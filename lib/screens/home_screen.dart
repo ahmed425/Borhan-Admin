@@ -11,11 +11,44 @@ class Home extends StatelessWidget {
         title: Text("الصفحة الرئيسية"),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('الرجوع لصفحة الدخول'),
+        child: Column(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+              },
+              child: Text('تعديل بيانات الجمعية'),
+            ),
+            RaisedButton(
+              onPressed: () {},
+              child: Text('إدارة أنشطة الجمعية'),
+            ),
+            RaisedButton(
+              onPressed: () {
+              },
+              child: Text('إدارة الحملات'),
+            ),
+            RaisedButton(
+              onPressed: () {
+              },
+              child: Text('  متابعة التبرعات'),
+            ),
+            RaisedButton(
+              onPressed: () {
+              },
+              child: Text('  مشاهدة فيديو توضيحي'),
+            ),
+            RaisedButton(
+              onPressed: () {
+              },
+              child: Text('المساعدة'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('الرجوع إلي صفحة الدخول'),
+            ),
+          ],
         ),
       ),
     );
