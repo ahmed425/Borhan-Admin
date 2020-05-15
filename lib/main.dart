@@ -1,8 +1,9 @@
-import 'package:BorhanAdmin/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-
-import './screens/auth_screen.dart';
 import 'package:provider/provider.dart';
+import './screens/home_screen.dart';
+import './screens/auth_screen.dart';
+import './screens/activity_screen.dart';
+import './screens/add_activity.dart';
 import './providers/auth.dart';
 
 void main() => runApp(MyApp());
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
           home: AuthScreen(),
           routes: {
             Home.routeName: (ctx) => Home(),
+            ActivityScreen.routeName: (ctx) => ActivityScreen(),
+            AddActivity.routeName: (ctx) => AddActivity(),
           }),
     );
   }

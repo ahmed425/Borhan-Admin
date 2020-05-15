@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import './activity_screen.dart';
 
 class Home extends StatelessWidget {
   static const routeName = '/home';
@@ -14,32 +15,34 @@ class Home extends StatelessWidget {
         child: Column(
           children: <Widget>[
             RaisedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('تعديل بيانات الجمعية'),
             ),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ActivityScreen(),
+                  ),
+                );
+              },
               child: Text('إدارة أنشطة الجمعية'),
             ),
             RaisedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('إدارة الحملات'),
             ),
             RaisedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('  متابعة التبرعات'),
             ),
             RaisedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('  مشاهدة فيديو توضيحي'),
             ),
             RaisedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('المساعدة'),
             ),
             RaisedButton(
