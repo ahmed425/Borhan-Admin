@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './activity_screen.dart';
 
+import 'activity_screen.dart';
 import 'edit_organization_details.dart';
 
 class Home extends StatelessWidget {
@@ -21,41 +21,6 @@ class Home extends StatelessWidget {
           stops: [0, 1],
         ),
       ),
-<<<<<<< Updated upstream
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            RaisedButton(
-              onPressed: () {},
-              child: Text('تعديل بيانات الجمعية'),
-            ),
-            RaisedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ActivityScreen(),
-                  ),
-                );
-              },
-              child: Text('إدارة أنشطة الجمعية'),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('إدارة الحملات'),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('  متابعة التبرعات'),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('  مشاهدة فيديو توضيحي'),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('المساعدة'),
-=======
       child: Scaffold(
         appBar: AppBar(
           title: Text("الصفحة الرئيسية"),
@@ -70,7 +35,6 @@ class Home extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               stops: [0, 1],
->>>>>>> Stashed changes
             ),
           ),
           child: Center(
@@ -86,7 +50,10 @@ class Home extends StatelessWidget {
                   child: Text('تعديل بيانات الجمعية'),
                 ),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () { Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ActivityScreen()));},
                   child: Text('إدارة أنشطة الجمعية'),
                 ),
                 RaisedButton(

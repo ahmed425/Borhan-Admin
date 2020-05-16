@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream
-=======
+
 import './providers/organization.dart';
 import './providers/organizations_logic.dart';
 import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
->>>>>>> Stashed changes
 import 'package:provider/provider.dart';
 import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
