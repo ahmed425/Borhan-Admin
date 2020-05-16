@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: Activities(),
-          value: Organizations(),
         ),
         ChangeNotifierProvider.value(
           value: Organization(),
