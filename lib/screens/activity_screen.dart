@@ -1,28 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/activities.dart';
 import './add_activity.dart';
-class ActivityScreen extends StatelessWidget {
+import '../widgets/activity_item.dart';
+
+class ActivityScreen extends StatefulWidget {
   static const routeName = '/activities';
 
-  final List<String> activities = ['كفالة اليتيم','اطعام','كساء'];
+  @override
+  _ActivityScreenState createState() => _ActivityScreenState();
+}
+
+class _ActivityScreenState extends State<ActivityScreen> {
+  var _isLoading = false;
+  var _isInit = true;
 
   @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Activities>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+//  in body : _isLoading? Center(child:CircularProgressIndicator(),) :
+  @override
   Widget build(BuildContext context) {
+    final activitiesData = Provider.of<Activities>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('الأنشطة'),
+        title: const Text('الأنشطة'),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(10),
-        itemCount: activities.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 50,
-            color: Colors.lightBlueAccent,
-            child: Center(child: Text('${activities[index]}')),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.all(10),
+              itemCount: activitiesData.items.length,
+              itemBuilder: (_, i) => ActivityItem(
+                activitiesData.items[i].activityName,
+                activitiesData.items[i].id,
+              ),
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -32,7 +62,7 @@ class ActivityScreen extends StatelessWidget {
             ),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Colors.lightBlueAccent,
       ),
     );

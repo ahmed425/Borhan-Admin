@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-class Activity {
+class Activity with ChangeNotifier{
+  final String id;
   final String activityName;
   final String activityDescription;
-  final List<String> imagesUrl;
+  final String imagesUrl;
 
   Activity({
+    this.id,
     @required this.activityName,
     @required this.activityDescription,
     this.imagesUrl,

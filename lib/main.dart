@@ -5,6 +5,7 @@ import './screens/auth_screen.dart';
 import './screens/activity_screen.dart';
 import './screens/add_activity.dart';
 import './providers/auth.dart';
+import './providers/activities.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Activities(),
         ),
       ],
       child: MaterialApp(
