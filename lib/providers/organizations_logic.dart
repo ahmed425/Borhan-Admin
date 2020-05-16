@@ -1,12 +1,10 @@
 import 'dart:convert';
-
+import './organization.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import './organization.dart';
-
-class CharitableOrgs with ChangeNotifier {
-  Future<void> updateOrg(CharitableOrganization newOrg) async {
+class Organizations with ChangeNotifier {
+  Future<void> updateOrg(String id, Organization newOrg) async {
     // id = json.decode(response.body)['name'];
     // final orgIndex = _orgs.indexWhere((org) => org.id == id);
     // if (orgIndex >= 0) {
@@ -22,11 +20,9 @@ class CharitableOrgs with ChangeNotifier {
           'landLineNo': newOrg.landLineNo,
           'mobileNo': newOrg.mobileNo,
           'bankAccounts': newOrg.bankAccounts,
+          'webPage': newOrg.webPage,
         }));
     // _orgs[orgIndex] = newOrg;
     notifyListeners();
   }
 }
-
-
-

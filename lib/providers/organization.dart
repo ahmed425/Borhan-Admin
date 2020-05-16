@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class CharitableOrganization with ChangeNotifier {
+class Organization with ChangeNotifier {
   final String id;
   final String orgName;
   final String logo;
@@ -10,8 +10,9 @@ class CharitableOrganization with ChangeNotifier {
   final String landLineNo;
   final String mobileNo;
   final String bankAccounts;
+  final String webPage;
 
-  CharitableOrganization(
+  Organization(
       {this.id,
       this.orgName,
       this.logo,
@@ -20,9 +21,6 @@ class CharitableOrganization with ChangeNotifier {
       this.licenseNo,
       this.landLineNo,
       this.mobileNo,
-      this.bankAccounts});
+      this.bankAccounts,
+      this.webPage});
 }
-
-
-
-
