@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "325713680003",
+    "firebase_url": "https://borhanadmin.firebaseio.com",
+    "project_id": "borhanadmin",
+    "storage_bucket": "borhanadmin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325713680003:android:6c7d41bf1fe633db73edb6",
+        "android_client_info": {
+          "package_name": "com.example.BorhanAdmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325713680003-aisnhmn5j9vf327o2glu6o9rlmapdf7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa7pelTniJKmX332v8ZQvhrqj2Mg2k8oo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325713680003-aisnhmn5j9vf327o2glu6o9rlmapdf7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
