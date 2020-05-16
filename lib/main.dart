@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import './providers/organization.dart';
 import './providers/organizations_logic.dart';
 import './screens/home_screen.dart';

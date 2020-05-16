@@ -98,6 +98,7 @@ class _AddActivityState extends State<AddActivity> {
   File _image;
   var _upload = false;
   String _downloadUrl;
+  // FirebaseApp.initializeApp(this);
   StorageReference _reference =
       FirebaseStorage.instance.ref().child('imageUrl.jpg');
 
@@ -111,9 +112,8 @@ class _AddActivityState extends State<AddActivity> {
 
   Future uploadImage() async {
     print("object");
-    StorageReference storageReference = FirebaseStorage.instance
-        .ref()
-        .child(_image.path.split('/').last);
+    StorageReference storageReference =
+        FirebaseStorage.instance.ref().child(_image.path.split('/').last);
     StorageUploadTask uploadTask = storageReference.putFile(_image);
     await uploadTask.onComplete;
     print('File Uploaded');
@@ -127,49 +127,55 @@ class _AddActivityState extends State<AddActivity> {
 //    setState(() {
 //      _upload = true;
 //    });
-    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n +++++++++++++++++++++++++++++++++++++++++++');
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n +++++++++++++++++++++++++++++++++++++++++++');
     print("from uploading");
   }
+
   Future downloadImage() async {
     String downloadAddress = await _reference.getDownloadURL();
-  setState(() {
-    _downloadUrl = downloadAddress;
-  });
+    setState(() {
+      _downloadUrl = downloadAddress;
+    });
   }
 
   Widget newImage() {
     return Center(
       child: Container(
         height: 300,
-        child: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              child: Text('gallery'),
-              onPressed: () {
-                getImage();
-              },
-            ),
-            _downloadUrl != null
-                ? Image.network(_downloadUrl)
-                : _image==null? Container(): Image.file(
-                    _image,
-                    height: 250,
-                  ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text('gallery'),
+                onPressed: () {
+                  getImage();
+                },
+              ),
+              _downloadUrl != null
+                  ? Image.network(_downloadUrl)
+                  : _image == null
+                      ? Container()
+                      : Image.file(
+                          _image,
+                          height: 250,
+                        ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _descFocusNode.dispose();
-    super.dispose();
-  }
+//  @override
+//  void dispose() {
+//    // TODO: implement dispose
+//    _descFocusNode.dispose();
+//    super.dispose();
+//  }
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
@@ -258,84 +264,87 @@ class _AddActivityState extends State<AddActivity> {
               padding: const EdgeInsets.all(15.0),
               child: Form(
                 key: _form,
-                child: ListView(
-                  children: <Widget>[
-                    Text(
-                      'اسم النشاط',
-                      textAlign: TextAlign.center,
-                    ),
-                    TextFormField(
-                      textAlign: TextAlign.right,
-                      initialValue: _initValues['actName'],
-                      decoration: const InputDecoration(
-                        hintText: 'مثال: نشاط إطعام',
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'اسم النشاط',
+                        textAlign: TextAlign.center,
                       ),
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_descFocusNode);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'من فضلك أدخل أسم للنشاط';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _addActivity = Activity(
-                          activityName: value,
-                          activityDescription: _addActivity.activityDescription,
-                          imagesUrl: _addActivity.imagesUrl,
-                          id: _addActivity.id,
-                        );
-                      },
-                    ),
-                    Text(
-                      'الوصف',
-                      textAlign: TextAlign.center,
-                    ),
-                    TextFormField(
-                      initialValue: _initValues['actDescription'],
-                      textAlign: TextAlign.right,
-                      maxLines: 3,
-                      keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
-                        hintText: 'نشاط يساعد في اطعام المحتاجين',
+                      TextFormField(
+                        textAlign: TextAlign.right,
+                        initialValue: _initValues['actName'],
+                        decoration: const InputDecoration(
+                          hintText: 'مثال: نشاط إطعام',
+                        ),
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_descFocusNode);
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'من فضلك أدخل أسم للنشاط';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _addActivity = Activity(
+                            activityName: value,
+                            activityDescription:
+                                _addActivity.activityDescription,
+                            imagesUrl: _addActivity.imagesUrl,
+                            id: _addActivity.id,
+                          );
+                        },
                       ),
-                      focusNode: _descFocusNode,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'من فضلك أدخل وصف للنشاط';
-                        }
-                        if (value.length < 10) {
-                          return 'الوصف يجب ألا يقل عن 10 أحرف';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _addActivity = Activity(
-                          activityName: _addActivity.activityName,
-                          activityDescription: value,
-                          imagesUrl: _addActivity.imagesUrl,
-                          id: _addActivity.id,
-                        );
-                      },
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: newImage(),
+                      Text(
+                        'الوصف',
+                        textAlign: TextAlign.center,
+                      ),
+                      TextFormField(
+                        initialValue: _initValues['actDescription'],
+                        textAlign: TextAlign.right,
+                        maxLines: 3,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          hintText: 'نشاط يساعد في اطعام المحتاجين',
+                        ),
+                        focusNode: _descFocusNode,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'من فضلك أدخل وصف للنشاط';
+                          }
+                          if (value.length < 10) {
+                            return 'الوصف يجب ألا يقل عن 10 أحرف';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _addActivity = Activity(
+                            activityName: _addActivity.activityName,
+                            activityDescription: value,
+                            imagesUrl: _addActivity.imagesUrl,
+                            id: _addActivity.id,
+                          );
+                        },
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: newImage(),
 //                      child: addImage(),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: new RaisedButton(
-                        child: _addActivity.id != null
-                            ? Text('حفظ')
-                            : Text('إضافة'),
-                        color: Colors.lightBlueAccent,
-                        onPressed: _saveForm,
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: new RaisedButton(
+                          child: _addActivity.id != null
+                              ? Text('حفظ')
+                              : Text('إضافة'),
+                          color: Colors.lightBlueAccent,
+                          onPressed: _saveForm,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
