@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import '../providers/activities.dart';
 import '../models/activity.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class AddActivity extends StatefulWidget {
   static const routeName = '/add-activity';
@@ -58,13 +57,6 @@ class _AddActivityState extends State<AddActivity> {
 //  }
 
   Future<void> _saveForm() async {
-    _addActivity = Activity(
-      id: _addActivity.id,
-      imagesUrl: _downloadUrl,
-      activityDescription: _addActivity.activityDescription,
-      activityName: _addActivity.activityName,
-    );
-    print(_addActivity.imagesUrl);
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -74,8 +66,16 @@ class _AddActivityState extends State<AddActivity> {
     setState(() {
       _isLoading = true;
     });
-    print("activity id :  "+_addActivity.id);
+
     if (_addActivity.id != null) {
+      print("activity id :  "+_addActivity.id);
+      _addActivity = Activity(
+        id: _addActivity.id,
+        imagesUrl: _downloadUrl!=null? _downloadUrl:_addActivity.imagesUrl,
+        activityDescription: _addActivity.activityDescription,
+        activityName: _addActivity.activityName,
+      );
+      print(_addActivity.imagesUrl);
       Provider.of<Activities>(context, listen: false)
           .updateActivity(_addActivity.id, _addActivity);
       setState(() {
@@ -83,6 +83,13 @@ class _AddActivityState extends State<AddActivity> {
       });
       Navigator.of(context).pop();
     } else {
+      _addActivity = Activity(
+        id: _addActivity.id,
+        imagesUrl: _downloadUrl,
+        activityDescription: _addActivity.activityDescription,
+        activityName: _addActivity.activityName,
+      );
+      print(_addActivity.imagesUrl);
       try {
         await Provider.of<Activities>(context, listen: false)
             .addActivity(_addActivity);

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import './providers/organization.dart';
+import './models/organization.dart';
+import './providers/campaigns.dart';
 import './providers/organizations_logic.dart';
 import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
 import 'package:provider/provider.dart';
+import './screens/add_campaign.dart';
 import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/activity_screen.dart';
@@ -25,7 +27,10 @@ class MyApp extends StatelessWidget {
           value: Activities(),
         ),
         ChangeNotifierProvider.value(
-          value: Organization(),
+          value: Organizations(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Campaigns(),
         ),
       ],
       child: MaterialApp(
@@ -38,6 +43,7 @@ class MyApp extends StatelessWidget {
             Home.routeName: (ctx) => Home(),
             ActivityScreen.routeName: (ctx) => ActivityScreen(),
             AddActivity.routeName: (ctx) => AddActivity(),
+            AddCampaign.routeName: (ctx) => AddCampaign(),
           }),
     );
   }

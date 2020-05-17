@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import '../screens/campaign_screen.dart';
 import 'activity_screen.dart';
 import 'edit_organization_details.dart';
 
@@ -50,14 +50,21 @@ class Home extends StatelessWidget {
                   child: Text('تعديل بيانات الجمعية'),
                 ),
                 RaisedButton(
-                  onPressed: () { Navigator.push(
+                  onPressed: () {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ActivityScreen()));},
+                            builder: (context) => ActivityScreen()));
+                  },
                   child: Text('إدارة أنشطة الجمعية'),
                 ),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CampaignScreen()));
+                  },
                   child: Text('إدارة الحملات'),
                 ),
                 RaisedButton(
