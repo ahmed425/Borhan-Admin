@@ -1,25 +1,13 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/activity.dart';
 
 class Activities with ChangeNotifier {
-  List<Activity> _items = [
-//    Activity(
-//      activityName: 'كساء',
-//      activityDescription: 'clothes',
-//    ),
-//    Activity(
-//      activityName: 'كفالة اليتيم',
-//      activityDescription: 'clothes',
-//    ),
-//    Activity(
-//      activityName: 'اطعام',
-//      activityDescription: 'clothes',
-//    ),
-  ];
+  List<Activity> _items = [];
 
   List<Activity> get items {
     return [..._items];
@@ -29,18 +17,18 @@ class Activities with ChangeNotifier {
     return _items.firstWhere((activity) => activity.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetActivities() async {
     const url = 'https://borhanadmin.firebaseio.com/activities.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Activity> loadedActivities = [];
-      extractedData.forEach((prodId, prodData) {
+      extractedData.forEach((activityId, activityData) {
         loadedActivities.add(Activity(
-          id: prodId,
-          activityName: prodData['name'],
-          activityDescription: prodData['description'],
-          imagesUrl: prodData['image'],
+          id: activityId,
+          activityName: activityData['name'],
+          activityDescription: activityData['description'],
+          imagesUrl: activityData['image'],
         ));
       });
       _items = loadedActivities;
@@ -108,4 +96,19 @@ class Activities with ChangeNotifier {
     }
     existingProduct = null;
   }
+
+  Future<String> uploadImage(File image) async {
+    print("in upload");
+    StorageReference storageReference =
+    FirebaseStorage.instance.ref().child(image.path.split('/').last);
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    String _downloadUrl = await storageReference.getDownloadURL();
+    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    print("from uploading :  " + _downloadUrl);
+    return _downloadUrl;
+  }
+
 }

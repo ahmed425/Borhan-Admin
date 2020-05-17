@@ -21,7 +21,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Activities>(context).fetchAndSetProducts().then((_) {
+      Provider.of<Activities>(context).fetchAndSetActivities().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -31,7 +31,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
     super.didChangeDependencies();
   }
 
-//  in body : _isLoading? Center(child:CircularProgressIndicator(),) :
   @override
   Widget build(BuildContext context) {
     final activitiesData = Provider.of<Activities>(context);

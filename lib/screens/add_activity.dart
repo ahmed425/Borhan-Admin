@@ -15,7 +15,6 @@ class AddActivity extends StatefulWidget {
 }
 
 class _AddActivityState extends State<AddActivity> {
-  Future<File> imageFile;
   final _descFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _addActivity = Activity(
@@ -31,76 +30,8 @@ class _AddActivityState extends State<AddActivity> {
     'imgUrl': '',
   };
   var _isLoading = false;
-
-//  List<Future<File>> images;
-//  var i = 0;
-
-  pickImageFromGallery(ImageSource source) {
-    setState(() {
-      imageFile = ImagePicker.pickImage(source: source);
-//      images.add(imageFile);
-//      i++;
-    });
-  }
-
-  Widget showImage() {
-    return FutureBuilder<File>(
-      future: imageFile,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          print(snapshot.data);
-          _addActivity = Activity(
-            activityName: _addActivity.activityName,
-            activityDescription: _addActivity.activityDescription,
-            imagesUrl: snapshot.data.toString(),
-            id: _addActivity.id,
-          );
-          return Image.file(
-            snapshot.data,
-            width: 300,
-            height: 300,
-          );
-        } else if (snapshot.error != null) {
-          return const Text(
-            'فشل في تحديد الصوره',
-            textAlign: TextAlign.center,
-          );
-//        } else if (_addActivity.id != null) {
-//          return Image.file(
-//            new File(_addActivity.imagesUrl),
-//          );
-        } else {
-          return const Text(
-            'لم يتم تحديد صور',
-            textAlign: TextAlign.center,
-          );
-        }
-      },
-    );
-  }
-
-  Widget addImage() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        showImage(),
-        RaisedButton(
-          child: Text("إضافة صورة"),
-          onPressed: () {
-            pickImageFromGallery(ImageSource.gallery);
-          },
-        ),
-      ],
-    );
-  }
-
   File _image;
-  var _upload = false;
   String _downloadUrl;
-  // FirebaseApp.initializeApp(this);
-  StorageReference _reference =
-      FirebaseStorage.instance.ref().child('imageUrl.jpg');
 
   Future getImage() async {
     File img;
@@ -108,66 +39,12 @@ class _AddActivityState extends State<AddActivity> {
     setState(() {
       _image = img;
     });
-  }
-
-  Future uploadImage() async {
-    print("object");
-    StorageReference storageReference =
-        FirebaseStorage.instance.ref().child(_image.path.split('/').last);
-    StorageUploadTask uploadTask = storageReference.putFile(_image);
-    await uploadTask.onComplete;
-    print('File Uploaded');
-    storageReference.getDownloadURL().then((fileURL) {
-      setState(() {
-        _downloadUrl = fileURL;
-      });
+    
+    Provider.of<Activities>(context, listen: false)
+        .uploadImage(_image).then((val){
+          _downloadUrl = val;
+          print("value from upload" + _downloadUrl);
     });
-//    StorageUploadTask uploadTask = _reference.putFile(_image);
-//    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-//    setState(() {
-//      _upload = true;
-//    });
-    print(
-        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n +++++++++++++++++++++++++++++++++++++++++++');
-    print("from uploading");
-  }
-
-  Future downloadImage() async {
-    String downloadAddress = await _reference.getDownloadURL();
-    setState(() {
-      _downloadUrl = downloadAddress;
-    });
-  }
-
-  Widget newImage() {
-    return Center(
-      child: Container(
-        height: 300,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10.0,
-              ),
-              RaisedButton(
-                child: Text('gallery'),
-                onPressed: () {
-                  getImage();
-                },
-              ),
-              _downloadUrl != null
-                  ? Image.network(_downloadUrl)
-                  : _image == null
-                      ? Container()
-                      : Image.file(
-                          _image,
-                          height: 250,
-                        ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
 //  @override
@@ -178,6 +55,12 @@ class _AddActivityState extends State<AddActivity> {
 //  }
 
   Future<void> _saveForm() async {
+    _addActivity = Activity(
+      imagesUrl: _downloadUrl,
+      activityDescription: _addActivity.activityDescription,
+      activityName: _addActivity.activityName,
+    );
+    print(_addActivity.imagesUrl);
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -188,9 +71,6 @@ class _AddActivityState extends State<AddActivity> {
       _isLoading = true;
     });
     if (_addActivity.id != null) {
-      // for getting image from storage in firebase
-      downloadImage();
-      //
       Provider.of<Activities>(context, listen: false)
           .updateActivity(_addActivity.id, _addActivity);
       setState(() {
@@ -199,10 +79,6 @@ class _AddActivityState extends State<AddActivity> {
       Navigator.of(context).pop();
     } else {
       try {
-        // for storing image in Storage in firebase
-        print('before');
-        uploadImage();
-        //
         await Provider.of<Activities>(context, listen: false)
             .addActivity(_addActivity);
       } catch (error) {
@@ -348,6 +224,37 @@ class _AddActivityState extends State<AddActivity> {
                 ),
               ),
             ),
+    );
+  }
+
+  Widget newImage() {
+    return Center(
+      child: Container(
+        height: 300,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text('gallery'),
+                onPressed: () {
+                  getImage();
+                },
+              ),
+              _addActivity.id!=null && _addActivity.imagesUrl != null
+                  ? Image.network(_addActivity.imagesUrl)
+                  : _image == null
+                  ? Container()
+                  : Image.file(
+                _image,
+                height: 250,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
