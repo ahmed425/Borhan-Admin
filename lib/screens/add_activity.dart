@@ -16,51 +16,60 @@ class AddActivity extends StatefulWidget {
 class _AddActivityState extends State<AddActivity> {
   final _descFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  var _isLoadImg = false;
+  var _isInit = true;
+  var _isLoading = false;
+  File _image;
+  String _downloadUrl;
   var _addActivity = Activity(
     id: null,
     activityName: '',
     activityDescription: '',
     imagesUrl: '',
   );
-  var _isInit = true;
   var _initValues = {
     'actName': '',
     'actDescription': '',
     'imgUrl': '',
   };
-  var _isLoading = false;
-  File _image;
-  String _downloadUrl;
 
   Future getImage() async {
     File img;
     img = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = img;
+      _isLoadImg = true;
     });
 
     Provider.of<Activities>(context, listen: false)
         .uploadImage(_image)
         .then((val) {
       _downloadUrl = val;
+      setState(() {
+        _isLoadImg = false;
+      });
       print("value from upload" + _downloadUrl);
     });
 
-    Provider.of<Activities>(context, listen: false)
-        .deleteImage(_addActivity.imagesUrl);
   }
 
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    _descFocusNode.dispose();
-//    super.dispose();
-//  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _descFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
+    }
+    if (_addActivity.imagesUrl != null && _addActivity.imagesUrl != '') {
+      print('---------------------------- from delete image -----------------------------');
+      print('Image Url : ' + _addActivity.imagesUrl);
+      Provider.of<Activities>(context, listen: false)
+          .deleteImage(_addActivity.imagesUrl);
     }
     print("---------------------------------------------");
     _form.currentState.save();
@@ -219,7 +228,11 @@ class _AddActivityState extends State<AddActivity> {
                       ),
                       Container(
                         padding: const EdgeInsets.all(10.0),
-                        child: newImage(),
+                        child: _isLoadImg
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : newImage(),
 //                      child: addImage(),
                       ),
                       Container(

@@ -26,6 +26,7 @@ class _AddCampaignState extends State<AddCampaign> {
     imagesUrl: '',
     time: '',
   );
+  var _isLoadImg = false;
   var _isInit = true;
   var _initValues = {
     'campName': '',
@@ -42,17 +43,19 @@ class _AddCampaignState extends State<AddCampaign> {
     img = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = img;
+      _isLoadImg = true;
     });
 
     Provider.of<Campaigns>(context, listen: false)
         .uploadImage(_image)
         .then((val) {
       _downloadUrl = val;
+      setState(() {
+        _isLoadImg = false;
+      });
       print("value from upload" + _downloadUrl);
     });
 
-    Provider.of<Campaigns>(context, listen: false)
-        .deleteImage(_addCampaign.imagesUrl);
   }
 
 //  @override
@@ -66,6 +69,12 @@ class _AddCampaignState extends State<AddCampaign> {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
+    }
+    if (_addCampaign.imagesUrl != null && _addCampaign.imagesUrl != '') {
+      print('---------------------------- from delete image -----------------------------');
+      print('Image Url : ' + _addCampaign.imagesUrl);
+      Provider.of<Campaigns>(context, listen: false)
+          .deleteImage(_addCampaign.imagesUrl);
     }
     print("---------------------------------------------");
     _form.currentState.save();
@@ -131,8 +140,8 @@ class _AddCampaignState extends State<AddCampaign> {
     if (_isInit) {
       final campaignId = ModalRoute.of(context).settings.arguments as String;
       if (campaignId != null) {
-        _addCampaign = Provider.of<Campaigns>(context, listen: false)
-            .findById(campaignId);
+        _addCampaign =
+            Provider.of<Campaigns>(context, listen: false).findById(campaignId);
         _initValues = {
           'campName': _addCampaign.campaignName,
           'campDescription': _addCampaign.campaignDescription,
@@ -155,126 +164,130 @@ class _AddCampaignState extends State<AddCampaign> {
       ),
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Form(
-          key: _form,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'اسم الحمة',
-                  textAlign: TextAlign.center,
-                ),
-                TextFormField(
-                  textAlign: TextAlign.right,
-                  initialValue: _initValues['campName'],
-                  decoration: const InputDecoration(
-                    hintText: 'مثال: حملة رمضان الخير',
-                  ),
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_descFocusNode);
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'من فضلك أدخل أسم للحملة';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _addCampaign = Campaign(
-                      campaignName: value,
-                      campaignDescription:
-                      _addCampaign.campaignDescription,
-                      imagesUrl: _addCampaign.imagesUrl,
-                      time: _addCampaign.time,
-                      id: _addCampaign.id,
-                    );
-                  },
-                ),
-                Text(
-                  'الوصف',
-                  textAlign: TextAlign.center,
-                ),
-                TextFormField(
-                  initialValue: _initValues['campDescription'],
-                  textAlign: TextAlign.right,
-                  maxLines: 3,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    hintText: 'حملة تساعد في اطعام المحتاجين',
-                  ),
-                  focusNode: _descFocusNode,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'من فضلك أدخل وصف للحملة';
-                    }
-                    if (value.length < 10) {
-                      return 'الوصف يجب ألا يقل عن 10 أحرف';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _addCampaign = Campaign(
-                      campaignName: _addCampaign.campaignName,
-                      campaignDescription: value,
-                      imagesUrl: _addCampaign.imagesUrl,
-                      time: _addCampaign.time,
-                      id: _addCampaign.id,
-                    );
-                  },
-                ),
-                Text(
-                  'وقت الحملة',
-                  textAlign: TextAlign.center,
-                ),
-                TextFormField(
-                  textAlign: TextAlign.right,
-                  initialValue: _initValues['campName'],
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_descFocusNode);
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'من فضلك أدخل وقت للحملة';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _addCampaign = Campaign(
-                      campaignName: value,
-                      campaignDescription:
-                      _addCampaign.campaignDescription,
-                      imagesUrl: _addCampaign.imagesUrl,
-                      time: _addCampaign.time,
-                      id: _addCampaign.id,
-                    );
-                  },
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: newImage(),
+              padding: const EdgeInsets.all(15.0),
+              child: Form(
+                key: _form,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'اسم الحمة',
+                        textAlign: TextAlign.center,
+                      ),
+                      TextFormField(
+                        textAlign: TextAlign.right,
+                        initialValue: _initValues['campName'],
+                        decoration: const InputDecoration(
+                          hintText: 'مثال: حملة رمضان الخير',
+                        ),
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_descFocusNode);
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'من فضلك أدخل أسم للحملة';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _addCampaign = Campaign(
+                            campaignName: value,
+                            campaignDescription:
+                                _addCampaign.campaignDescription,
+                            imagesUrl: _addCampaign.imagesUrl,
+                            time: _addCampaign.time,
+                            id: _addCampaign.id,
+                          );
+                        },
+                      ),
+                      Text(
+                        'الوصف',
+                        textAlign: TextAlign.center,
+                      ),
+                      TextFormField(
+                        initialValue: _initValues['campDescription'],
+                        textAlign: TextAlign.right,
+                        maxLines: 3,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          hintText: 'حملة تساعد في اطعام المحتاجين',
+                        ),
+                        focusNode: _descFocusNode,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'من فضلك أدخل وصف للحملة';
+                          }
+                          if (value.length < 10) {
+                            return 'الوصف يجب ألا يقل عن 10 أحرف';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _addCampaign = Campaign(
+                            campaignName: _addCampaign.campaignName,
+                            campaignDescription: value,
+                            imagesUrl: _addCampaign.imagesUrl,
+                            time: _addCampaign.time,
+                            id: _addCampaign.id,
+                          );
+                        },
+                      ),
+                      Text(
+                        'وقت الحملة',
+                        textAlign: TextAlign.center,
+                      ),
+                      TextFormField(
+                        textAlign: TextAlign.right,
+                        initialValue: _initValues['campName'],
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_descFocusNode);
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'من فضلك أدخل وقت للحملة';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _addCampaign = Campaign(
+                            campaignName: value,
+                            campaignDescription:
+                                _addCampaign.campaignDescription,
+                            imagesUrl: _addCampaign.imagesUrl,
+                            time: _addCampaign.time,
+                            id: _addCampaign.id,
+                          );
+                        },
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: _isLoadImg
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : newImage(),
 //                      child: addImage(),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: new RaisedButton(
-                    child: _addCampaign.id != null
-                        ? Text('حفظ')
-                        : Text('إضافة'),
-                    color: Colors.lightBlueAccent,
-                    onPressed: _saveForm,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: new RaisedButton(
+                          child: _addCampaign.id != null
+                              ? Text('حفظ')
+                              : Text('إضافة'),
+                          color: Colors.lightBlueAccent,
+                          onPressed: _saveForm,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -297,14 +310,14 @@ class _AddCampaignState extends State<AddCampaign> {
               _addCampaign.id != null && _image != null
                   ? Image.file(_image)
                   : _addCampaign.id != null &&
-                  _addCampaign.imagesUrl != null //update
-                  ? Image.network(_addCampaign.imagesUrl)
-                  : _image == null
-                  ? Container()
-                  : Image.file(
-                _image,
-                height: 250,
-              ),
+                          _addCampaign.imagesUrl != null //update
+                      ? Image.network(_addCampaign.imagesUrl)
+                      : _image == null
+                          ? Container()
+                          : Image.file(
+                              _image,
+                              height: 250,
+                            ),
             ],
           ),
         ),
