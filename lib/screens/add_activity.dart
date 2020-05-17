@@ -40,9 +40,10 @@ class _AddActivityState extends State<AddActivity> {
     });
 
     Provider.of<Activities>(context, listen: false)
-        .uploadImage(_image).then((val){
-          _downloadUrl = val;
-          print("value from upload" + _downloadUrl);
+        .uploadImage(_image)
+        .then((val) {
+      _downloadUrl = val;
+      print("value from upload" + _downloadUrl);
     });
 
     Provider.of<Activities>(context, listen: false)
@@ -68,10 +69,10 @@ class _AddActivityState extends State<AddActivity> {
     });
 
     if (_addActivity.id != null) {
-      print("activity id :  "+_addActivity.id);
+      print("activity id :  " + _addActivity.id);
       _addActivity = Activity(
         id: _addActivity.id,
-        imagesUrl: _downloadUrl!=null? _downloadUrl:_addActivity.imagesUrl,
+        imagesUrl: _downloadUrl != null ? _downloadUrl : _addActivity.imagesUrl,
         activityDescription: _addActivity.activityDescription,
         activityName: _addActivity.activityName,
       );
@@ -255,14 +256,17 @@ class _AddActivityState extends State<AddActivity> {
                   getImage();
                 },
               ),
-              _addActivity.id!=null && _addActivity.imagesUrl != null
-                  ? Image.network(_addActivity.imagesUrl)
-                  : _image == null
-                  ? Container()
-                  : Image.file(
-                _image,
-                height: 250,
-              ),
+              _addActivity.id != null && _image != null
+                  ? Image.file(_image)
+                  : _addActivity.id != null &&
+                          _addActivity.imagesUrl != null //update
+                      ? Image.network(_addActivity.imagesUrl)
+                      : _image == null
+                          ? Container()
+                          : Image.file(
+                              _image,
+                              height: 250,
+                            ),
             ],
           ),
         ),
