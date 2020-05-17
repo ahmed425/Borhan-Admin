@@ -39,12 +39,15 @@ class _AddActivityState extends State<AddActivity> {
     setState(() {
       _image = img;
     });
-    
+
     Provider.of<Activities>(context, listen: false)
         .uploadImage(_image).then((val){
           _downloadUrl = val;
           print("value from upload" + _downloadUrl);
     });
+
+    Provider.of<Activities>(context, listen: false)
+        .deleteImage(_addActivity.imagesUrl);
   }
 
 //  @override
@@ -56,6 +59,7 @@ class _AddActivityState extends State<AddActivity> {
 
   Future<void> _saveForm() async {
     _addActivity = Activity(
+      id: _addActivity.id,
       imagesUrl: _downloadUrl,
       activityDescription: _addActivity.activityDescription,
       activityName: _addActivity.activityName,
@@ -70,6 +74,7 @@ class _AddActivityState extends State<AddActivity> {
     setState(() {
       _isLoading = true;
     });
+    print("activity id :  "+_addActivity.id);
     if (_addActivity.id != null) {
       Provider.of<Activities>(context, listen: false)
           .updateActivity(_addActivity.id, _addActivity);

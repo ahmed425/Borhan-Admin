@@ -111,4 +111,13 @@ class Activities with ChangeNotifier {
     return _downloadUrl;
   }
 
+  Future deleteImage(String imgUrl) async {
+    print("From Delete Image");
+    StorageReference myStorageReference = await FirebaseStorage.instance
+        .getReferenceFromUrl(imgUrl);
+    print(myStorageReference.path);
+    await myStorageReference.delete();
+    print("image deleted successfully");
+  }
+
 }
