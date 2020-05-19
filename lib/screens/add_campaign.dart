@@ -271,7 +271,6 @@ class _AddCampaignState extends State<AddCampaign> {
                                 child: CircularProgressIndicator(),
                               )
                             : newImage(),
-//                      child: addImage(),
                       ),
                       Container(
                         padding: const EdgeInsets.all(10.0),

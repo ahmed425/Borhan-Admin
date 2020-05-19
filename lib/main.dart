@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import './models/organization.dart';
-import './providers/campaigns.dart';
-import './providers/organizations_logic.dart';
-import './screens/home_screen.dart';
-import './screens/auth_screen.dart';
 import 'package:provider/provider.dart';
-import './screens/add_campaign.dart';
-import './screens/home_screen.dart';
-import './screens/auth_screen.dart';
-import './screens/activity_screen.dart';
-import './screens/add_activity.dart';
 import './providers/auth.dart';
 import './providers/activities.dart';
+import './providers/campaigns.dart';
+import './providers/history_provider.dart';
+import './providers/organizations_logic.dart';
+import './screens/add_campaign.dart';
+import './screens/activity_screen.dart';
+import './screens/add_activity.dart';
+import './screens/donation_tabs_screen.dart';
+import './screens/home_screen.dart';
+import './screens/auth_screen.dart';
+import './screens/video_screen.dart';
+
+import './screens/donation_history.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,11 +34,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Campaigns(),
         ),
+        ChangeNotifierProvider.value(
+          value: HistoryProvider(),
+        ),
       ],
       child: MaterialApp(
           title: 'Borhan',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.purple,
           ),
           home: AuthScreen(),
           routes: {
@@ -44,6 +49,8 @@ class MyApp extends StatelessWidget {
             ActivityScreen.routeName: (ctx) => ActivityScreen(),
             AddActivity.routeName: (ctx) => AddActivity(),
             AddCampaign.routeName: (ctx) => AddCampaign(),
+            VideoPlayerScreen.routeName: (ctx) => VideoPlayerScreen(),
+            DonationTabsScreen.routeName: (ctx) => DonationTabsScreen(),
           }),
     );
   }

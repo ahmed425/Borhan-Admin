@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/activities.dart';
 
 class ActivityItem extends StatelessWidget {
+
   final String name;
   final String id;
 

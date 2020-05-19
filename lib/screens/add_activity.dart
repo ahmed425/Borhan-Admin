@@ -264,7 +264,7 @@ class _AddActivityState extends State<AddActivity> {
                 height: 10.0,
               ),
               RaisedButton(
-                child: Text('gallery'),
+                child: Text('إختيار صورة'),
                 onPressed: () {
                   getImage();
                 },
