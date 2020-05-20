@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/donation_history.dart';
+import 'donation_requests_screen.dart';
 
 class DonationTabsScreen extends StatefulWidget {
   static const routeName = '/donationTabsScreen';
@@ -9,7 +10,6 @@ class DonationTabsScreen extends StatefulWidget {
 }
 
 class _DonationTabsScreenState extends State<DonationTabsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -39,9 +39,7 @@ class _DonationTabsScreenState extends State<DonationTabsScreen> {
         ),
         body: TabBarView(
           children: <Widget>[
-            Center(
-              child: Text('current donation'),
-            ),
+            DonationRequestsScreen(),
             DonationHistory(),
           ],
         ),

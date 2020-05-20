@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 import '../models/organization.dart';
 import '../providers/organizations_logic.dart';
@@ -15,7 +19,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
-  var _editedOrg =Organization(
+  var _editedOrg = Organization(
     id: '1',
     orgName: '',
     logo: '',
@@ -26,6 +30,29 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
     mobileNo: '',
     bankAccounts: '',
   );
+  File _image;
+  String _downloadUrl;
+  var _isLoading = false;
+  var _isLoadImg = false;
+
+  Future getImage() async {
+    File img;
+    img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = img;
+      _isLoadImg = true;
+    });
+
+    Provider.of<Organizations>(context, listen: false)
+        .uploadImage(_image)
+        .then((val) {
+      _downloadUrl = val;
+      setState(() {
+        _isLoadImg = false;
+      });
+      print("value from upload" + _downloadUrl);
+    });
+  }
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
@@ -35,8 +62,12 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
     _form.currentState.save();
     setState(() {});
     if (_editedOrg.id != null) {
+      Provider.of<Organizations>(context, listen: false)
+          .deleteImage(_downloadUrl);
       await Provider.of<Organizations>(context, listen: false)
           .updateOrg(_editedOrg.id, _editedOrg);
+      Toast.show("تم حفظ البيانات بنجاح", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
     }
   }
 
@@ -69,288 +100,250 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
           child: Form(
             key: _form,
             child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'اسم الجمعية'),
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(_descriptionFocusNode);
-                    },
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
+              child: Column(children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'اسم الجمعية'),
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
 
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: value,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'عنوان الجمعية'),
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(_descriptionFocusNode);
-                    },
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: value,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: _editedOrg.description,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'عنوان الجمعية'),
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
 
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: value,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'نبذة عن الجمعية'),
-                    maxLines: 3,
-                    keyboardType: TextInputType.multiline,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-                      if (value.length < 10) {
-                        return 'يجب ألا يقل عن 10 أحرف';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: value,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'رقم الرخصة'),
-                keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: value,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'رقم الهاتف الأرضي'),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: value,
+                      description: _editedOrg.description,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'نبذة عن الجمعية'),
+                  maxLines: 3,
+                  keyboardType: TextInputType.multiline,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
+                    if (value.length < 10) {
+                      return 'يجب ألا يقل عن 10 أحرف';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: value,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'رقم الرخصة'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: _editedOrg.description,
+                      licenseNo: value,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'رقم الهاتف الأرضي'),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
 
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: value,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'رقم الموبايل '),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: _editedOrg.description,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: value,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'رقم الموبايل '),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
 
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: value,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'تفاصيل الحساب البنكي '),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: _editedOrg.description,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: value,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration:
+                      InputDecoration(labelText: 'تفاصيل الحساب البنكي '),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
 
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: value,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'رابط صفحة الإنترنت'),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: _editedOrg.description,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: value,
+                      webPage: _editedOrg.webPage,
+                    );
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'رابط صفحة الإنترنت'),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'يرجي ملأ هذا الحقل';
+                    }
 
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: _editedOrg.orgName,
-                        logo: _editedOrg.logo,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: value,
-                      );
-                    },
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        width: 100,
-                        height: 100,
-                        margin: EdgeInsets.only(
-                          top: 8,
-                          right: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        child: _imageUrlController.text.isEmpty
-                            ? Text('Enter a URL')
-                            : FittedBox(
-                                child: Image.network(
-                                  _imageUrlController.text,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          decoration: InputDecoration(labelText: 'Image URL'),
-                          keyboardType: TextInputType.url,
-                          textInputAction: TextInputAction.done,
-                          controller: _imageUrlController,
-                          focusNode: _imageUrlFocusNode,
-                          onFieldSubmitted: (_) {
-                            _saveForm();
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'يرجي إدخال رابط صورة';
-                            }
-                            if (!value.startsWith('http') &&
-                                !value.startsWith('https')) {
-                              return 'يرجي إدخال رابط صورة صحيح';
-                            }
-                            if (!value.endsWith('.png') &&
-                                !value.endsWith('.jpg') &&
-                                !value.endsWith('.jpeg')) {
-                              return 'يرجي إدخال رابط صورة صحيح';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _editedOrg = Organization(
-                              id: _editedOrg.id,
-                              orgName: _editedOrg.orgName,
-                              logo: value,
-                              address: _editedOrg.address,
-                              description: _editedOrg.description,
-                              licenseNo: _editedOrg.licenseNo,
-                              landLineNo: _editedOrg.landLineNo,
-                              mobileNo: _editedOrg.mobileNo,
-                              bankAccounts: _editedOrg.bankAccounts,
-                              webPage: _editedOrg.webPage,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _editedOrg = Organization(
+                      id: _editedOrg.id,
+                      orgName: _editedOrg.orgName,
+                      logo: _downloadUrl,
+                      address: _editedOrg.address,
+                      description: _editedOrg.description,
+                      licenseNo: _editedOrg.licenseNo,
+                      landLineNo: _editedOrg.landLineNo,
+                      mobileNo: _editedOrg.mobileNo,
+                      bankAccounts: _editedOrg.bankAccounts,
+                      webPage: value,
+                    );
+                  },
+                ),
+                Container(
+                  child: newImage(),
+                )
+              ]),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget newImage() {
+    return Center(
+      child: Container(
+        height: 200,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text('إختيار صورة'),
+                onPressed: () {
+                  getImage();
+                },
+              ),
+              _editedOrg.id != null && _image != null
+                  ? Image.file(_image)
+                  : _editedOrg.id != null && _downloadUrl != null //update
+                      ? Image.network(_downloadUrl)
+                      : _image == null
+                          ? Container()
+                          : Image.file(
+                              _image,
+                              fit: BoxFit.contain,
+                            ),
+            ],
           ),
         ),
       ),

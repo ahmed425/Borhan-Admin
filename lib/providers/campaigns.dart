@@ -10,6 +10,7 @@ class Campaigns with ChangeNotifier {
   List<Campaign> _campaigns = [];
 
   List<Campaign> get campaigns {
+    print(_campaigns);
     return [..._campaigns];
   }
 
@@ -34,6 +35,7 @@ class Campaigns with ChangeNotifier {
         ));
       });
       _campaigns = loadedCampaigns;
+
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -107,7 +109,7 @@ class Campaigns with ChangeNotifier {
   Future<String> uploadImage(File image) async {
     print("in upload");
     StorageReference storageReference =
-    FirebaseStorage.instance.ref().child(image.path.split('/').last);
+        FirebaseStorage.instance.ref().child(image.path.split('/').last);
     StorageUploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.onComplete;
     print('File Uploaded');
@@ -120,8 +122,8 @@ class Campaigns with ChangeNotifier {
 
   Future deleteImage(String imgUrl) async {
     print("From Delete Image");
-    StorageReference myStorageReference = await FirebaseStorage.instance
-        .getReferenceFromUrl(imgUrl);
+    StorageReference myStorageReference =
+        await FirebaseStorage.instance.getReferenceFromUrl(imgUrl);
     print(myStorageReference.path);
     await myStorageReference.delete();
     print("image deleted successfully");

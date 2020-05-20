@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import '../screens/campaign_screen.dart';
 import '../screens/activity_screen.dart';
 import '../screens/edit_organization_details.dart';
+import 'activity_screen.dart';
+import 'donation_requests_screen.dart';
+import 'edit_organization_details.dart';
 
 class Home extends StatelessWidget {
   static const routeName = '/home';
@@ -177,7 +180,8 @@ class Home extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
                       color: Theme.of(context).primaryColor,
-                      textColor: Theme.of(context).primaryTextTheme.button.color,
+                      textColor:
+                          Theme.of(context).primaryTextTheme.button.color,
                     ),
                   ),
                   Padding(
@@ -200,7 +204,8 @@ class Home extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
                       color: Theme.of(context).primaryColor,
-                      textColor: Theme.of(context).primaryTextTheme.button.color,
+                      textColor:
+                          Theme.of(context).primaryTextTheme.button.color,
                     ),
                   ),
                   Padding(
@@ -225,7 +230,8 @@ class Home extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
                       color: Theme.of(context).primaryColor,
-                      textColor: Theme.of(context).primaryTextTheme.button.color,
+                      textColor:
+                          Theme.of(context).primaryTextTheme.button.color,
                     ),
                   ),
                 ],
