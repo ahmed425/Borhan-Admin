@@ -64,7 +64,7 @@ class Activities with ChangeNotifier {
     }
   }
 
-  Future<void> updateActivity(String id, Activity newActivity) async{
+  Future<void> updateActivity(String id, Activity newActivity) async {
     final activityIndex = _items.indexWhere((activity) => activity.id == id);
     if (activityIndex >= 0) {
       final url = 'https://borhanadmin.firebaseio.com/activities/$id.json';
@@ -81,7 +81,7 @@ class Activities with ChangeNotifier {
     }
   }
 
-  Future<void> deleteActivity(String id) async{
+  Future<void> deleteActivity(String id) async {
     final url = 'https://borhanadmin.firebaseio.com/activities/$id.json';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
@@ -99,7 +99,7 @@ class Activities with ChangeNotifier {
   Future<String> uploadImage(File image) async {
     print("in upload");
     StorageReference storageReference =
-    FirebaseStorage.instance.ref().child(image.path.split('/').last);
+        FirebaseStorage.instance.ref().child(image.path.split('/').last);
     StorageUploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.onComplete;
     print('File Uploaded');
@@ -112,11 +112,10 @@ class Activities with ChangeNotifier {
 
   Future deleteImage(String imgUrl) async {
     print("From Delete Image");
-    StorageReference myStorageReference = await FirebaseStorage.instance
-        .getReferenceFromUrl(imgUrl);
+    StorageReference myStorageReference =
+        await FirebaseStorage.instance.getReferenceFromUrl(imgUrl);
     print(myStorageReference.path);
     await myStorageReference.delete();
     print("image deleted successfully");
   }
-
 }

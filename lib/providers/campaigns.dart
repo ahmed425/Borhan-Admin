@@ -35,6 +35,7 @@ class Campaigns with ChangeNotifier {
         ));
       });
       _campaigns = loadedCampaigns;
+
       notifyListeners();
     } catch (error) {
       throw (error);

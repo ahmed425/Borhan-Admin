@@ -34,7 +34,6 @@ class DonationRequests with ChangeNotifier {
         loadedRequests.add(DonationRequest(
             id: prodId,
             donatorName: prodData['DonatorName'],
-//            donatorName: prodData['DonatorType'],
             donatorMobileNo: prodData['DonationMobileNo'],
             donationDate: prodData['DonationDate'],
             donationType: prodData['DonationType'],

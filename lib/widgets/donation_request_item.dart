@@ -23,35 +23,45 @@ class DonationRequestItem extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.purple,
-                    width: 2,
-                  ),
-                ),
-                padding: EdgeInsets.all(10),
+//                margin: EdgeInsets.symmetric(
+//                  vertical: 10,
+//                  horizontal: 15,
+
+//                decoration: BoxDecoration(
+//                  border: Border.all(
+//                    color: Colors.purple,
+//                    width: 2,
+//                  ),
+//                ),
+                padding: EdgeInsets.all(5),
                 child: Text(
-                  donationType,
+                  "$donationType",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.purple,
+//                    color: Colors.purple,
+                    color: Theme.of(context).primaryColor,
+//                    textColor:
+//                    Theme.of(context).primaryTextTheme.button.color,
                   ),
                 ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    donatorName,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.purple,
+                        width: 2,
+                      ),
                     ),
+                    child: Text(donatorName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.purple,
+                        )),
                   ),
                   Text(
                     donationDate,
@@ -59,33 +69,36 @@ class DonationRequestItem extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      Provider.of<DonationRequests>(context, listen: false)
-                          .deleteRequest(id);
-//                  } catch (error) {
-//                    scaffold.showSnackBar(
-//                      SnackBar(
-//                        content: Text('فشل الحذف!', textAlign: TextAlign.center,),
-//                      ),
-//                    );
-//                  }
-                    },
-                    color: Theme.of(context).errorColor,
-                  ),
                 ],
+              ),
+              Container(
+                margin: EdgeInsets.all(20),
+                child: SizedBox(
+                  width: 100,
+                  child: RaisedButton(
+                    onPressed: () {
+                      Provider.of<DonationRequests>(context).deleteRequest(id);
+                    },
+                    child: Text(
+                      'تم التبرع  ',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-
-//            ],
-//          ),
-//        ),
-//        trailing: Text(donatorName));
   }
 
   void selectRequest(BuildContext context) {
