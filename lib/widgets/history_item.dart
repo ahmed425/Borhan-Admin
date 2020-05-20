@@ -36,14 +36,14 @@ class HistoryItem extends StatelessWidget {
                 textDirection: TextDirection.rtl,
                 children: <Widget>[
                   Text(' : اسم المتبرع',style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 18.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),),
                   Text(
                     donatorName,
                     style: TextStyle(
-                        color: Colors.purple,
-                        fontSize: 16.0,
+                        color: Colors.white,
+                        fontSize: 12.0,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -60,14 +60,14 @@ class HistoryItem extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: <Widget>[
                 Text(' : رقم التليفون',style: TextStyle(
-                    color: Colors.purple,
-                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold),),
                 Text(
                   donatorMobile,
                   style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -84,14 +84,14 @@ class HistoryItem extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: <Widget>[
                 Text(' : العنوان',style: TextStyle(
-                    color: Colors.indigo,
-                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold),),
                 Text(
                   donatorAddress,
                   style: TextStyle(
-                      color: Colors.indigo,
-                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -109,15 +109,15 @@ class HistoryItem extends StatelessWidget {
               children: <Widget>[
                 Text(' : التاريخ',
                         style: TextStyle(
-                            color: Colors.indigo,
-                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontSize: 12.0,
                             fontWeight: FontWeight.bold),
                       ),
                 Text(
                   donationDate,
                   style: TextStyle(
-                      color: Colors.indigo,
-                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -134,14 +134,14 @@ class HistoryItem extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: <Widget>[
                 Text(' : وصف التبرع',style: TextStyle(
-                    color: Color(0xffe6020a),
-                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold),),
                 Text(
                   donationItems,
                   style: TextStyle(
-                      color: Color(0xffe6020a),
-                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -158,14 +158,14 @@ class HistoryItem extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: <Widget>[
                 Text(' : نوع التبرع',style: TextStyle(
-                    color: Color(0xffe6020a),
-                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold),),
                 Text(
                   donationType,
                   style: TextStyle(
-                      color: Color(0xffe6020a),
-                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -182,14 +182,14 @@ class HistoryItem extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: <Widget>[
                 Text(' : المبلغ',style: TextStyle(
-                    color: Color(0xffe6020a),
-                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold),),
                 Text(
                   donationAmount,
                   style: TextStyle(
-                      color: Color(0xffe6020a),
-                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],

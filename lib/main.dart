@@ -1,3 +1,4 @@
+import 'package:BorhanAdmin/providers/video_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/auth.dart';
@@ -37,11 +38,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: HistoryProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: Video(),
+        ),
       ],
       child: MaterialApp(
           title: 'Borhan',
           theme: ThemeData(
-            primarySwatch: Colors.purple,
+            primarySwatch: Colors.teal,
           ),
           home: AuthScreen(),
           routes: {
