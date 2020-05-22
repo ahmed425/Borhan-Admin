@@ -50,7 +50,6 @@ class _AddActivityState extends State<AddActivity> {
       });
       print("value from upload" + _downloadUrl);
     });
-
   }
 
   @override
@@ -66,7 +65,8 @@ class _AddActivityState extends State<AddActivity> {
       return;
     }
     if (_addActivity.imagesUrl != null && _addActivity.imagesUrl != '') {
-      print('---------------------------- from delete image -----------------------------');
+      print(
+          '---------------------------- from delete image -----------------------------');
       print('Image Url : ' + _addActivity.imagesUrl);
       Provider.of<Activities>(context, listen: false)
           .deleteImage(_addActivity.imagesUrl);
@@ -238,10 +238,11 @@ class _AddActivityState extends State<AddActivity> {
                       Container(
                         padding: const EdgeInsets.all(10.0),
                         child: new RaisedButton(
+                          textColor: Colors.white,
                           child: _addActivity.id != null
                               ? Text('حفظ')
                               : Text('إضافة'),
-                          color: Colors.lightBlueAccent,
+                          color: Colors.teal,
                           onPressed: _saveForm,
                         ),
                       ),
@@ -264,7 +265,14 @@ class _AddActivityState extends State<AddActivity> {
                 height: 10.0,
               ),
               RaisedButton(
-                child: Text('اختيار صورة'),
+                child: Text(
+                  'اختيار صورة',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                color: Colors.teal,
                 onPressed: () {
                   getImage();
                 },

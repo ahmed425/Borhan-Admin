@@ -1,3 +1,5 @@
+import 'package:BorhanAdmin/screens/email_screen.dart';
+
 import '../screens/video_screen.dart';
 import '../screens/donation_tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,6 @@ import '../screens/campaign_screen.dart';
 import '../screens/activity_screen.dart';
 import '../screens/edit_organization_details.dart';
 import 'activity_screen.dart';
-import 'donation_requests_screen.dart';
 import 'edit_organization_details.dart';
 
 class Home extends StatelessWidget {
@@ -190,7 +191,12 @@ class Home extends StatelessWidget {
                   SizedBox(
                     width: 250,
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EmailScreen()));
+                      },
                       child: Text(
                         'المساعدة',
                         style: TextStyle(

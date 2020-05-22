@@ -62,7 +62,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
           );
         },
         child: const Icon(Icons.add),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.teal,
       ),
     );
   }

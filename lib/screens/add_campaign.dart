@@ -55,7 +55,6 @@ class _AddCampaignState extends State<AddCampaign> {
       });
       print("value from upload" + _downloadUrl);
     });
-
   }
 
 //  @override
@@ -71,7 +70,8 @@ class _AddCampaignState extends State<AddCampaign> {
       return;
     }
     if (_addCampaign.imagesUrl != null && _addCampaign.imagesUrl != '') {
-      print('---------------------------- from delete image -----------------------------');
+      print(
+          '---------------------------- from delete image -----------------------------');
       print('Image Url : ' + _addCampaign.imagesUrl);
       Provider.of<Campaigns>(context, listen: false)
           .deleteImage(_addCampaign.imagesUrl);
@@ -275,10 +275,11 @@ class _AddCampaignState extends State<AddCampaign> {
                       Container(
                         padding: const EdgeInsets.all(10.0),
                         child: new RaisedButton(
+                          textColor: Colors.white,
                           child: _addCampaign.id != null
                               ? Text('حفظ')
                               : Text('إضافة'),
-                          color: Colors.lightBlueAccent,
+                          color: Colors.teal,
                           onPressed: _saveForm,
                         ),
                       ),
@@ -301,7 +302,14 @@ class _AddCampaignState extends State<AddCampaign> {
                 height: 10.0,
               ),
               RaisedButton(
-                child: Text('إختيار صورة'),
+                child: Text(
+                  'اختيار صورة',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                color: Colors.teal,
                 onPressed: () {
                   getImage();
                 },

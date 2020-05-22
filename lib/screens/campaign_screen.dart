@@ -63,7 +63,7 @@ class _CampaignScreenState extends State<CampaignScreen> {
           );
         },
         child: const Icon(Icons.add),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.teal,
       ),
     );
   }

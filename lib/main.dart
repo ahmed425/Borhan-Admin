@@ -1,6 +1,3 @@
-import 'package:BorhanAdmin/providers/video_provider.dart';
-import 'package:BorhanAdmin/providers/donation_requests.dart';
-import 'package:BorhanAdmin/screens/donation_request_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/auth.dart';
@@ -8,13 +5,18 @@ import './providers/activities.dart';
 import './providers/campaigns.dart';
 import './providers/history_provider.dart';
 import './providers/organizations_logic.dart';
+import './providers/email_provider.dart';
+import './providers/video_provider.dart';
+import './providers/donation_requests.dart';
 import './screens/add_campaign.dart';
 import './screens/activity_screen.dart';
 import './screens/add_activity.dart';
 import './screens/donation_tabs_screen.dart';
+import './screens/donation_request_details.dart';
 import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/video_screen.dart';
+import './screens/email_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -43,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: Video(),
+        ),
+        ChangeNotifierProvider.value(
+          value: EmailProvider(),
         ),
       ],
       child: MaterialApp(
@@ -73,8 +78,8 @@ class MyApp extends StatelessWidget {
             AddCampaign.routeName: (ctx) => AddCampaign(),
             VideoPlayerScreen.routeName: (ctx) => VideoPlayerScreen(),
             DonationTabsScreen.routeName: (ctx) => DonationTabsScreen(),
-            DonationRequestDetailsScreen.routeName: (ctx) =>
-                DonationRequestDetailsScreen(),
+            DonationRequestDetailsScreen.routeName: (ctx) => DonationRequestDetailsScreen(),
+            EmailScreen.routeName: (ctx) => EmailScreen(),
           }),
     );
   }
