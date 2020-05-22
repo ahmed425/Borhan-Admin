@@ -8,8 +8,14 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need to get your location!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need to get your location!</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 	<key>CFBundleName</key>
 	<string>BorhanAdmin</string>
 	<key>CFBundlePackageType</key>
