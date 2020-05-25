@@ -20,7 +20,9 @@ class EmailScreen extends StatefulWidget {
 
 class _EmailScreenState extends State<EmailScreen> {
   var emailM = EmailM(
-      recipientController: 'borhan@borhan.com', subjectController: '', bodyController: '');
+      recipientController: 'borhan@borhan.com',
+      subjectController: '',
+      bodyController: '');
   List<String> attachments = [];
 
   final _recipientController = TextEditingController(

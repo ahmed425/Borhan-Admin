@@ -28,24 +28,29 @@ class DonationRequests with ChangeNotifier {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 //      print(extractedData);
       final List<DonationRequest> loadedRequests = [];
-      extractedData.forEach((prodId, prodData) {
-        loadedRequests.add(DonationRequest(
-            id: prodId,
-            donatorName: prodData['DonatorName'],
-            donatorMobileNo: prodData['DonationMobileNo'],
-            donationDate: prodData['DonationDate'],
-            donationType: prodData['DonationType'],
-            donationItems: prodData['DonatorItems'],
-            donatorAddress: prodData['DonatorAddress'],
-            donationAmount: prodData['DonationAmount'],
-            availableOn: prodData['AvailableOn'],
-            image: prodData['Image']));
-      });
-      _donationRequests = loadedRequests;
-      print("id is ${_donationRequests[0].id}");
-      notifyListeners();
+      if (extractedData != null) {
+        extractedData.forEach((prodId, prodData) {
+          loadedRequests.add(DonationRequest(
+              id: prodId,
+              donatorName: prodData['DonatorName'],
+              donatorMobileNo: prodData['DonationMobileNo'],
+              donationDate: prodData['DonationDate'],
+              donationType: prodData['DonationType'],
+              donationItems: prodData['DonatorItems'],
+              donatorAddress: prodData['DonatorAddress'],
+              donationAmount: prodData['DonationAmount'],
+              availableOn: prodData['AvailableOn'],
+              image: prodData['Image']));
+        });
+        _donationRequests = loadedRequests;
+        print("id is ${_donationRequests[0].id}");
+        notifyListeners();
+      } else {
+        print("no requests");
+      }
     } catch (error) {
       throw (error);
+//      print("error is $error");
     }
   }
 
@@ -58,28 +63,23 @@ class DonationRequests with ChangeNotifier {
         body: json.encode(
           {
             "donationDate": campaign.donationDate,
-            "donationImage":
-                "https://www.albawabhnews.com/upload/photo/news/382/8/600x338o/299.jpg?q=1",
+            "donationImage": campaign.image,
             "donationItem": campaign.donationItems,
-            "donationType": "عيني",
-            "donatorAddress": "سيدي بشر",
-            "donatorMobile": "01001159966",
-            "donatorName": "آيه فتحي"
-//            'id': campaign.campaignName,
-//            'donation': campaign.campaignDescription,
-//            'image': campaign.imagesUrl,
-//            'time': campaign.time,
+            "donationType": campaign.donationType,
+            "donatorAddress": campaign.donatorAddress,
+            "donatorMobile": campaign.donatorMobileNo,
+            "donatorName": campaign.donatorName
           },
         ),
       );
-      final newCampaign = DonationRequest(
-        id: json.decode(response.body)['name'],
-        donatorName: campaign.donatorName,
-        donationItems: campaign.donationItems,
-        image: campaign.image,
-        donationDate: campaign.donationDate,
-      );
-      _donationRequests.add(newCampaign);
+//      final newCampaign = DonationRequest(
+//        id: json.decode(response.body)['name'],
+//        donatorName: campaign.donatorName,
+//        donationItems: campaign.donationItems,
+//        image: campaign.image,
+//        donationDate: campaign.donationDate,
+//      );
+//      _donationRequests.add(newCampaign);
       notifyListeners();
     } catch (error) {
       print(error);
@@ -141,7 +141,7 @@ class DonationRequests with ChangeNotifier {
     }
     print("deleted successfully");
     print(response.statusCode);
-    existingProduct = null;
+//    existingProduct = null;
   }
 
 //  Future<String> uploadImage(File image) async {

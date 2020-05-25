@@ -99,36 +99,49 @@ class _DonationHistoryState extends State<DonationHistory> {
                                                 padding: const EdgeInsets.only(
                                                     top: 2.0),
                                               ),
-                                              Material(
-                                                elevation: 2.0,
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  textDirection:
-                                                      TextDirection.rtl,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      ' : نوع التبرع',
-                                                      style: TextStyle(
-                                                          color: Colors.teal,
-                                                          fontSize: 18.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
+                                              historyData.items[i]
+                                                              .donationType !=
+                                                          '' &&
                                                       historyData.items[i]
-                                                          .donationType,
-                                                      style: TextStyle(
-                                                          color: Colors.teal,
-                                                          fontSize: 18.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                                              .donationType !=
+                                                          null
+                                                  ? Material(
+                                                      elevation: 2.0,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            ' : نوع التبرع',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.teal,
+                                                                fontSize: 18.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Text(
+                                                            historyData.items[i]
+                                                                .donationType,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.teal,
+                                                                fontSize: 18.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Container(),
                                             ],
                                           ),
                                           Padding(
