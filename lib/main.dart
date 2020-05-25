@@ -1,3 +1,6 @@
+import 'package:BorhanAdmin/providers/chat_provider.dart';
+import 'package:BorhanAdmin/screens/chat_screen.dart';
+import 'package:BorhanAdmin/screens/help_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/auth.dart';
@@ -49,6 +52,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: EmailProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: ChatProvider(),
+        ),
       ],
       child: MaterialApp(
           builder: (BuildContext context, Widget child) {
@@ -79,7 +85,9 @@ class MyApp extends StatelessWidget {
             VideoPlayerScreen.routeName: (ctx) => VideoPlayerScreen(),
             DonationTabsScreen.routeName: (ctx) => DonationTabsScreen(),
             DonationRequestDetailsScreen.routeName: (ctx) => DonationRequestDetailsScreen(),
+            HelpScreen.routeName: (ctx) => HelpScreen(),
             EmailScreen.routeName: (ctx) => EmailScreen(),
+            ChatScreen.routeName: (ctx) => ChatScreen(),
           }),
     );
   }

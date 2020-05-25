@@ -1,4 +1,5 @@
 import 'package:BorhanAdmin/screens/email_screen.dart';
+import 'package:BorhanAdmin/screens/help_screen.dart';
 
 import '../screens/video_screen.dart';
 import '../screens/donation_tabs_screen.dart';
@@ -195,7 +196,7 @@ class Home extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EmailScreen()));
+                                builder: (context) => HelpScreen()));
                       },
                       child: Text(
                         'المساعدة',
