@@ -1,6 +1,8 @@
 import './providers/chat_provider.dart';
 import './providers/user_chat_provider.dart';
 import './screens/all_users_chat.dart';
+import 'package:BorhanAdmin/providers/chat_provider.dart';
+import 'package:BorhanAdmin/providers/image_chat.dart';
 import 'package:BorhanAdmin/screens/chat_screen.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +60,9 @@ class MyApp extends StatelessWidget {
           value: ChatProvider(),
         ),
         ChangeNotifierProvider.value(
+          value: ImageChat(),
+        ),
+        ChangeNotifierProvider.value(
           value: UserChatProvider(),
         ),
       ],
@@ -89,7 +94,8 @@ class MyApp extends StatelessWidget {
             AddCampaign.routeName: (ctx) => AddCampaign(),
             VideoPlayerScreen.routeName: (ctx) => VideoPlayerScreen(),
             DonationTabsScreen.routeName: (ctx) => DonationTabsScreen(),
-            DonationRequestDetailsScreen.routeName: (ctx) => DonationRequestDetailsScreen(),
+            DonationRequestDetailsScreen.routeName: (ctx) =>
+                DonationRequestDetailsScreen(),
             HelpScreen.routeName: (ctx) => HelpScreen(),
             EmailScreen.routeName: (ctx) => EmailScreen(),
             ChatScreen.routeName: (ctx) => ChatScreen(),

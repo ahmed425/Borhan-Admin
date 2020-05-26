@@ -1,6 +1,8 @@
 //import 'package:BorhanAdmin/screens/email_screen.dart';
 //import 'package:BorhanAdmin/screens/help_screen.dart';
 
+import 'package:BorhanAdmin/screens/help_screen.dart';
+
 import '../screens/video_screen.dart';
 import '../screens/donation_tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import '../screens/activity_screen.dart';
 import '../screens/edit_organization_details.dart';
 import 'activity_screen.dart';
 import 'edit_organization_details.dart';
+import 'image_chatting.dart';
 
 class Home extends StatelessWidget {
   static const routeName = '/home';
@@ -204,7 +207,7 @@ class Home extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => DonationTabsScreen()));
+                                builder: (context) => ImageChatScreen()));
                       },
                       child: Text(
                         'المساعدة',
