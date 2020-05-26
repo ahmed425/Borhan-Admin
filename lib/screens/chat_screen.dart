@@ -7,12 +7,15 @@ import '../models/chat.dart';
 
 class ChatScreen extends StatefulWidget {
   static const routeName = '/chat';
-
+  var id = '';
+  ChatScreen({this.id});
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  // the id for specific user i(admin) chat with him
+//  var id = '1212145f';
   var _enteredMessage = '';
   var _isInit = true;
   var chat = Chat(
@@ -28,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _sendMessage() {
     FocusScope.of(context).unfocus();
     Provider.of<ChatProvider>(context, listen: false)
-        .addMessage(chat)
+        .addMessage(chat,widget.id)
         .then((value) => {
               _controller.clear(),
               _enteredMessage = '',
@@ -40,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-      Provider.of<ChatProvider>(context).fetchAndSetChat();
+      Provider.of<ChatProvider>(context).fetchAndSetChat(widget.id);
     }
     _isInit = false;
     super.didChangeDependencies();

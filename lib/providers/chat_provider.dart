@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:BorhanAdmin/models/chat.dart';
+import '../models/chat.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,30 +12,37 @@ class ChatProvider with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetChat() async {
-    const url = 'https://borhanadmin.firebaseio.com/chat.json';
+  Future<void> fetchAndSetChat(String id) async {
+    final url = 'https://borhanadmin.firebaseio.com/chat/$id.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Chat> loadedChat = [];
-      extractedData.forEach((messageId, chatData) {
-        loadedChat.insert(0,Chat(
-          id: messageId,
-          userName: chatData['name'],
-          userId: chatData['userId'],
-          text: chatData['text'],
-          img: chatData['image'],
-        ));
-      });
-      _items = loadedChat;
-      notifyListeners();
+      if (extractedData != null) {
+        extractedData.forEach((messageId, chatData) {
+          loadedChat.insert(
+              0,
+              Chat(
+                id: messageId,
+                userName: chatData['name'],
+                userId: chatData['userId'],
+                text: chatData['text'],
+                img: chatData['image'],
+              ));
+        });
+        _items = loadedChat;
+        notifyListeners();
+      } else {
+        print('No Data in this chat');
+      }
     } catch (error) {
       throw (error);
     }
   }
 
-  Future<void> addMessage(Chat chat) async {
-    const url = 'https://borhanadmin.firebaseio.com/chat.json';
+  Future<void> addMessage(Chat chat, String id) async {
+    // id is the user id not admin
+    final url = 'https://borhanadmin.firebaseio.com/chat/$id.json';
     try {
       final response = await http.post(
         url,

@@ -1,4 +1,6 @@
-import 'package:BorhanAdmin/providers/chat_provider.dart';
+import './providers/chat_provider.dart';
+import './providers/user_chat_provider.dart';
+import './screens/all_users_chat.dart';
 import 'package:BorhanAdmin/screens/chat_screen.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +57,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: ChatProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: UserChatProvider(),
+        ),
       ],
       child: MaterialApp(
           builder: (BuildContext context, Widget child) {
@@ -88,6 +93,7 @@ class MyApp extends StatelessWidget {
             HelpScreen.routeName: (ctx) => HelpScreen(),
             EmailScreen.routeName: (ctx) => EmailScreen(),
             ChatScreen.routeName: (ctx) => ChatScreen(),
+            AllUsersChatScreen.routeName: (ctx) => AllUsersChatScreen(),
           }),
     );
   }

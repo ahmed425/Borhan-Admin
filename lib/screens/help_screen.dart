@@ -1,3 +1,4 @@
+import 'package:BorhanAdmin/screens/all_users_chat.dart';
 import 'package:BorhanAdmin/screens/chat_screen.dart';
 import 'package:BorhanAdmin/screens/email_screen.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class HelpScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ChatScreen()));
+                          builder: (context) => AllUsersChatScreen()));
                 },
                 child: Text(
                   'بواسطة محادثة',
