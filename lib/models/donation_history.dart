@@ -10,16 +10,21 @@ class History with ChangeNotifier {
   final String donatorMobile;
   final String donatorAddress;
   final String donationImage;
+  final String orgName;
+  final String orgId;
+  final String actName;
 
-  History({
-    this.id,
-    @required this.donationType,
-    @required this.donationDate,
-    @required this.donationAmount,
-    @required this.donationItems,
-    @required this.donatorName,
-    @required this.donatorMobile,
-    @required this.donatorAddress,
-    @required this.donationImage,
-  });
+  History(
+      {this.id,
+      @required this.donationType,
+      @required this.donationDate,
+      @required this.donationAmount,
+      @required this.donationItems,
+      @required this.donatorName,
+      @required this.donatorMobile,
+      @required this.donatorAddress,
+      @required this.donationImage,
+      @required this.orgName,
+      @required this.orgId,
+      @required this.actName});
 }

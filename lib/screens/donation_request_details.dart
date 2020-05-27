@@ -52,6 +52,17 @@ class _DonationRequestDetailsScreenState
                           width: 5,
                         ),
                         borderRadius: BorderRadius.circular(10)),
+                    child: Text("اسم النشاط", style: TextStyle(fontSize: 20))),
+                Text(currentRequest.actName,
+                    style: TextStyle(fontSize: 20)),
+                Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.blue,
+                          width: 5,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
                     child: Text("اسم المتبرع", style: TextStyle(fontSize: 20))),
                 Text(currentRequest.donatorName,
                     style: TextStyle(fontSize: 20)),

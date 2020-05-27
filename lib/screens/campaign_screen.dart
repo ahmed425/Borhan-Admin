@@ -12,6 +12,7 @@ class CampaignScreen extends StatefulWidget {
 }
 
 class _CampaignScreenState extends State<CampaignScreen> {
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   var _isLoading = false;
   var _isInit = true;
 
@@ -21,7 +22,7 @@ class _CampaignScreenState extends State<CampaignScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Campaigns>(context).fetchAndSetProducts().then((_) {
+      Provider.of<Campaigns>(context).fetchAndSetProducts(orgId).then((_) {
         setState(() {
           _isLoading = false;
         });

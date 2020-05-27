@@ -13,14 +13,15 @@ class AllUsersChatScreen extends StatefulWidget {
 }
 
 class _UsersChatScreenState extends State<AllUsersChatScreen> {
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   var _isInit = true;
   var _isLoading = false;
-  String currentUserId = '1212145f';
+//  String currentUserId = '1212145f';
 //String currentUserId ='M8CoA0TH86hmKSikh1K';
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      Provider.of<UserChatProvider>(context).fetchAndSetAllUsers().then((_) => {
+      Provider.of<UserChatProvider>(context).fetchAndSetAllUsers(orgId).then((_) => {
             print('from provider'),
             setState(() {
               _isLoading = false;
@@ -82,7 +83,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          'كود العميل: ${documents[i]}',
+                          'البريد الألكتروني للعميل: ${documents[i]}',
                           style: TextStyle(color: Colors.teal),
                         ),
                         alignment: Alignment.centerRight,
@@ -97,7 +98,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ChatScreen(id:currentUserId)));
+                context, MaterialPageRoute(builder: (context) => ChatScreen(id:documents[i].split('.')[0])));
           },
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
           shape:

@@ -11,7 +11,7 @@ import './providers/auth.dart';
 import './providers/activities.dart';
 import './providers/campaigns.dart';
 import './providers/history_provider.dart';
-import './providers/organizations_logic.dart';
+import './providers/organizations_provider.dart';
 import './providers/email_provider.dart';
 import './providers/video_provider.dart';
 import './providers/donation_requests.dart';

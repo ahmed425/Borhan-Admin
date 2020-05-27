@@ -4,9 +4,10 @@ import 'package:http/http.dart' as http;
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  String _token;
-  DateTime _expiryDate;
-  String _userId;
+
+  String _orgId;
+
+  String get orgId => _orgId;
 
   Future<void> _authenticate(String email, String password) async {
     final url =
@@ -23,6 +24,8 @@ class Auth with ChangeNotifier {
         ),
       );
       final responseData = json.decode(response.body);
+      _orgId = responseData['localId'];
+      print("Org Id: " + _orgId);
       print("User Data is :  $responseData");
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);

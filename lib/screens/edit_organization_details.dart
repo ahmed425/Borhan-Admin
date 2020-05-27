@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
 import '../models/organization.dart';
-import '../providers/organizations_logic.dart';
+import '../providers/organizations_provider.dart';
 
 class EditOrganizationScreen extends StatefulWidget {
   @override

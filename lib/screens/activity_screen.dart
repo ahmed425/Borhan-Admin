@@ -12,6 +12,7 @@ class ActivityScreen extends StatefulWidget {
 }
 
 class _ActivityScreenState extends State<ActivityScreen> {
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   var _isLoading = false;
   var _isInit = true;
 
@@ -21,7 +22,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Activities>(context).fetchAndSetActivities().then((_) {
+      Provider.of<Activities>(context).fetchAndSetActivities(orgId).then((_) {
         setState(() {
           _isLoading = false;
         });

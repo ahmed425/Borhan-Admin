@@ -17,6 +17,7 @@ class AddCampaign extends StatefulWidget {
 }
 
 class _AddCampaignState extends State<AddCampaign> {
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   final _descFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _addCampaign = Campaign(
@@ -93,7 +94,7 @@ class _AddCampaignState extends State<AddCampaign> {
       );
       print(_addCampaign.imagesUrl);
       Provider.of<Campaigns>(context, listen: false)
-          .updateCampaign(_addCampaign.id, _addCampaign);
+          .updateCampaign(_addCampaign.id, _addCampaign, orgId);
       setState(() {
         _isLoading = false;
       });
@@ -109,7 +110,7 @@ class _AddCampaignState extends State<AddCampaign> {
       print(_addCampaign.imagesUrl);
       try {
         await Provider.of<Campaigns>(context, listen: false)
-            .addCampaign(_addCampaign);
+            .addCampaign(_addCampaign, orgId);
       } catch (error) {
         await showDialog(
           context: context,

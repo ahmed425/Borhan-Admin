@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/campaigns.dart';
 
 class CampaignItem extends StatelessWidget {
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   final String name;
   final String id;
 
@@ -32,7 +33,7 @@ class CampaignItem extends StatelessWidget {
                 icon: Icon(Icons.delete),
                 onPressed: () {
                   Provider.of<Campaigns>(context, listen: false)
-                      .deleteCampaign(id);
+                      .deleteCampaign(id,orgId);
 //                  } catch (error) {
 //                    scaffold.showSnackBar(
 //                      SnackBar(

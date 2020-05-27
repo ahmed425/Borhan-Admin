@@ -12,6 +12,7 @@ class DonationHistory extends StatefulWidget {
 class _DonationHistoryState extends State<DonationHistory> {
   var _isLoading = false;
   var _isInit = true;
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
 
   @override
   void didChangeDependencies() {
@@ -19,7 +20,7 @@ class _DonationHistoryState extends State<DonationHistory> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<HistoryProvider>(context).fetchAndSetActivities().then((_) {
+      Provider.of<HistoryProvider>(context).fetchAndSetActivities(orgId).then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -157,8 +158,8 @@ class _DonationHistoryState extends State<DonationHistory> {
                                                     .items[i].donatorMobile,
                                                 donatorAddress: historyData
                                                     .items[i].donatorAddress,
-//                                    donationType:
-//                                        historyData.items[i].donationType,
+                                                actName: historyData
+                                                    .items[i].actName,
                                                 donationItems: historyData
                                                     .items[i].donationItems,
                                                 donationDate: historyData

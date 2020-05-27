@@ -6,19 +6,19 @@ class HistoryItem extends StatelessWidget {
   String donationAmount;
   String donationDate;
   String donationItems;
-  String donationType;
   String donatorAddress;
   String donatorMobile;
   String donatorName;
+  String actName;
 
   HistoryItem({
     this.donationAmount,
-    this.donationType,
     this.donationItems,
     this.donationDate,
     this.donatorAddress,
     this.donatorMobile,
     this.donatorName,
+    this.actName,
   });
 
   @override
@@ -149,16 +149,16 @@ class HistoryItem extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Container(
-            child: donationType != '' && donationType != null
+            child: actName != '' && actName != null
                 ? Row(
               textDirection: TextDirection.rtl,
               children: <Widget>[
-                Text(' : نوع التبرع',style: TextStyle(
+                Text(' : اسم النشاط',style: TextStyle(
                     color: Colors.white,
                     fontSize: 12.0,
                     fontWeight: FontWeight.bold),),
                 Text(
-                  donationType,
+                  actName,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 12.0,

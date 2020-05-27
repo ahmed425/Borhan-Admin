@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/activities.dart';
 
 class ActivityItem extends StatelessWidget {
-
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   final String name;
   final String id;
 
@@ -32,7 +32,7 @@ class ActivityItem extends StatelessWidget {
                 icon: Icon(Icons.delete),
                 onPressed: () {
                     Provider.of<Activities>(context, listen: false)
-                        .deleteActivity(id);
+                        .deleteActivity(id,orgId);
 //                  } catch (error) {
 //                    scaffold.showSnackBar(
 //                      SnackBar(

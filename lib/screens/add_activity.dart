@@ -14,6 +14,7 @@ class AddActivity extends StatefulWidget {
 }
 
 class _AddActivityState extends State<AddActivity> {
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   final _descFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _isLoadImg = false;
@@ -87,7 +88,7 @@ class _AddActivityState extends State<AddActivity> {
       );
       print(_addActivity.imagesUrl);
       Provider.of<Activities>(context, listen: false)
-          .updateActivity(_addActivity.id, _addActivity);
+          .updateActivity(_addActivity.id, _addActivity , orgId);
       setState(() {
         _isLoading = false;
       });
@@ -102,7 +103,7 @@ class _AddActivityState extends State<AddActivity> {
       print(_addActivity.imagesUrl);
       try {
         await Provider.of<Activities>(context, listen: false)
-            .addActivity(_addActivity);
+            .addActivity(_addActivity,orgId);
       } catch (error) {
         await showDialog(
           context: context,

@@ -207,7 +207,7 @@ class Home extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ImageChatScreen()));
+                                builder: (context) => HelpScreen()));
                       },
                       child: Text(
                         'المساعدة',

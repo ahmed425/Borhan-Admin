@@ -12,14 +12,14 @@ class DonationRequestsScreen extends StatefulWidget {
 class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   var _isLoading = false;
   var _isInit = true;
-
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   @override
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<DonationRequests>(context).fetchAndSetProducts().then((_) {
+      Provider.of<DonationRequests>(context).fetchAndSetProducts(orgId).then((_) {
         setState(() {
           _isLoading = false;
         });

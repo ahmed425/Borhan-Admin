@@ -19,8 +19,8 @@ class Campaigns with ChangeNotifier {
     return _campaigns.firstWhere((campaign) => campaign.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
-    const url = 'https://borhanadmin.firebaseio.com/Campaigns.json';
+  Future<void> fetchAndSetProducts(String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -43,8 +43,8 @@ class Campaigns with ChangeNotifier {
   }
 
   // ignore: non_constant_identifier_names
-  Future<void> addCampaign(Campaign campaign) async {
-    const url = 'https://borhanadmin.firebaseio.com/Campaigns.json';
+  Future<void> addCampaign(Campaign campaign,String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId.json';
     try {
       final response = await http.post(
         url,
@@ -72,11 +72,11 @@ class Campaigns with ChangeNotifier {
     }
   }
 
-  Future<void> updateCampaign(String id, Campaign newCampaign) async {
+  Future<void> updateCampaign(String id, Campaign newCampaign,String orgId) async {
     final campaignIndex =
         _campaigns.indexWhere((campaign) => campaign.id == id);
     if (campaignIndex >= 0) {
-      final url = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
+      final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId/$id.json';
       await http.patch(url,
           body: json.encode({
             'name': newCampaign.campaignName,
@@ -91,8 +91,8 @@ class Campaigns with ChangeNotifier {
     }
   }
 
-  Future<void> deleteCampaign(String id) async {
-    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
+  Future<void> deleteCampaign(String id,String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId/$id.json';
     final existingProductIndex = _campaigns.indexWhere((prod) => prod.id == id);
     var existingProduct = _campaigns[existingProductIndex];
     _campaigns.removeWhere((campaign) => campaign.id == id);
@@ -129,16 +129,3 @@ class Campaigns with ChangeNotifier {
     print("image deleted successfully");
   }
 }
-
-//    Campaign(
-//      campaignName: 'كساء',
-//      campaignDescription: 'clothes',
-//    ),
-//    Campaign(
-//      campaignName: 'كفالة اليتيم',
-//      campaignDescription: 'clothes',
-//    ),
-//    Campaign(
-//      campaignName: 'اطعام',
-//      campaignDescription: 'clothes',
-//    ),

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:BorhanAdmin/models/place.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import '../models/organization.dart';

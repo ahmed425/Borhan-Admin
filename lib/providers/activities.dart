@@ -12,12 +12,13 @@ class Activities with ChangeNotifier {
     return [..._items];
   }
 
+
   Activity findById(String id) {
     return _items.firstWhere((activity) => activity.id == id);
   }
 
-  Future<void> fetchAndSetActivities() async {
-    const url = 'https://borhanadmin.firebaseio.com/activities.json';
+  Future<void> fetchAndSetActivities(String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/activities/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -37,8 +38,8 @@ class Activities with ChangeNotifier {
     }
   }
 
-  Future<void> addActivity(Activity activity) async {
-    const url = 'https://borhanadmin.firebaseio.com/activities.json';
+  Future<void> addActivity(Activity activity, String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/activities/$orgId.json';
     try {
       final response = await http.post(
         url,
@@ -64,10 +65,10 @@ class Activities with ChangeNotifier {
     }
   }
 
-  Future<void> updateActivity(String id, Activity newActivity) async {
+  Future<void> updateActivity(String id, Activity newActivity,String orgId) async {
     final activityIndex = _items.indexWhere((activity) => activity.id == id);
     if (activityIndex >= 0) {
-      final url = 'https://borhanadmin.firebaseio.com/activities/$id.json';
+      final url = 'https://borhanadmin.firebaseio.com/activities/$orgId/$id.json';
       await http.patch(url,
           body: json.encode({
             'name': newActivity.activityName,
@@ -81,8 +82,8 @@ class Activities with ChangeNotifier {
     }
   }
 
-  Future<void> deleteActivity(String id) async {
-    final url = 'https://borhanadmin.firebaseio.com/activities/$id.json';
+  Future<void> deleteActivity(String id,String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/activities/$orgId/$id.json';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeWhere((activity) => activity.id == id);

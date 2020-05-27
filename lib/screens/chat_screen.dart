@@ -16,12 +16,13 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   // the id for specific user i(admin) chat with him
 //  var id = '1212145f';
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   var _enteredMessage = '';
   var _isInit = true;
   var chat = Chat(
       time: '',
       text: '',
-      userId: '121212dfdf',
+      userId: 'Admin Id',
       userName: 'Admin',
       img: '',
       id: null);
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _sendMessage() {
     FocusScope.of(context).unfocus();
     Provider.of<ChatProvider>(context, listen: false)
-        .addMessage(chat,widget.id)
+        .addMessage(chat,widget.id,orgId)
         .then((value) => {
               _controller.clear(),
               _enteredMessage = '',
@@ -43,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-      Provider.of<ChatProvider>(context).fetchAndSetChat(widget.id);
+      Provider.of<ChatProvider>(context).fetchAndSetChat(widget.id,orgId);
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -82,7 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       itemBuilder: (_, index) => MessageBubble(
                         chatDocs.items[index].text,
                         chatDocs.items[index].userName,
-                        chatDocs.items[index].userId != "121212dfdf",
+                        chatDocs.items[index].userName != "Admin",
                       ),
                     );
                   });
@@ -98,12 +99,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(labelText: 'كتابة رسالة ...'),
+                      onTap: (){
+                        _isInit = true;
+                      },
                       onChanged: (value) {
                         setState(() {
                           _enteredMessage = value;
                         });
                         print('from wigdet Message is : ' + value);
                         _isInit = true;
+                        Provider.of<ChatProvider>(context).fetchAndSetChat(widget.id,orgId);
                         chat = Chat(
                           img: chat.img,
                           text: value,

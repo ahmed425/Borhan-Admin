@@ -9,7 +9,7 @@ class DonationRequestItem extends StatelessWidget {
   final String donationType;
   final String donationDate;
   final String id;
-
+  String orgId = '-M7mQM4joEI2tdd06ykQ';
   DonationRequestItem(this.id, this.donatorName, this.donatorMobileNo,
       this.donationType, this.donationDate);
 
@@ -108,10 +108,10 @@ class DonationRequestItem extends StatelessWidget {
                           .findById(id)
                           .availableOn);
 
-                      Provider.of<DonationRequests>(context).addCampaign(
-                          Provider.of<DonationRequests>(context).findById(id));
+                      Provider.of<DonationRequests>(context).addDonationReq(
+                          Provider.of<DonationRequests>(context).findById(id),orgId);
 
-                      Provider.of<DonationRequests>(context).deleteRequest(id);
+                      Provider.of<DonationRequests>(context).deleteRequest(id,orgId);
                     },
                     child: Text(
                       '  تم التبرع ',

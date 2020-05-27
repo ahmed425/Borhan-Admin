@@ -11,8 +11,8 @@ class HistoryProvider with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetActivities() async {
-    const url = 'https://borhanadmin.firebaseio.com/DonationHistory.json';
+  Future<void> fetchAndSetActivities(String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/DonationHistory/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -28,6 +28,8 @@ class HistoryProvider with ChangeNotifier {
           donationDate: historyData['donationDate'],
           donationAmount: historyData['donationAmount'],
           donationImage: historyData['donationImage'],
+          orgName: historyData['OrganizationName'],
+          actName: historyData['ActivityName'],
         ));
       });
       _items = loadedHistory;

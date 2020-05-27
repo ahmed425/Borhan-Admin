@@ -12,8 +12,8 @@ class ChatProvider with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetChat(String id) async {
-    final url = 'https://borhanadmin.firebaseio.com/chat/$id.json';
+  Future<void> fetchAndSetChat(String userId,String orgId) async {
+    final url = 'https://borhanadmin.firebaseio.com/chat/$orgId/$userId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -40,17 +40,17 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addMessage(Chat chat, String id) async {
+  Future<void> addMessage(Chat chat, String id, String orgId) async {
     // id is the user id not admin
-    final url = 'https://borhanadmin.firebaseio.com/chat/$id.json';
+    final url = 'https://borhanadmin.firebaseio.com/chat/$orgId/$id.json';
     try {
       final response = await http.post(
         url,
         body: json.encode(
           {
-            'name': "Ahmed",
-            'userId': "cdcd",
-            'text': "dcc",
+            'name': chat.userName,
+            'userId': chat.userId,
+            'text': chat.text,
             'image': chat.img,
             'time': DateTime.now().toString(),
           },
@@ -71,5 +71,19 @@ class ChatProvider with ChangeNotifier {
       print(error);
       throw error;
     }
+  }
+
+  Future<String> uploadImage(File image) async {
+    print("in upload");
+    StorageReference storageReference =
+    FirebaseStorage.instance.ref().child(image.path.split('/').last);
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    String _downloadUrl = await storageReference.getDownloadURL();
+    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    print("from uploading :  " + _downloadUrl);
+    return _downloadUrl;
   }
 }
