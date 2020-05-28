@@ -1,3 +1,5 @@
+import 'package:BorhanAdmin/screens/edit_organization_details.dart';
+
 import './providers/chat_provider.dart';
 import './providers/user_chat_provider.dart';
 import './screens/all_users_chat.dart';
@@ -96,6 +98,7 @@ class MyApp extends StatelessWidget {
             DonationTabsScreen.routeName: (ctx) => DonationTabsScreen(),
             DonationRequestDetailsScreen.routeName: (ctx) =>
                 DonationRequestDetailsScreen(),
+            EditOrganizationScreen.routName: (ctx) => EditOrganizationScreen(),
             HelpScreen.routeName: (ctx) => HelpScreen(),
             EmailScreen.routeName: (ctx) => EmailScreen(),
             ChatScreen.routeName: (ctx) => ChatScreen(),

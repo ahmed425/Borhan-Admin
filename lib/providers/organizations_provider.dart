@@ -10,6 +10,59 @@ import 'package:http/http.dart' as http;
 import '../helpers/location_helper.dart';
 
 class Organizations with ChangeNotifier {
+
+  List<Organization> _items = [];
+
+  List<Organization> get items {
+    return [..._items];
+  }
+
+  Organization findById(String id) {
+    var organization = _items.firstWhere((org) => org.orgLocalId == id);
+    print("from find  "+ organization.toString());
+    return organization;
+  }
+
+  Future<void> fetchAndSetOrg(String orgLocalId) async {
+    final url = 'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Organization> loadedActivities = [];
+      extractedData.forEach((autoOrgId, orgData) {
+        loadedActivities.add(
+            Organization(
+          id: autoOrgId,
+          orgName: orgData['orgName'],
+          address: orgData['address'],
+          bankAccounts: orgData['bankAccoints'],
+          landLineNo: orgData['landLineNo'],
+          description: orgData['description'],
+          licenseNo: orgData['licensNo'],
+          mobileNo: orgData['mobileNo'],
+          webPage: orgData['webPage'],
+          logo: orgData['logo'],
+              orgLocalId: orgData['orgLocalId']
+        ));
+      });
+      _items = loadedActivities;
+      print("from fetch  "+ _items.toString());
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  /*
+  * for (int i = 0; i < loadedOrganizations.length; i++) {
+        if (loadedOrganizations[i].orgLocalId == orgId) {
+          _item = loadedOrganizations[i];
+          notifyListeners();
+        }
+      }*/
+
+
+
   Future<LocationData> getTheCurrentUserLocation() async {
     final locData = await Location().getLocation();
     // final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
@@ -23,14 +76,12 @@ class Organizations with ChangeNotifier {
     return locData;
   }
 
-  Future<void> updateOrgWithCurrentLocation(
-      String id, Organization newOrg, LocationData currentLocation) async {
+  Future<void> updateOrgWithCurrentLocation(String orgId, Organization newOrg, LocationData currentLocation) async {
     print(
         "  Current Address is   :  ${currentLocation.longitude}+${currentLocation.latitude}");
-    final address = await LocationHelper.getPlaceAddress(
-        currentLocation.latitude, currentLocation.longitude);
-    final url =
-        'https://borhanadmin.firebaseio.com/CharitableOrganizations/-M7m8Gs9EitK0NIqAC-Y.json';
+    final address = currentLocation.longitude+currentLocation.latitude;
+//    await LocationHelper.getPlaceAddress(currentLocation.latitude, currentLocation.longitude);
+    final url = 'https://borhanadmin.firebaseio.com/CharitableOrganizations/$orgId.json';
     print("  Current Address is   :  $address");
 
     await http.patch(url,

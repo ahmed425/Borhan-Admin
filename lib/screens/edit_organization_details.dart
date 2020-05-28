@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:BorhanAdmin/models/place.dart';
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,8 @@ import '../models/organization.dart';
 import '../providers/organizations_provider.dart';
 
 class EditOrganizationScreen extends StatefulWidget {
+  static const routName = '/editOrg';
+
   @override
   _EditOrganizationScreenState createState() => _EditOrganizationScreenState();
 }
@@ -24,7 +27,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
   PlaceLocation _pickedLocation;
   PlaceLocation _currentLocation;
   var _editedOrg = Organization(
-    id: '1',
+    id: null,
     orgName: '',
     logo: '',
     address: '',
@@ -33,11 +36,65 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
     landLineNo: '',
     mobileNo: '',
     bankAccounts: '',
+    orgLocalId: '',
+    webPage: '',
   );
+  var orgLocalId = '';
   File _image;
   String _downloadUrl;
   var _isLoading = false;
   var _isLoadImg = false;
+  var _isInit = true;
+  var _initValues = {
+    'webPage': '',
+    'orgLocalId': '',
+    'address': '',
+    'bankAccounts': '',
+    'description': '',
+    'landLineNo': '',
+    'licenseNo': '',
+    'logo': '',
+    'mobileNo': '',
+    'orgName': '',
+  };
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _descriptionFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      if (orgLocalId != null) {
+        orgLocalId = ModalRoute.of(context).settings.arguments as String;
+        print('from Edit Org ' + orgLocalId);
+        Provider.of<Organizations>(context, listen: false).fetchAndSetOrg(orgLocalId).then((_) => {
+          setState(() {
+            _editedOrg = Provider.of<Organizations>(context, listen: false)
+                .findById(orgLocalId);
+            _initValues = {
+              'webPage': _editedOrg.webPage,
+              'orgLocalId': _editedOrg.orgLocalId,
+              'address': _editedOrg.address,
+              'bankAccounts': _editedOrg.bankAccounts,
+              'description': _editedOrg.description,
+              'landLineNo': _editedOrg.landLineNo,
+              'licenseNo': _editedOrg.licenseNo,
+              'logo': _editedOrg.logo,
+              'mobileNo': _editedOrg.mobileNo,
+              'orgName': _editedOrg.orgName,
+            };
+            print("After init value" + _editedOrg.orgName);
+          }),
+        });
+      }
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future getImage() async {
     File img;
@@ -59,19 +116,35 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
   }
 
   Future<void> _saveForm() async {
-    PlaceLocation myCurrentLocation;
+//    PlaceLocation myCurrentLocation;
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
     }
     _form.currentState.save();
-    setState(() {});
+    setState(() {
+      _isLoading = true;
+    });
     if (_editedOrg.id != null) {
-      final currentLocData =
-          await Provider.of<Organizations>(context, listen: false)
+      _editedOrg = Organization(
+        logo: _downloadUrl != null ? _downloadUrl : _editedOrg.logo,
+        id: _editedOrg.id,
+        orgName: _editedOrg.orgName,
+        address: _editedOrg.address,
+        description: _editedOrg.description,
+        licenseNo: _editedOrg.licenseNo,
+        landLineNo: _editedOrg.landLineNo,
+        mobileNo: _editedOrg.mobileNo,
+        bankAccounts: _editedOrg.bankAccounts,
+        webPage: _editedOrg.webPage,
+        orgLocalId: _editedOrg.orgLocalId,
+      );
+      final currentLocData = await Provider.of<Organizations>(context, listen: false)
               .getTheCurrentUserLocation();
+      if (_editedOrg.logo != null && _editedOrg.logo != '') {
       Provider.of<Organizations>(context, listen: false)
           .deleteImage(_downloadUrl);
+      }
       print(
           "loca is : ${currentLocData.longitude} + ${currentLocData.latitude}");
       // _currentLocation.longitude=LocationInput.
@@ -82,11 +155,19 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
         await Provider.of<Organizations>(context, listen: false)
             .updateOrgWithCurrentLocation(
                 _editedOrg.id, _editedOrg, currentLocData);
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
       } else {
 //        print("select on map");
         await Provider.of<Organizations>(context, listen: false)
             .updateOrgWithSelectedLocation(
                 _editedOrg.id, _editedOrg, _pickedLocation);
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
       }
       Toast.show("تم حفظ البيانات بنجاح", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -100,6 +181,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('From Build' + _initValues['orgName']);
     return Scaffold(
       appBar: AppBar(
         title: Text('تعديل بيانات الجمعية'),
@@ -110,7 +192,11 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
           ),
         ],
       ),
-      body: Container(
+      body: _isLoading
+          ? Center(
+        child: CircularProgressIndicator(),
+      )
+          :Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -129,8 +215,45 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
+                  Text(
+                    _initValues['orgName'],
+                    textAlign: TextAlign.center,
+                  ),
+                  TextFormField(
+                    textAlign: TextAlign.right,
+                    initialValue: 'يــــــــــــــــــــــــــــارب',
+                    decoration: const InputDecoration(
+                      hintText: 'مثال: نشاط إطعام',
+                    ),
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context)
+                          .requestFocus(_descriptionFocusNode);
+                    },
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'من فضلك أدخل أسم للنشاط';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _editedOrg = Organization(
+                        id: _editedOrg.id,
+                        orgName: value,
+                        logo: _downloadUrl,
+                        address: _editedOrg.address,
+                        description: _editedOrg.description,
+                        licenseNo: _editedOrg.licenseNo,
+                        landLineNo: _editedOrg.landLineNo,
+                        mobileNo: _editedOrg.mobileNo,
+                        bankAccounts: _editedOrg.bankAccounts,
+                        webPage: _editedOrg.webPage,
+                      );
+                    },
+                  ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'اسم الجمعية'),
+                    initialValue: _initValues['orgName'],
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context)
@@ -161,6 +284,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'عنوان الجمعية'),
                     textInputAction: TextInputAction.next,
+                    initialValue: _initValues['address'],
                     onFieldSubmitted: (_) {
                       FocusScope.of(context)
                           .requestFocus(_descriptionFocusNode);
@@ -190,6 +314,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'نبذة عن الجمعية'),
                     maxLines: 3,
+                    initialValue: _initValues['description'],
                     keyboardType: TextInputType.multiline,
                     validator: (value) {
                       if (value.isEmpty) {
@@ -218,6 +343,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'رقم الرخصة'),
                     keyboardType: TextInputType.number,
+                    initialValue: _initValues['licenseNo'],
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'يرجي ملأ هذا الحقل';
@@ -241,6 +367,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'رقم الهاتف الأرضي'),
+                    initialValue: _initValues['landLineNo'],
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'يرجي ملأ هذا الحقل';
@@ -264,7 +391,9 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                     },
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'رقم الموبايل '),
+                    decoration:
+                        InputDecoration(labelText: 'رقم الهاتف المحمول '),
+                    initialValue: _initValues['mobileNo'],
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'يرجي ملأ هذا الحقل';
@@ -290,6 +419,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   TextFormField(
                     decoration:
                         InputDecoration(labelText: 'تفاصيل الحساب البنكي '),
+                    initialValue: _initValues['bankAccounts'],
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'يرجي ملأ هذا الحقل';
@@ -315,11 +445,11 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   TextFormField(
                     decoration:
                         InputDecoration(labelText: 'رابط صفحة الإنترنت'),
+                    initialValue: _initValues['webPage'],
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'يرجي ملأ هذا الحقل';
                       }
-
                       return null;
                     },
                     onSaved: (value) {

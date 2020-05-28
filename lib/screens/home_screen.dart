@@ -1,7 +1,9 @@
 //import 'package:BorhanAdmin/screens/email_screen.dart';
 //import 'package:BorhanAdmin/screens/help_screen.dart';
 
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/video_screen.dart';
 import '../screens/donation_tabs_screen.dart';
@@ -13,40 +15,25 @@ import 'activity_screen.dart';
 import 'edit_organization_details.dart';
 import 'image_chatting.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   static const routeName = '/home';
 
   @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
   Widget build(BuildContext context) {
+    final data = Provider.of<Auth>(context);
+    print('from Hoooooomeee id :  '+data.adminData.id);
     return Container(
-//      decoration: BoxDecoration(
-//        gradient: LinearGradient(
-//          colors: [
-//            Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-//            Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-//          ],
-//          begin: Alignment.topLeft,
-//          end: Alignment.bottomRight,
-//          stops: [0, 1],
-//        ),
-//      ),
       child: Scaffold(
         appBar: AppBar(
           title: Text("الصفحة الرئيسية"),
         ),
         body: Container(
           color: Colors.teal[100],
-//          decoration: BoxDecoration(
-//            gradient: LinearGradient(
-//              colors: [
-//                Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-//                Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-//              ],
-//              begin: Alignment.topLeft,
-//              end: Alignment.bottomRight,
-//              stops: [0, 1],
-//            ),
-//          ),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -58,11 +45,8 @@ class Home extends StatelessWidget {
                     width: 250,
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditOrganizationScreen()));
+                        Navigator.pushNamed(context,
+                            EditOrganizationScreen.routName,arguments: data.adminData.id);
                       },
                       child: Text(
                         'تعديل بيانات الجمعية',

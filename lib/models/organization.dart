@@ -11,9 +11,11 @@ class Organization with ChangeNotifier {
   final String mobileNo;
   final String bankAccounts;
   final String webPage;
+  final String orgLocalId;
 
   Organization(
       {this.id,
+        this.orgLocalId,
       this.orgName,
       this.logo,
       this.address,
