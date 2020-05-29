@@ -20,7 +20,7 @@ class DonationRequests with ChangeNotifier {
   Future<void> fetchAndSetProducts(String orgId) async {
     final url = 'https://borhanadmin.firebaseio.com/DonationRequests/$orgId.json';
     try {
-      print("vghvghvghvggh");
+      print("from fetch req");
       print(_donationRequests);
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -30,20 +30,21 @@ class DonationRequests with ChangeNotifier {
         extractedData.forEach((prodId, donationData) {
           loadedRequests.add(DonationRequest(
               id: prodId,
-              donatorName: donationData['DonatorName'],
-              donatorMobileNo: donationData['DonationMobileNo'],
-              donationDate: donationData['DonationDate'],
-              donationType: donationData['DonationType'],
-              donationItems: donationData['DonatorItems'],
-              donatorAddress: donationData['DonatorAddress'],
-              donationAmount: donationData['DonationAmount'],
-              availableOn: donationData['AvailableOn'],
-              orgName: donationData['OrganizationName'],
-              actName: donationData['ActivityName'],
-              image: donationData['Image']));
+              donatorName: donationData['donatorName'],
+              donatorMobileNo: donationData['donatorMobile'],
+              donationDate: donationData['donationDate'],
+              donationType: donationData['donationType'],
+              donationItems: donationData['donationItems'],
+              donatorAddress: donationData['donatorAddress'],
+              donationAmount: donationData['donationAmount'],
+              availableOn: donationData['availableOn'],
+              actName: donationData['activityName'],
+              image: donationData['donationImage']));
         });
+
         _donationRequests = loadedRequests;
         print("id is ${_donationRequests[0].id}");
+        print("id is ${_donationRequests[0].donatorName}");
         notifyListeners();
       } else {
         print("no requests");
@@ -63,8 +64,9 @@ class DonationRequests with ChangeNotifier {
         body: json.encode(
           {
             "donationDate": donationReq.donationDate,
+            "donationAmount": donationReq.donationAmount,
             "donationImage": donationReq.image,
-            "donationItem": donationReq.donationItems,
+            "donationItems": donationReq.donationItems,
             "donationType": donationReq.donationType,
             "donatorAddress": donationReq.donatorAddress,
             "donatorMobile": donationReq.donatorMobileNo,

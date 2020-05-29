@@ -29,7 +29,9 @@ class _EmailScreenState extends State<EmailScreen> {
     text: 'borhan@borhan.com',
   );
 
-  final _subjectController = TextEditingController();
+  final _subjectController = TextEditingController(
+
+  );
 
   final _bodyController = TextEditingController();
 

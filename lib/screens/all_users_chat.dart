@@ -1,4 +1,6 @@
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/chat_provider.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/providers/user_chat_provider.dart';
 import 'package:BorhanAdmin/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +15,30 @@ class AllUsersChatScreen extends StatefulWidget {
 }
 
 class _UsersChatScreenState extends State<AllUsersChatScreen> {
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+  String orgId = '';
   var _isInit = true;
   var _isLoading = false;
+
 //  String currentUserId = '1212145f';
 //String currentUserId ='M8CoA0TH86hmKSikh1K';
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      Provider.of<UserChatProvider>(context).fetchAndSetAllUsers(orgId).then((_) => {
-            print('from provider'),
-            setState(() {
-              _isLoading = false;
-            }),
-          });
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+                Provider.of<UserChatProvider>(context)
+                    .fetchAndSetAllUsers(orgId)
+                    .then((_) => {
+                          print('from provider'),
+                          setState(() {
+                            _isLoading = false;
+                          }),
+                        }),
+              });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -98,7 +110,10 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ChatScreen(id:documents[i].split('.')[0])));
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ChatScreen(id: documents[i].split('.')[0])));
           },
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
           shape:

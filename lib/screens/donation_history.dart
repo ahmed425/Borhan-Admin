@@ -1,4 +1,6 @@
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/history_provider.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/material.dart';
 import '../widgets/history_item.dart';
 import '../models/donation_history.dart';
@@ -12,18 +14,27 @@ class DonationHistory extends StatefulWidget {
 class _DonationHistoryState extends State<DonationHistory> {
   var _isLoading = false;
   var _isInit = true;
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+  String orgId = '';
 
   @override
   void didChangeDependencies() {
     if (_isInit) {
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+                Provider.of<HistoryProvider>(context)
+                    .fetchAndSetActivities(orgId)
+                    .then((_) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }),
+              });
       setState(() {
         _isLoading = true;
-      });
-      Provider.of<HistoryProvider>(context).fetchAndSetActivities(orgId).then((_) {
-        setState(() {
-          _isLoading = false;
-        });
       });
     }
     _isInit = false;

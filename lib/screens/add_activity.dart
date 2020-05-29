@@ -1,3 +1,5 @@
+import 'package:BorhanAdmin/providers/auth.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +16,7 @@ class AddActivity extends StatefulWidget {
 }
 
 class _AddActivityState extends State<AddActivity> {
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+  String orgId = '';
   final _descFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _isLoadImg = false;
@@ -132,10 +134,17 @@ class _AddActivityState extends State<AddActivity> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
+        orgId = value.id,
+        print(orgId),
+      });
       final activityId = ModalRoute.of(context).settings.arguments as String;
       if (activityId != null) {
         _addActivity = Provider.of<Activities>(context, listen: false)
             .findById(activityId);
+        print('After Find Activity  _addActivity =  '+_addActivity.toString());
+        print('After Find Activity  Activity Name =  '+_addActivity.activityName);
         _initValues = {
           'actName': _addActivity.activityName,
           'actDescription': _addActivity.activityDescription,

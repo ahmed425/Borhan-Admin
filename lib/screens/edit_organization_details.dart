@@ -58,6 +58,15 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
     'orgName': '',
   };
 
+  final _nameController = TextEditingController();
+  final _webController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _bankController = TextEditingController();
+  final _descController = TextEditingController();
+  final _landController = TextEditingController();
+  final _licenseController = TextEditingController();
+  final _mobileController = TextEditingController();
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -71,10 +80,9 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       if (orgLocalId != null) {
         orgLocalId = ModalRoute.of(context).settings.arguments as String;
         print('from Edit Org ' + orgLocalId);
-        Provider.of<Organizations>(context, listen: false).fetchAndSetOrg(orgLocalId).then((_) => {
+        Provider.of<Organizations>(context, listen: false).fetchAndSetOrg(orgLocalId).then((value) => {
           setState(() {
-            _editedOrg = Provider.of<Organizations>(context, listen: false)
-                .findById(orgLocalId);
+            _editedOrg = value;
             _initValues = {
               'webPage': _editedOrg.webPage,
               'orgLocalId': _editedOrg.orgLocalId,
@@ -88,6 +96,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
               'orgName': _editedOrg.orgName,
             };
             print("After init value" + _editedOrg.orgName);
+
           }),
         });
       }
@@ -181,7 +190,14 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('From Build' + _initValues['orgName']);
+    _nameController.text = _initValues['orgName'];
+    _addressController.text = _initValues['address'];
+    _descController.text = _initValues['description'];
+    _landController.text = _initValues['landLineNo'];
+    _licenseController.text = _initValues['licenseNo'];
+    _mobileController.text = _initValues['mobileNo'];
+    _webController.text = _initValues['webPage'];
+    _bankController.text = _initValues['bankAccounts'];
     return Scaffold(
       appBar: AppBar(
         title: Text('تعديل بيانات الجمعية'),
@@ -215,93 +231,38 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Text(
-                    _initValues['orgName'],
-                    textAlign: TextAlign.center,
-                  ),
-                  TextFormField(
-                    textAlign: TextAlign.right,
-                    initialValue: 'يــــــــــــــــــــــــــــارب',
-                    decoration: const InputDecoration(
-                      hintText: 'مثال: نشاط إطعام',
+                  Text('اسم الجمعية'),
+                  TextField(
+                    controller: _nameController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
+                      _editedOrg = Organization(
+                        orgName: val,
+                        id: _editedOrg.id,
+                        logo: _downloadUrl,
+                        address: _editedOrg.address,
+                        description: _editedOrg.description,
+                        licenseNo: _editedOrg.licenseNo,
+                        landLineNo: _editedOrg.landLineNo,
+                        mobileNo: _editedOrg.mobileNo,
+                        bankAccounts: _editedOrg.bankAccounts,
+                        webPage: _editedOrg.webPage,
+                      );
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                     ),
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(_descriptionFocusNode);
-                    },
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'من فضلك أدخل أسم للنشاط';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: value,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'اسم الجمعية'),
-                    initialValue: _initValues['orgName'],
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(_descriptionFocusNode);
-                    },
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('عنوان الجمعية'),
+                  TextField(
+                    controller: _addressController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
-                        orgName: value,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'عنوان الجمعية'),
-                    textInputAction: TextInputAction.next,
-                    initialValue: _initValues['address'],
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(_descriptionFocusNode);
-                    },
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
-                        address: value,
+                        address: val,
                         description: _editedOrg.description,
                         licenseNo: _editedOrg.licenseNo,
                         landLineNo: _editedOrg.landLineNo,
@@ -310,28 +271,21 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         webPage: _editedOrg.webPage,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'نبذة عن الجمعية'),
-                    maxLines: 3,
-                    initialValue: _initValues['description'],
-                    keyboardType: TextInputType.multiline,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-                      if (value.length < 10) {
-                        return 'يجب ألا يقل عن 10 أحرف';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('نبذة عن الجمعية'),
+                  TextField(
+                    controller: _descController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
                         address: _editedOrg.address,
-                        description: value,
+                        description: val,
                         licenseNo: _editedOrg.licenseNo,
                         landLineNo: _editedOrg.landLineNo,
                         mobileNo: _editedOrg.mobileNo,
@@ -339,123 +293,106 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         webPage: _editedOrg.webPage,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'رقم الرخصة'),
-                    keyboardType: TextInputType.number,
-                    initialValue: _initValues['licenseNo'],
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('رقم الرخصة'),
+                  TextField(
+                    controller: _licenseController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
                         address: _editedOrg.address,
                         description: _editedOrg.description,
-                        licenseNo: value,
+                        licenseNo: val,
                         landLineNo: _editedOrg.landLineNo,
                         mobileNo: _editedOrg.mobileNo,
                         bankAccounts: _editedOrg.bankAccounts,
                         webPage: _editedOrg.webPage,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'رقم الهاتف الأرضي'),
-                    initialValue: _initValues['landLineNo'],
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('رقم الهاتف الأرضي'),
+                  TextField(
+                    controller: _landController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
                         address: _editedOrg.address,
                         description: _editedOrg.description,
                         licenseNo: _editedOrg.licenseNo,
-                        landLineNo: value,
+                        landLineNo: val,
                         mobileNo: _editedOrg.mobileNo,
                         bankAccounts: _editedOrg.bankAccounts,
                         webPage: _editedOrg.webPage,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'رقم الهاتف المحمول '),
-                    initialValue: _initValues['mobileNo'],
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('رقم الهاتف المحمول'),
+                  TextField(
+                    controller: _mobileController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
                         address: _editedOrg.address,
                         description: _editedOrg.description,
                         licenseNo: _editedOrg.licenseNo,
                         landLineNo: _editedOrg.landLineNo,
-                        mobileNo: value,
+                        mobileNo: val,
                         bankAccounts: _editedOrg.bankAccounts,
                         webPage: _editedOrg.webPage,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'تفاصيل الحساب البنكي '),
-                    initialValue: _initValues['bankAccounts'],
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('تفاصيل الحساب المصرفي'),
+                  TextField(
+                    controller: _bankController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
                         address: _editedOrg.address,
                         description: _editedOrg.description,
                         licenseNo: _editedOrg.licenseNo,
                         landLineNo: _editedOrg.landLineNo,
                         mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: value,
+                        bankAccounts: val,
                         webPage: _editedOrg.webPage,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'رابط صفحة الإنترنت'),
-                    initialValue: _initValues['webPage'],
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'يرجي ملأ هذا الحقل';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
+                  Text('رابط صفحة الإنترنت'),
+                  TextField(
+                    controller: _webController,
+                    textDirection: TextDirection.rtl,
+                    onChanged: (val) {
                       _editedOrg = Organization(
-                        id: _editedOrg.id,
                         orgName: _editedOrg.orgName,
+                        id: _editedOrg.id,
                         logo: _downloadUrl,
                         address: _editedOrg.address,
                         description: _editedOrg.description,
@@ -463,9 +400,12 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         landLineNo: _editedOrg.landLineNo,
                         mobileNo: _editedOrg.mobileNo,
                         bankAccounts: _editedOrg.bankAccounts,
-                        webPage: value,
+                        webPage: val,
                       );
                     },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   Container(
                     child: newImage(),
@@ -499,16 +439,11 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                   getImage();
                 },
               ),
-              _editedOrg.id != null && _image != null
+              _image != null
                   ? Image.file(_image)
-                  : _editedOrg.id != null && _downloadUrl != null //update
-                      ? Image.network(_downloadUrl)
-                      : _image == null
-                          ? Container()
-                          : Image.file(
-                              _image,
-                              fit: BoxFit.contain,
-                            ),
+                  :_editedOrg.logo != null //update
+                      ? Image.network(_editedOrg.logo)
+                      :Container(),
             ],
           ),
         ),

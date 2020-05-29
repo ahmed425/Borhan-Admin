@@ -1,5 +1,7 @@
 import 'package:BorhanAdmin/models/campaign.dart';
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/campaigns.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +19,7 @@ class AddCampaign extends StatefulWidget {
 }
 
 class _AddCampaignState extends State<AddCampaign> {
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+  String orgId = '';
   final _descFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _addCampaign = Campaign(
@@ -139,6 +141,11 @@ class _AddCampaignState extends State<AddCampaign> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
+        orgId = value.id,
+        print(orgId),
+      });
       final campaignId = ModalRoute.of(context).settings.arguments as String;
       if (campaignId != null) {
         _addCampaign =
@@ -243,7 +250,7 @@ class _AddCampaignState extends State<AddCampaign> {
                       ),
                       TextFormField(
                         textAlign: TextAlign.right,
-                        initialValue: _initValues['campName'],
+                        initialValue: _initValues['time'],
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) {
                           FocusScope.of(context).requestFocus(_descFocusNode);
@@ -256,11 +263,11 @@ class _AddCampaignState extends State<AddCampaign> {
                         },
                         onSaved: (value) {
                           _addCampaign = Campaign(
-                            campaignName: value,
+                            campaignName: _addCampaign.campaignName,
                             campaignDescription:
                                 _addCampaign.campaignDescription,
                             imagesUrl: _addCampaign.imagesUrl,
-                            time: _addCampaign.time,
+                            time: value,
                             id: _addCampaign.id,
                           );
                         },

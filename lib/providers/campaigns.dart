@@ -20,23 +20,30 @@ class Campaigns with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts(String orgId) async {
-    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId.json';
+    print(orgId);
+    final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      print("Response body"+ response.body);
       final List<Campaign> loadedCampaigns = [];
-      extractedData.forEach((prodId, prodData) {
-        loadedCampaigns.add(Campaign(
-          id: prodId,
-          campaignName: prodData['name'],
-          campaignDescription: prodData['description'],
-          imagesUrl: prodData['image'],
-          time: prodData['time'],
-        ));
-      });
-      _campaigns = loadedCampaigns;
-
-      notifyListeners();
+      if(extractedData!=null) {
+        extractedData.forEach((prodId, prodData) {
+          loadedCampaigns.add(Campaign(
+            id: prodId,
+            campaignName: prodData['name'],
+            campaignDescription: prodData['description'],
+            imagesUrl: prodData['image'],
+            time: prodData['time'],
+          ));
+        });
+        _campaigns = loadedCampaigns;
+        print(_campaigns[0].id);
+        print(_campaigns[0].campaignDescription);
+        notifyListeners();
+      }else {
+        print('No Data in this chat');
+      }
     } catch (error) {
       throw (error);
     }
@@ -44,10 +51,22 @@ class Campaigns with ChangeNotifier {
 
   // ignore: non_constant_identifier_names
   Future<void> addCampaign(Campaign campaign,String orgId) async {
-    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId.json';
+    final adminUrl = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId.json';
+    final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns.json';
     try {
+//      await http.post(
+//        userUrl,
+//        body: json.encode(
+//          {
+//            'name': campaign.campaignName,
+//            'description': campaign.campaignDescription,
+//            'image': campaign.imagesUrl,
+//            'time': campaign.time,
+//          },
+//        ),
+//      );
       final response = await http.post(
-        url,
+        adminUrl,
         body: json.encode(
           {
             'name': campaign.campaignName,
@@ -66,6 +85,7 @@ class Campaigns with ChangeNotifier {
       );
       _campaigns.add(newCampaign);
       notifyListeners();
+      updateCampaign(newCampaign.id, newCampaign, orgId);
     } catch (error) {
       print(error);
       throw error;
@@ -76,7 +96,15 @@ class Campaigns with ChangeNotifier {
     final campaignIndex =
         _campaigns.indexWhere((campaign) => campaign.id == id);
     if (campaignIndex >= 0) {
-      final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId/$id.json';
+      final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
+      final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
+      await http.patch(userUrl,
+          body: json.encode({
+            'name': newCampaign.campaignName,
+            'description': newCampaign.campaignDescription,
+            'image': newCampaign.imagesUrl,
+            'time': newCampaign.time,
+          }));
       await http.patch(url,
           body: json.encode({
             'name': newCampaign.campaignName,
@@ -92,11 +120,13 @@ class Campaigns with ChangeNotifier {
   }
 
   Future<void> deleteCampaign(String id,String orgId) async {
-    final url = 'https://borhanadmin.firebaseio.com/Campaigns/$orgId/$id.json';
+    final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
+    final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
     final existingProductIndex = _campaigns.indexWhere((prod) => prod.id == id);
     var existingProduct = _campaigns[existingProductIndex];
     _campaigns.removeWhere((campaign) => campaign.id == id);
     notifyListeners();
+    await http.delete(userUrl);
     final response = await http.delete(url);
     if (response.statusCode >= 400) {
       _campaigns.insert(existingProductIndex, existingProduct);

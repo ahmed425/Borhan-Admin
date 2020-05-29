@@ -1,3 +1,6 @@
+import 'package:BorhanAdmin/providers/auth.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
+
 import '../providers/donation_requests.dart';
 import '../widgets/donation_request_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,17 +15,27 @@ class DonationRequestsScreen extends StatefulWidget {
 class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   var _isLoading = false;
   var _isInit = true;
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+  String orgId = '';
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+                Provider.of<DonationRequests>(context)
+                    .fetchAndSetProducts(orgId)
+                    .then((_) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }),
+              });
       setState(() {
         _isLoading = true;
-      });
-      Provider.of<DonationRequests>(context).fetchAndSetProducts(orgId).then((_) {
-        setState(() {
-          _isLoading = false;
-        });
       });
     }
     _isInit = false;
@@ -32,7 +45,7 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   @override
   Widget build(BuildContext context) {
     final activitiesData = Provider.of<DonationRequests>(context);
-
+print('from build in req donation' + activitiesData.toString());
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(

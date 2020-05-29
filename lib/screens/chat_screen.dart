@@ -1,6 +1,9 @@
+import 'package:BorhanAdmin/providers/auth.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import '../providers/chat_provider.dart';
 import '../widgets/message_bubble.dart';
 import '../models/chat.dart';
@@ -8,7 +11,9 @@ import '../models/chat.dart';
 class ChatScreen extends StatefulWidget {
   static const routeName = '/chat';
   var id = '';
+
   ChatScreen({this.id});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -16,7 +21,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   // the id for specific user i(admin) chat with him
 //  var id = '1212145f';
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+  String orgId = '';
   var _enteredMessage = '';
   var _isInit = true;
   var chat = Chat(
@@ -32,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _sendMessage() {
     FocusScope.of(context).unfocus();
     Provider.of<ChatProvider>(context, listen: false)
-        .addMessage(chat,widget.id,orgId)
+        .addMessage(chat, widget.id, orgId)
         .then((value) => {
               _controller.clear(),
               _enteredMessage = '',
@@ -44,10 +49,24 @@ class _ChatScreenState extends State<ChatScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-      Provider.of<ChatProvider>(context).fetchAndSetChat(widget.id,orgId);
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+                Provider.of<ChatProvider>(context)
+                    .fetchAndSetChat(widget.id, orgId),
+              });
     }
     _isInit = false;
     super.didChangeDependencies();
+  }
+
+  Future _getData() async{
+    final url = 'https://borhanadmin.firebaseio.com/chat/$orgId/$widget.id.json';
+    var response = await http.get(url);
+    return response;
   }
 
   @override
@@ -62,7 +81,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
               child: FutureBuilder(
-                future: FirebaseAuth.instance.currentUser(),
+                future: _getData(),
                 builder: (ctx, futureSnapshot) {
                   if (futureSnapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -99,16 +118,17 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(labelText: 'كتابة رسالة ...'),
-                      onTap: (){
-                        _isInit = true;
+                      onTap: () {
+//                        _isInit = true;
                       },
                       onChanged: (value) {
                         setState(() {
                           _enteredMessage = value;
                         });
                         print('from wigdet Message is : ' + value);
-                        _isInit = true;
-                        Provider.of<ChatProvider>(context).fetchAndSetChat(widget.id,orgId);
+//                        _isInit = true;
+                        Provider.of<ChatProvider>(context)
+                            .fetchAndSetChat(widget.id, orgId);
                         chat = Chat(
                           img: chat.img,
                           text: value,
@@ -136,4 +156,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+
 }

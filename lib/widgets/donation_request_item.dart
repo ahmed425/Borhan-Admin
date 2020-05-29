@@ -1,17 +1,40 @@
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/donation_requests.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/screens/donation_request_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DonationRequestItem extends StatelessWidget {
+class DonationRequestItem extends StatefulWidget {
   final String donatorName;
   final String donatorMobileNo;
   final String donationType;
   final String donationDate;
   final String id;
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+
   DonationRequestItem(this.id, this.donatorName, this.donatorMobileNo,
       this.donationType, this.donationDate);
+
+  @override
+  _DonationRequestItemState createState() => _DonationRequestItemState();
+}
+
+class _DonationRequestItemState extends State<DonationRequestItem> {
+  String orgId = '';
+  var _isInit = true;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    if(_isInit){
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
+        orgId = value.id,
+        print(orgId),
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +58,7 @@ class DonationRequestItem extends StatelessWidget {
 //                ),
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  "$donationType",
+                  "${widget.donationType}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -56,7 +79,7 @@ class DonationRequestItem extends StatelessWidget {
                         width: 2,
                       ),
                     ),
-                    child: Text(donatorName,
+                    child: Text(widget.donatorName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -64,7 +87,7 @@ class DonationRequestItem extends StatelessWidget {
                         )),
                   ),
                   Text(
-                    donationDate,
+                    widget.donationDate,
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -78,40 +101,40 @@ class DonationRequestItem extends StatelessWidget {
                   child: RaisedButton(
                     onPressed: () {
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donationDate);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donationType);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donationItems);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donationAmount);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donatorAddress);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donatorMobileNo);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .donatorName);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .id);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .image);
                       print(Provider.of<DonationRequests>(context)
-                          .findById(id)
+                          .findById(widget.id)
                           .availableOn);
 
                       Provider.of<DonationRequests>(context).addDonationReq(
-                          Provider.of<DonationRequests>(context).findById(id),orgId);
+                          Provider.of<DonationRequests>(context).findById(widget.id),orgId);
 
-                      Provider.of<DonationRequests>(context).deleteRequest(id,orgId);
+                      Provider.of<DonationRequests>(context).deleteRequest(widget.id,orgId);
                     },
                     child: Text(
                       '  تم التبرع ',
@@ -138,7 +161,7 @@ class DonationRequestItem extends StatelessWidget {
   void selectRequest(BuildContext context) {
     Navigator.of(context).pushNamed(
       DonationRequestDetailsScreen.routeName,
-      arguments: id,
+      arguments: widget.id,
     );
   }
 }

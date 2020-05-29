@@ -18,21 +18,31 @@ class Activities with ChangeNotifier {
   }
 
   Future<void> fetchAndSetActivities(String orgId) async {
+    print("from fetch activity orgId  " + orgId);
     final url = 'https://borhanadmin.firebaseio.com/activities/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Activity> loadedActivities = [];
-      extractedData.forEach((activityId, activityData) {
-        loadedActivities.add(Activity(
-          id: activityId,
-          activityName: activityData['name'],
-          activityDescription: activityData['description'],
-          imagesUrl: activityData['image'],
-        ));
-      });
-      _items = loadedActivities;
-      notifyListeners();
+
+      print("Response body"+ response.body);
+
+      if(extractedData!=null) {
+        extractedData.forEach((activityId, activityData) {
+          print("Act Id from fetch in looooop  :  "+activityId);
+          loadedActivities.add(Activity(
+            id: activityId,
+            activityName: activityData['name'],
+            activityDescription: activityData['description'],
+            imagesUrl: activityData['image'],
+          ));
+        });
+        _items = loadedActivities;
+//        print('loadedAct Name :  '+ _items[1].id);
+        notifyListeners();
+      }else {
+        print('No Data in this chat');
+      }
     } catch (error) {
       throw (error);
     }
@@ -57,6 +67,7 @@ class Activities with ChangeNotifier {
         activityDescription: activity.activityDescription,
         imagesUrl: activity.imagesUrl,
       );
+      print('from add activity '+newActivity.id);
       _items.add(newActivity);
       notifyListeners();
     } catch (error) {

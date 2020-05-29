@@ -1,15 +1,36 @@
+import 'package:BorhanAdmin/providers/auth.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_activity.dart';
 import 'package:provider/provider.dart';
 import '../providers/activities.dart';
 
-class ActivityItem extends StatelessWidget {
-  String orgId = '-M7mQM4joEI2tdd06ykQ';
+class ActivityItem extends StatefulWidget {
   final String name;
   final String id;
 
   ActivityItem(this.name, this.id);
 
+  @override
+  _ActivityItemState createState() => _ActivityItemState();
+}
+
+class _ActivityItemState extends State<ActivityItem> {
+  String orgId = '';
+  var _isInit = true;
+@override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+  if(_isInit){
+    final data = Provider.of<Auth>(context);
+    Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
+      orgId = value.id,
+      print(orgId),
+    });
+  }
+  _isInit = false;
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
 //    final scaffold = Scaffold.of(context);
@@ -23,7 +44,7 @@ class ActivityItem extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed(
                     AddActivity.routeName,
-                    arguments: id,
+                    arguments: widget.id,
                   );
                 },
                 color: Theme.of(context).primaryColor,
@@ -32,7 +53,7 @@ class ActivityItem extends StatelessWidget {
                 icon: Icon(Icons.delete),
                 onPressed: () {
                     Provider.of<Activities>(context, listen: false)
-                        .deleteActivity(id,orgId);
+                        .deleteActivity(widget.id,orgId);
 //                  } catch (error) {
 //                    scaffold.showSnackBar(
 //                      SnackBar(
@@ -46,6 +67,6 @@ class ActivityItem extends StatelessWidget {
             ],
           ),
         ),
-        trailing: Text(name));
+        trailing: Text(widget.name));
   }
 }

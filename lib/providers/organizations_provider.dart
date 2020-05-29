@@ -17,28 +17,33 @@ class Organizations with ChangeNotifier {
     return [..._items];
   }
 
-  Organization findById(String id) {
-    var organization = _items.firstWhere((org) => org.orgLocalId == id);
-    print("from find  "+ organization.toString());
-    return organization;
-  }
 
-  Future<void> fetchAndSetOrg(String orgLocalId) async {
+//  Organization findById(String id) {
+//    var organization = _items.firstWhere((org) => org.orgLocalId == id);
+//    print("from find  "+ organization.toString());
+//    return organization;
+//  }
+
+  Future<Organization> fetchAndSetOrg(String orgLocalId) async {
     final url = 'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Organization> loadedActivities = [];
+      if(extractedData!=null){
+        print('from fetch extracted data' + extractedData.toString());
       extractedData.forEach((autoOrgId, orgData) {
+        print("ID"+ autoOrgId);
+        print(orgData);
         loadedActivities.add(
             Organization(
           id: autoOrgId,
           orgName: orgData['orgName'],
           address: orgData['address'],
-          bankAccounts: orgData['bankAccoints'],
+          bankAccounts: orgData['bankAccounts'],
           landLineNo: orgData['landLineNo'],
           description: orgData['description'],
-          licenseNo: orgData['licensNo'],
+          licenseNo: orgData['licenseNo'],
           mobileNo: orgData['mobileNo'],
           webPage: orgData['webPage'],
           logo: orgData['logo'],
@@ -47,7 +52,17 @@ class Organizations with ChangeNotifier {
       });
       _items = loadedActivities;
       print("from fetch  "+ _items.toString());
+      print("from fetch  "+ _items[1].id);
+      print("from fetch  "+ _items[1].orgName);
+      print("orgLocalId" + orgLocalId);
       notifyListeners();
+      var organization = _items.firstWhere((org) => org.orgLocalId == orgLocalId);
+      print("from fetch Organization  "+ organization.id);
+      return organization;
+
+      }else {
+        print('No Data in this chat');
+      }
     } catch (error) {
       throw (error);
     }
@@ -79,16 +94,16 @@ class Organizations with ChangeNotifier {
   Future<void> updateOrgWithCurrentLocation(String orgId, Organization newOrg, LocationData currentLocation) async {
     print(
         "  Current Address is   :  ${currentLocation.longitude}+${currentLocation.latitude}");
-    final address = currentLocation.longitude+currentLocation.latitude;
+//    final address = currentLocation.longitude+currentLocation.latitude;
 //    await LocationHelper.getPlaceAddress(currentLocation.latitude, currentLocation.longitude);
     final url = 'https://borhanadmin.firebaseio.com/CharitableOrganizations/$orgId.json';
-    print("  Current Address is   :  $address");
+//    print("  Current Address is   :  $address");
 
     await http.patch(url,
         body: json.encode({
           'orgName': newOrg.orgName,
           'logo': newOrg.logo,
-          'address': address,
+          'address': newOrg.address,
           'description': newOrg.description,
           'licenseNo': newOrg.licenseNo,
           'landLineNo': newOrg.landLineNo,

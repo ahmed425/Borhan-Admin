@@ -17,6 +17,7 @@ class HistoryProvider with ChangeNotifier {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<History> loadedHistory = [];
+      if(extractedData!=null){
       extractedData.forEach((historyId, historyData) {
         loadedHistory.add(History(
           id: historyId,
@@ -28,13 +29,16 @@ class HistoryProvider with ChangeNotifier {
           donationDate: historyData['donationDate'],
           donationAmount: historyData['donationAmount'],
           donationImage: historyData['donationImage'],
-          orgName: historyData['OrganizationName'],
-          actName: historyData['ActivityName'],
+          orgName: historyData['organizationName'],
+          actName: historyData['activityName'],
         ));
       });
       _items = loadedHistory;
       print(_items);
       notifyListeners();
+      }else {
+        print('No Data in this chat');
+      }
     } catch (error) {
       throw (error);
     }
