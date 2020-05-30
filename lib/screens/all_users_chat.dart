@@ -31,9 +31,10 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 orgId = value.id,
                 print(orgId),
                 Provider.of<UserChatProvider>(context)
-                    .fetchAndSetAllUsers(orgId)
+                    .fetchAndSetAllUsersLocalId(orgId)
                     .then((_) => {
                           print('from provider'),
+                  Provider.of<UserChatProvider>(context).fetchAndSetAllUsersNames(orgId),
                           setState(() {
                             _isLoading = false;
                           }),
@@ -91,14 +92,17 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
                 clipBehavior: Clip.hardEdge,
               ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+              ),
               Flexible(
                 child: Container(
                   child: Column(
                     children: <Widget>[
                       Container(
                         child: Text(
-                          'البريد الألكتروني للعميل: ${documents[i]}',
-                          style: TextStyle(color: Colors.teal),
+                          ' العميل : ${documents[i]}',
+                          style: TextStyle(fontSize: 16),
                         ),
                         alignment: Alignment.centerRight,
                         margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
