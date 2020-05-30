@@ -63,8 +63,9 @@ class _ChatScreenState extends State<ChatScreen> {
     super.didChangeDependencies();
   }
 
-  Future _getData() async{
-    final url = 'https://borhanadmin.firebaseio.com/chat/$orgId/$widget.id.json';
+  Future _getData() async {
+    final url =
+        'https://borhanadmin.firebaseio.com/chat/$orgId/$widget.id.json';
     var response = await http.get(url);
     return response;
   }
@@ -77,6 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text('المحادثة'),
       ),
       body: Container(
+        color: Colors.teal[100],
         child: Column(
           children: <Widget>[
             Expanded(
@@ -156,6 +158,4 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-
-
 }

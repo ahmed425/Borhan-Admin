@@ -126,11 +126,11 @@ class _DonationHistoryState extends State<DonationHistory> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        textDirection:
-                                                            TextDirection.rtl,
+//                                                        textDirection:
+//                                                            TextDirection.rtl,
                                                         children: <Widget>[
                                                           Text(
-                                                            ' : نوع التبرع',
+                                                            'نوع التبرع : ',
                                                             style: TextStyle(
                                                                 color:
                                                                     Colors.teal,

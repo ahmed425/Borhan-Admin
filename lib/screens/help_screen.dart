@@ -11,66 +11,71 @@ class HelpScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Help/Support'),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: 250,
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EmailScreen()));
-                },
-                child: Text(
-                  'بواسطة البريد الإلكتروني',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
+      body: Container(
+        color: Colors.teal[100],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  width: 250,
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EmailScreen()));
+                    },
+                    child: Text(
+                      'بواسطة البريد الإلكتروني',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
                 ),
-                padding:
-                EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).primaryTextTheme.button.color,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-            ),
-            SizedBox(
-              width: 250,
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AllUsersChatScreen()));
-                },
-                child: Text(
-                  'بواسطة محادثة',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
+                SizedBox(
+                  width: 250,
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllUsersChatScreen()));
+                    },
+                    child: Text(
+                      'بواسطة محادثة',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
                 ),
-                padding:
-                EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).primaryTextTheme.button.color,
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-            ),
-          ],
+          ),
         ),
       ),
     );

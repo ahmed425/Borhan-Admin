@@ -29,9 +29,7 @@ class _EmailScreenState extends State<EmailScreen> {
     text: 'borhan@borhan.com',
   );
 
-  final _subjectController = TextEditingController(
-
-  );
+  final _subjectController = TextEditingController();
 
   final _bodyController = TextEditingController();
 
@@ -85,7 +83,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
                     controller: _subjectController,
-                    textDirection: TextDirection.rtl,
+//                    textDirection: TextDirection.rtl,
                     onChanged: (val) {
                       emailM = EmailM(
                         recipientController: emailM.recipientController,
@@ -103,7 +101,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
                     controller: _bodyController,
-                    textDirection: TextDirection.rtl,
+//                    textDirection: TextDirection.rtl,
                     onChanged: (val) {
                       emailM = EmailM(
                         recipientController: emailM.recipientController,

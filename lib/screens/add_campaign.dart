@@ -174,128 +174,130 @@ class _AddCampaignState extends State<AddCampaign> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Form(
-                key: _form,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'اسم الحمة',
-                        textAlign: TextAlign.center,
-                      ),
-                      TextFormField(
-                        textAlign: TextAlign.right,
-                        initialValue: _initValues['campName'],
-                        decoration: const InputDecoration(
-                          hintText: 'مثال: حملة رمضان الخير',
+          : Container(color: Colors.teal[100],
+            child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Form(
+                  key: _form,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'اسم الحمة',
+                          textAlign: TextAlign.center,
                         ),
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_descFocusNode);
-                        },
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'من فضلك أدخل أسم للحملة';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _addCampaign = Campaign(
-                            campaignName: value,
-                            campaignDescription:
-                                _addCampaign.campaignDescription,
-                            imagesUrl: _addCampaign.imagesUrl,
-                            time: _addCampaign.time,
-                            id: _addCampaign.id,
-                          );
-                        },
-                      ),
-                      Text(
-                        'الوصف',
-                        textAlign: TextAlign.center,
-                      ),
-                      TextFormField(
-                        initialValue: _initValues['campDescription'],
-                        textAlign: TextAlign.right,
-                        maxLines: 3,
-                        keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
-                          hintText: 'حملة تساعد في اطعام المحتاجين',
+                        TextFormField(
+                          textAlign: TextAlign.right,
+                          initialValue: _initValues['campName'],
+                          decoration: const InputDecoration(
+                            hintText: 'مثال: حملة رمضان الخير',
+                          ),
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context).requestFocus(_descFocusNode);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'من فضلك أدخل أسم للحملة';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _addCampaign = Campaign(
+                              campaignName: value,
+                              campaignDescription:
+                                  _addCampaign.campaignDescription,
+                              imagesUrl: _addCampaign.imagesUrl,
+                              time: _addCampaign.time,
+                              id: _addCampaign.id,
+                            );
+                          },
                         ),
-                        focusNode: _descFocusNode,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'من فضلك أدخل وصف للحملة';
-                          }
-                          if (value.length < 10) {
-                            return 'الوصف يجب ألا يقل عن 10 أحرف';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _addCampaign = Campaign(
-                            campaignName: _addCampaign.campaignName,
-                            campaignDescription: value,
-                            imagesUrl: _addCampaign.imagesUrl,
-                            time: _addCampaign.time,
-                            id: _addCampaign.id,
-                          );
-                        },
-                      ),
-                      Text(
-                        'وقت الحملة',
-                        textAlign: TextAlign.center,
-                      ),
-                      TextFormField(
-                        textAlign: TextAlign.right,
-                        initialValue: _initValues['time'],
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_descFocusNode);
-                        },
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'من فضلك أدخل وقت للحملة';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _addCampaign = Campaign(
-                            campaignName: _addCampaign.campaignName,
-                            campaignDescription:
-                                _addCampaign.campaignDescription,
-                            imagesUrl: _addCampaign.imagesUrl,
-                            time: value,
-                            id: _addCampaign.id,
-                          );
-                        },
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: _isLoadImg
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : newImage(),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: new RaisedButton(
-                          textColor: Colors.white,
-                          child: _addCampaign.id != null
-                              ? Text('حفظ')
-                              : Text('إضافة'),
-                          color: Colors.teal,
-                          onPressed: _saveForm,
+                        Text(
+                          'الوصف',
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                    ],
+                        TextFormField(
+                          initialValue: _initValues['campDescription'],
+                          textAlign: TextAlign.right,
+                          maxLines: 3,
+                          keyboardType: TextInputType.multiline,
+                          decoration: const InputDecoration(
+                            hintText: 'حملة تساعد في اطعام المحتاجين',
+                          ),
+                          focusNode: _descFocusNode,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'من فضلك أدخل وصف للحملة';
+                            }
+                            if (value.length < 10) {
+                              return 'الوصف يجب ألا يقل عن 10 أحرف';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _addCampaign = Campaign(
+                              campaignName: _addCampaign.campaignName,
+                              campaignDescription: value,
+                              imagesUrl: _addCampaign.imagesUrl,
+                              time: _addCampaign.time,
+                              id: _addCampaign.id,
+                            );
+                          },
+                        ),
+                        Text(
+                          'وقت الحملة',
+                          textAlign: TextAlign.center,
+                        ),
+                        TextFormField(
+                          textAlign: TextAlign.right,
+                          initialValue: _initValues['time'],
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context).requestFocus(_descFocusNode);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'من فضلك أدخل وقت للحملة';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _addCampaign = Campaign(
+                              campaignName: _addCampaign.campaignName,
+                              campaignDescription:
+                                  _addCampaign.campaignDescription,
+                              imagesUrl: _addCampaign.imagesUrl,
+                              time: value,
+                              id: _addCampaign.id,
+                            );
+                          },
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: _isLoadImg
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : newImage(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: new RaisedButton(
+                            textColor: Colors.white,
+                            child: _addCampaign.id != null
+                                ? Text('حفظ')
+                                : Text('إضافة'),
+                            color: Colors.teal,
+                            onPressed: _saveForm,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
+          ),
     );
   }
 

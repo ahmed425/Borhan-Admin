@@ -80,25 +80,26 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       if (orgLocalId != null) {
         orgLocalId = ModalRoute.of(context).settings.arguments as String;
         print('from Edit Org ' + orgLocalId);
-        Provider.of<Organizations>(context, listen: false).fetchAndSetOrg(orgLocalId).then((value) => {
-          setState(() {
-            _editedOrg = value;
-            _initValues = {
-              'webPage': _editedOrg.webPage,
-              'orgLocalId': _editedOrg.orgLocalId,
-              'address': _editedOrg.address,
-              'bankAccounts': _editedOrg.bankAccounts,
-              'description': _editedOrg.description,
-              'landLineNo': _editedOrg.landLineNo,
-              'licenseNo': _editedOrg.licenseNo,
-              'logo': _editedOrg.logo,
-              'mobileNo': _editedOrg.mobileNo,
-              'orgName': _editedOrg.orgName,
-            };
-            print("After init value" + _editedOrg.orgName);
-
-          }),
-        });
+        Provider.of<Organizations>(context, listen: false)
+            .fetchAndSetOrg(orgLocalId)
+            .then((value) => {
+                  setState(() {
+                    _editedOrg = value;
+                    _initValues = {
+                      'webPage': _editedOrg.webPage,
+                      'orgLocalId': _editedOrg.orgLocalId,
+                      'address': _editedOrg.address,
+                      'bankAccounts': _editedOrg.bankAccounts,
+                      'description': _editedOrg.description,
+                      'landLineNo': _editedOrg.landLineNo,
+                      'licenseNo': _editedOrg.licenseNo,
+                      'logo': _editedOrg.logo,
+                      'mobileNo': _editedOrg.mobileNo,
+                      'orgName': _editedOrg.orgName,
+                    };
+                    print("After init value" + _editedOrg.orgName);
+                  }),
+                });
       }
     }
     _isInit = false;
@@ -148,11 +149,12 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
         webPage: _editedOrg.webPage,
         orgLocalId: _editedOrg.orgLocalId,
       );
-      final currentLocData = await Provider.of<Organizations>(context, listen: false)
+      final currentLocData =
+          await Provider.of<Organizations>(context, listen: false)
               .getTheCurrentUserLocation();
       if (_editedOrg.logo != null && _editedOrg.logo != '') {
-      Provider.of<Organizations>(context, listen: false)
-          .deleteImage(_downloadUrl);
+        Provider.of<Organizations>(context, listen: false)
+            .deleteImage(_downloadUrl);
       }
       print(
           "loca is : ${currentLocData.longitude} + ${currentLocData.latitude}");
@@ -210,216 +212,219 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       ),
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
-          :Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-              Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0, 1],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _form,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Text('اسم الجمعية'),
-                  TextField(
-                    controller: _nameController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: val,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+//              decoration: BoxDecoration(
+//                gradient: LinearGradient(
+//                  colors: [
+//                    Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
+//                    Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
+//                  ],
+//                  begin: Alignment.topLeft,
+//                  end: Alignment.bottomRight,
+//                  stops: [0, 1],
+//                ),
+//              ),
+              color: Colors.teal[100],
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _form,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'اسم الجمعية',
+                        ),
+                        TextField(
+                          controller: _nameController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: val,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: _editedOrg.description,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('عنوان الجمعية'),
+                        TextField(
+                          controller: _addressController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: val,
+                              description: _editedOrg.description,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('نبذة عن الجمعية'),
+                        TextField(
+                          controller: _descController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: val,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('رقم الرخصة'),
+                        TextField(
+                          controller: _licenseController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: _editedOrg.description,
+                              licenseNo: val,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('رقم الهاتف الأرضي'),
+                        TextField(
+                          controller: _landController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: _editedOrg.description,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: val,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('رقم الهاتف المحمول'),
+                        TextField(
+                          controller: _mobileController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: _editedOrg.description,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: val,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('تفاصيل الحساب المصرفي'),
+                        TextField(
+                          controller: _bankController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: _editedOrg.description,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: val,
+                              webPage: _editedOrg.webPage,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Text('رابط صفحة الإنترنت'),
+                        TextField(
+                          controller: _webController,
+//                    textDirection: TextDirection.rtl,
+                          onChanged: (val) {
+                            _editedOrg = Organization(
+                              orgName: _editedOrg.orgName,
+                              id: _editedOrg.id,
+                              logo: _downloadUrl,
+                              address: _editedOrg.address,
+                              description: _editedOrg.description,
+                              licenseNo: _editedOrg.licenseNo,
+                              landLineNo: _editedOrg.landLineNo,
+                              mobileNo: _editedOrg.mobileNo,
+                              bankAccounts: _editedOrg.bankAccounts,
+                              webPage: val,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Container(
+                          child: newImage(),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        LocationInput(_selectPlace),
+                      ],
                     ),
                   ),
-                  Text('عنوان الجمعية'),
-                  TextField(
-                    controller: _addressController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: val,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Text('نبذة عن الجمعية'),
-                  TextField(
-                    controller: _descController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: val,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Text('رقم الرخصة'),
-                  TextField(
-                    controller: _licenseController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: val,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Text('رقم الهاتف الأرضي'),
-                  TextField(
-                    controller: _landController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: val,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Text('رقم الهاتف المحمول'),
-                  TextField(
-                    controller: _mobileController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: val,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Text('تفاصيل الحساب المصرفي'),
-                  TextField(
-                    controller: _bankController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: val,
-                        webPage: _editedOrg.webPage,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Text('رابط صفحة الإنترنت'),
-                  TextField(
-                    controller: _webController,
-                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      _editedOrg = Organization(
-                        orgName: _editedOrg.orgName,
-                        id: _editedOrg.id,
-                        logo: _downloadUrl,
-                        address: _editedOrg.address,
-                        description: _editedOrg.description,
-                        licenseNo: _editedOrg.licenseNo,
-                        landLineNo: _editedOrg.landLineNo,
-                        mobileNo: _editedOrg.mobileNo,
-                        bankAccounts: _editedOrg.bankAccounts,
-                        webPage: val,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Container(
-                    child: newImage(),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  LocationInput(_selectPlace),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -441,9 +446,9 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
               ),
               _image != null
                   ? Image.file(_image)
-                  :_editedOrg.logo != null //update
+                  : _editedOrg.logo != null //update
                       ? Image.network(_editedOrg.logo)
-                      :Container(),
+                      : Container(),
             ],
           ),
         ),

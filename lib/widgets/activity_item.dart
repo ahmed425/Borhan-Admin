@@ -8,8 +8,8 @@ import '../providers/activities.dart';
 class ActivityItem extends StatefulWidget {
   final String name;
   final String id;
-
-  ActivityItem(this.name, this.id);
+  final String image;
+  ActivityItem(this.name, this.id, this.image);
 
   @override
   _ActivityItemState createState() => _ActivityItemState();
@@ -18,48 +18,75 @@ class ActivityItem extends StatefulWidget {
 class _ActivityItemState extends State<ActivityItem> {
   String orgId = '';
   var _isInit = true;
-@override
+  @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-  if(_isInit){
-    final data = Provider.of<Auth>(context);
-    Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
-      orgId = value.id,
-      print(orgId),
-    });
-  }
-  _isInit = false;
+    if (_isInit) {
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+              });
+      print('Image is : ${widget.image}');
+    }
+    _isInit = false;
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
 //    final scaffold = Scaffold.of(context);
     return ListTile(
-        title: Container(
-          width: 100,
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    AddActivity.routeName,
-                    arguments: widget.id,
-                  );
-                },
-                color: Theme.of(context).primaryColor,
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                    Provider.of<Activities>(context, listen: false)
-                        .deleteActivity(widget.id,orgId);
-                },
-                color: Theme.of(context).errorColor,
-              ),
-            ],
+      title: Text(
+        widget.name,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      trailing: Container(
+        width: 100,
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AddActivity.routeName,
+                  arguments: widget.id,
+                );
+              },
+              color: Theme.of(context).primaryColor,
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Provider.of<Activities>(context, listen: false)
+                    .deleteActivity(widget.id, orgId);
+              },
+              color: Theme.of(context).errorColor,
+            ),
+          ],
+        ),
+      ),
+
+      leading: FittedBox(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: EdgeInsets.all(6),
+            child: Image.network(widget.image),
           ),
         ),
-        trailing: Text(widget.name));
+      ),
+//        Row(
+//          children: [
+//
+//            Text(
+//              widget.name,
+//              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//            ),
+//          ],
+//        )
+    );
   }
 }

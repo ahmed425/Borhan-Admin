@@ -25,19 +25,22 @@ class _CampaignScreenState extends State<CampaignScreen> {
     final data = Provider.of<Auth>(context);
 
     if (_isInit) {
-      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
-        orgId = value.id,
-        print(orgId),
-      Provider.of<Campaigns>(context).fetchAndSetProducts(orgId).then((_) {
-      setState(() {
-      _isLoading = false;
-      });
-      }),
-      });
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+                Provider.of<Campaigns>(context)
+                    .fetchAndSetProducts(orgId)
+                    .then((_) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }),
+              });
       setState(() {
         _isLoading = true;
       });
-
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -55,15 +58,19 @@ class _CampaignScreenState extends State<CampaignScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.separated(
-              padding: const EdgeInsets.all(10),
-              itemCount: campaignsData.campaigns.length,
-              itemBuilder: (_, i) => CampaignItem(
-                campaignsData.campaigns[i].campaignName,
-                campaignsData.campaigns[i].id,
+          : Container(
+              color: Colors.teal[100],
+              child: ListView.separated(
+                padding: const EdgeInsets.all(10),
+                itemCount: campaignsData.campaigns.length,
+                itemBuilder: (_, i) => CampaignItem(
+                  campaignsData.campaigns[i].campaignName,
+                  campaignsData.campaigns[i].id,
+                  campaignsData.campaigns[i].imagesUrl,
+                ),
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
               ),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

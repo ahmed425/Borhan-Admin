@@ -51,22 +51,24 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
       appBar: AppBar(
         title: const Text('المحادثات'),
       ),
-      body: WillPopScope(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      padding: EdgeInsets.all(10.0),
-                      itemBuilder: (context, index) =>
-                          buildItem(context, allUsers.users, index),
-                      itemCount: allUsers.users.length,
-                    ),
-            ),
-          ],
+      body: Container(color: Colors.teal[100],
+        child: WillPopScope(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                child: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.all(10.0),
+                        itemBuilder: (context, index) =>
+                            buildItem(context, allUsers.users, index),
+                        itemCount: allUsers.users.length,
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );

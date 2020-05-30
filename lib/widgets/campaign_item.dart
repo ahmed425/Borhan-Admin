@@ -9,8 +9,8 @@ import '../providers/campaigns.dart';
 class CampaignItem extends StatefulWidget {
   final String name;
   final String id;
-
-  CampaignItem(this.name, this.id);
+  final String image;
+  CampaignItem(this.name, this.id, this.image);
 
   @override
   _CampaignItemState createState() => _CampaignItemState();
@@ -19,42 +19,49 @@ class CampaignItem extends StatefulWidget {
 class _CampaignItemState extends State<CampaignItem> {
   String orgId = '';
   var _isInit = true;
-@override
+  @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-  if(_isInit){
-    final data = Provider.of<Auth>(context);
-    Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
-      orgId = value.id,
-      print(orgId),
-    });
-  }
-  _isInit = false;
+    if (_isInit) {
+      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+              });
+    }
+    _isInit = false;
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
 //    final scaffold = Scaffold.of(context);
     return ListTile(
-        title: Container(
-          width: 100,
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    AddCampaign.routeName,
-                    arguments: widget.id,
-                  );
-                },
-                color: Theme.of(context).primaryColor,
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  Provider.of<Campaigns>(context, listen: false)
-                      .deleteCampaign(widget.id,orgId);
+      title: Text(
+        widget.name,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      trailing: Container(
+        width: 100,
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AddCampaign.routeName,
+                  arguments: widget.id,
+                );
+              },
+              color: Theme.of(context).primaryColor,
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Provider.of<Campaigns>(context, listen: false)
+                    .deleteCampaign(widget.id, orgId);
 //                  } catch (error) {
 //                    scaffold.showSnackBar(
 //                      SnackBar(
@@ -62,12 +69,21 @@ class _CampaignItemState extends State<CampaignItem> {
 //                      ),
 //                    );
 //                  }
-                },
-                color: Theme.of(context).errorColor,
-              ),
-            ],
+              },
+              color: Theme.of(context).errorColor,
+            ),
+          ],
+        ),
+      ),
+      leading: FittedBox(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: EdgeInsets.all(6),
+            child: Image.network(widget.image),
           ),
         ),
-        trailing: Text(widget.name));
+      ),
+    );
   }
 }

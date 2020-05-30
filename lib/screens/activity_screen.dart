@@ -54,15 +54,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.separated(
-              padding: const EdgeInsets.all(10),
-              itemCount: activitiesData.items.length,
-              itemBuilder: (_, i) => ActivityItem(
-                activitiesData.items[i].activityName,
-                activitiesData.items[i].id,
+          : Container(
+              color: Colors.teal[100],
+              child: ListView.separated(
+                padding: const EdgeInsets.all(10),
+                itemCount: activitiesData.items.length,
+                itemBuilder: (_, i) => ActivityItem(
+                    activitiesData.items[i].activityName,
+                    activitiesData.items[i].id,
+                    activitiesData.items[i].imagesUrl),
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
               ),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
