@@ -50,17 +50,6 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
     print('from build in req donation' + donationsData.toString());
     return Container(
       color: Colors.teal[100],
-//      decoration: BoxDecoration(
-//        gradient: LinearGradient(
-//          colors: [
-//            Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-//            Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-//          ],
-//          begin: Alignment.topLeft,
-//          end: Alignment.bottomRight,
-//          stops: [0, 1],
-//        ),
-//      ),
       child: ListView.builder(
         itemBuilder: (ctx, index) {
           return donationsData.donationRequests.length != 0

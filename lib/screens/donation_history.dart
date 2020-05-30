@@ -64,7 +64,6 @@ class _DonationHistoryState extends State<DonationHistory> {
                             color: Colors.teal,
                             elevation: 14.0,
                             borderRadius: BorderRadius.circular(24.0),
-//                        shadowColor: Color(0x802196F3),
                             child: Column(children: <Widget>[
                               Row(
                                 mainAxisAlignment:
@@ -73,6 +72,7 @@ class _DonationHistoryState extends State<DonationHistory> {
                                   Container(
                                     width: 150,
                                     height: 150,
+                                    padding: EdgeInsets.only(right: 3.0),
                                     child: ClipRRect(
                                       borderRadius:
                                           new BorderRadius.circular(24.0),
@@ -177,6 +177,7 @@ class _DonationHistoryState extends State<DonationHistory> {
                                                     .items[i].donationDate,
                                                 donationAmount: historyData
                                                     .items[i].donationAmount,
+                                                status: historyData.items[i].status,
                                               ),
                                             ],
                                           ),

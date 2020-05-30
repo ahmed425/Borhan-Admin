@@ -10,6 +10,7 @@ class HistoryItem extends StatelessWidget {
   String donatorMobile;
   String donatorName;
   String actName;
+  String status;
 
   HistoryItem({
     this.donationAmount,
@@ -19,6 +20,7 @@ class HistoryItem extends StatelessWidget {
     this.donatorMobile,
     this.donatorName,
     this.actName,
+    this.status,
   });
 
   @override
@@ -207,6 +209,26 @@ class HistoryItem extends StatelessWidget {
                     ],
                   )
                 : Container(),
+          ),
+        ),
+        Center(
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            child: status != '' && status != null ?
+                status == 'done'?
+                Text('تبرع مقبول',
+                  style: TextStyle(
+                      color: Colors.green,
+                      backgroundColor: Colors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold),
+                ):Text('تبرع مرفوض',
+                  style: TextStyle(
+                      color: Colors.red,
+                      backgroundColor: Colors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold),
+                ) : Container(),
           ),
         ),
       ],

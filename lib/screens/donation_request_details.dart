@@ -24,6 +24,7 @@ class _DonationRequestDetailsScreenState
     final requestId = ModalRoute.of(context).settings.arguments as String;
     var currentRequest = Provider.of<DonationRequests>(context, listen: false)
         .findById(requestId);
+    print('from details  amount =  ${currentRequest.donationAmount.length}');
     return Scaffold(
       appBar: AppBar(
         title: Text('${currentRequest.donationType}'),
@@ -37,138 +38,194 @@ class _DonationRequestDetailsScreenState
           child: Column(
 //            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
-                  padding: EdgeInsets.all(5),
-                  child: Text("اسم النشاط",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ))),
-//              SizedBox(child: Text('Hello'),,),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                child: Text(currentRequest.actName,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                  padding: EdgeInsets.all(5),
-                  child: Text("اسم المتبرع", style: TextStyle(fontSize: 20))),
-
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                child: Text(currentRequest.donatorName,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                  padding: EdgeInsets.all(5),
-                  child: Text("عنوان المتبرع",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ))),
-              Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  child: Text(currentRequest.donatorAddress,
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold))),
-              Container(
-                  padding: EdgeInsets.all(5),
-                  child: Text(" رقم الموبايل", style: TextStyle(fontSize: 20))),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                child: Text(currentRequest.donatorMobileNo,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                padding: EdgeInsets.all(5),
-                child: Text("الأشياء التي يرغب التبرع بها ",
-                    style: TextStyle(
-                      fontSize: 20,
-                    )),
-              ),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                child: Text(currentRequest.donationItems,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                  padding: EdgeInsets.all(5),
-                  child: Text("المواعيد المتاحة",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ))),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                child: Text(currentRequest.availableOn,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                  padding: EdgeInsets.all(5),
-                  child: Text(
-                    " صورة للتبرع إن وجدت",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-//                    padding: EdgeInsets.all(10),
-//                    width: MediaQuery.of(context).size.width,
-//                    height: MediaQuery.of(context).size.height,
-//                    margin: EdgeInsets.all(8),
-
-//                        Image.network(_downloadUrl)
-
-                    child: SizedBox(
-//                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.width,
-                      child: CachedNetworkImage(
-                        imageUrl: currentRequest.image,
+              currentRequest.actName != null && currentRequest.actName != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text("اسم النشاط",
+                          style: TextStyle(
+                            fontSize: 20,
+                          )))
+                  : Container(),
+              currentRequest.actName != null && currentRequest.actName != ''
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
-                    ),
+                      child: Text(currentRequest.actName,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
+              currentRequest.donatorName != null &&
+                      currentRequest.donatorName != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child:
+                          Text("اسم المتبرع", style: TextStyle(fontSize: 20)))
+                  : Container(),
+              currentRequest.donatorName != null &&
+                      currentRequest.donatorName != ''
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Text(currentRequest.donatorName,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
+              currentRequest.donatorAddress != null &&
+                      currentRequest.donatorAddress != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text("عنوان المتبرع",
+                          style: TextStyle(
+                            fontSize: 20,
+                          )))
+                  : Container(),
+              currentRequest.donatorAddress != null &&
+                      currentRequest.donatorAddress != ''
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Text(currentRequest.donatorAddress,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)))
+                  : Container(),
+              currentRequest.donatorMobileNo != null &&
+                      currentRequest.donatorMobileNo != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child:
+                          Text(" رقم الموبايل", style: TextStyle(fontSize: 20)))
+                  : Container(),
+              currentRequest.donatorMobileNo != null &&
+                      currentRequest.donatorMobileNo != ''
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Text(currentRequest.donatorMobileNo,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
+              currentRequest.donationAmount != null &&
+                      currentRequest.donationAmount != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text("المبلغ",
+                          style: TextStyle(
+                            fontSize: 20,
+                          )))
+                  : Container(),
+              currentRequest.donationAmount != null &&
+                      currentRequest.donationAmount != ""
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Text(currentRequest.donationAmount,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
+              currentRequest.donationItems != null &&
+                      currentRequest.donationItems != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text("الأشياء التي يرغب التبرع بها ",
+                          style: TextStyle(
+                            fontSize: 20,
+                          )),
+                    )
+                  : Container(),
+              currentRequest.donationItems != null &&
+                      currentRequest.donationItems != ''
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Text(currentRequest.donationItems,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
+              currentRequest.availableOn != null &&
+                      currentRequest.availableOn != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text("المواعيد المتاحة",
+                          style: TextStyle(
+                            fontSize: 20,
+                          )))
+                  : Container(),
+              currentRequest.availableOn != null &&
+                      currentRequest.availableOn != ''
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Text(currentRequest.availableOn,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  : Container(),
+              currentRequest.image != null && currentRequest.image != ''
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        " صورة للتبرع إن وجدت",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ))
+                  : Container(),
+              currentRequest.image != null && currentRequest.image != ''
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+//                      width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.width,
+                            child: CachedNetworkImage(
+                              imageUrl: currentRequest.image,
+                            ),
+                          ),
 //                          fit: BoxFit.cover,
-                  ),
-                ],
-              ),
+                        ),
+                      ],
+                    )
+                  : Container(),
             ],
           ),
         ),

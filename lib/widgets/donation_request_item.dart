@@ -107,7 +107,7 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
               child: Material(
 //                  color: Colors.teal,
                 elevation: 2.0,
-                borderRadius: BorderRadius.circular(24.0),
+//                borderRadius: BorderRadius.circular(24.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[

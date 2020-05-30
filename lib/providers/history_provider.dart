@@ -31,6 +31,7 @@ class HistoryProvider with ChangeNotifier {
           donationImage: historyData['donationImage'],
           orgName: historyData['organizationName'],
           actName: historyData['activityName'],
+          status: historyData['status'],
         ));
       });
       _items = loadedHistory;

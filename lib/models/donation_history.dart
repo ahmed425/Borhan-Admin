@@ -13,6 +13,7 @@ class History with ChangeNotifier {
   final String orgName;
   final String orgId;
   final String actName;
+  final String status;
 
   History(
       {this.id,
@@ -26,5 +27,6 @@ class History with ChangeNotifier {
       @required this.donationImage,
       @required this.orgName,
       @required this.orgId,
+      @required this.status,
       @required this.actName});
 }
