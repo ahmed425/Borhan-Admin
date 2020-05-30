@@ -54,13 +54,6 @@ class _ActivityItemState extends State<ActivityItem> {
                 onPressed: () {
                     Provider.of<Activities>(context, listen: false)
                         .deleteActivity(widget.id,orgId);
-//                  } catch (error) {
-//                    scaffold.showSnackBar(
-//                      SnackBar(
-//                        content: Text('فشل الحذف!', textAlign: TextAlign.center,),
-//                      ),
-//                    );
-//                  }
                 },
                 color: Theme.of(context).errorColor,
               ),

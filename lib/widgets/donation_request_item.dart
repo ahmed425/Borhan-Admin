@@ -1,3 +1,4 @@
+import 'package:BorhanAdmin/models/donation_request.dart';
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/donation_requests.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
@@ -6,14 +7,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DonationRequestItem extends StatefulWidget {
+  final String id;
+  final String donationType;
   final String donatorName;
   final String donatorMobileNo;
-  final String donationType;
+  final String donatorAddress;
+  final String donationItems;
+  final String donationAmount;
   final String donationDate;
-  final String id;
+  final String availableOn;
+  final String image;
+  final String orgName;
+  final String actName;
+  final String userId;
+  final String status;
 
-  DonationRequestItem(this.id, this.donatorName, this.donatorMobileNo,
-      this.donationType, this.donationDate);
+  DonationRequestItem({
+    this.id,
+    this.donationType,
+    this.donatorName,
+    this.donatorMobileNo,
+    this.donatorAddress,
+    this.donationItems,
+    this.donationAmount,
+    this.donationDate,
+    this.availableOn,
+    this.image,
+    this.orgName,
+    this.actName,
+    this.userId,
+    this.status,
+  });
 
   @override
   _DonationRequestItemState createState() => _DonationRequestItemState();
@@ -22,15 +46,50 @@ class DonationRequestItem extends StatefulWidget {
 class _DonationRequestItemState extends State<DonationRequestItem> {
   String orgId = '';
   var _isInit = true;
+  var _donationReq = DonationRequest(
+    status: '',
+    image: '',
+    donationType: '',
+    donationItems: '',
+    donationDate: '',
+    donationAmount: '',
+    actName: '',
+    orgName: '',
+    id: '',
+    userId: '',
+    donatorName: '',
+    donatorAddress: '',
+    availableOn: '',
+    donatorMobileNo: '',
+  );
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    if(_isInit){
+    if (_isInit) {
+      _donationReq = DonationRequest(
+        donatorMobileNo: widget.donatorMobileNo,
+        availableOn: widget.availableOn,
+        donatorAddress: widget.donatorAddress,
+        donatorName: widget.donatorName,
+        userId: widget.userId,
+        id: widget.id,
+        orgName: widget.orgName,
+        actName: widget.actName,
+        donationAmount: widget.donationAmount,
+        donationDate: widget.donationDate,
+        donationItems: widget.donationItems,
+        donationType: widget.donationType,
+        image: widget.image,
+        status: widget.status,
+      );
       final data = Provider.of<Auth>(context);
-      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
-        orgId = value.id,
-        print(orgId),
-      });
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+              });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -39,121 +98,185 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
   @override
   Widget build(BuildContext context) {
 //    final scaffold = Scaffold.of(context);
-    return ListTile(
-      onTap: () => selectRequest(context),
-      title: Container(
-        child: Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-//                margin: EdgeInsets.symmetric(
-//                  vertical: 10,
-//                  horizontal: 15,
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            onTap: () => selectRequest(context),
+            title: Card(
+                  child: Material(
+//                  color: Colors.teal,
+                    elevation: 2.0,
+                    borderRadius: BorderRadius.circular(24.0),
+                    child: FittedBox(
+                      child: Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Expanded(
+                            child: Text('عيني'),
+                          ),
+                          Expanded(
+                            child: Column(
+//                            crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
 
-//                decoration: BoxDecoration(
-//                  border: Border.all(
-//                    color: Colors.purple,
-//                    width: 2,
-//                  ),
-//                ),
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  "${widget.donationType}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-//                    color: Colors.purple,
-                    color: Theme.of(context).primaryColor,
-//                    textColor:
-//                    Theme.of(context).primaryTextTheme.button.color,
-                  ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.purple,
-                        width: 2,
+                                  ],
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.purple,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Text(widget.donatorName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.purple,
+                                      )),
+                                ),
+                                Text(
+                                  widget.donationDate,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      RaisedButton(
+                                        onPressed: () {
+                                          _donationReq = DonationRequest(
+                                            donatorMobileNo: widget.donatorMobileNo,
+                                            availableOn: widget.availableOn,
+                                            donatorAddress: widget.donatorAddress,
+                                            donatorName: widget.donatorName,
+                                            userId: widget.userId,
+                                            id: widget.id,
+                                            orgName: widget.orgName,
+                                            actName: widget.actName,
+                                            donationAmount: widget.donationAmount,
+                                            donationDate: widget.donationDate,
+                                            donationItems: widget.donationItems,
+                                            donationType: widget.donationType,
+                                            image: widget.image,
+                                            status: 'done',
+                                          );
+                                          Provider.of<DonationRequests>(context)
+                                              .updateDonationReq(_donationReq, orgId)
+                                              .then((value) => {
+                                                    print('from .then ' +
+                                                        orgId +
+                                                        '\n' +
+                                                        _donationReq.userId),
+                                                    Provider.of<DonationRequests>(context)
+                                                        .updateInMyDonation(
+                                                            _donationReq.userId,
+                                                            _donationReq),
+                                                    Provider.of<DonationRequests>(context)
+                                                        .addDonationReq(
+                                                            Provider.of<DonationRequests>(
+                                                                    context)
+                                                                .findById(widget.id),
+                                                            orgId),
+                                                    Provider.of<DonationRequests>(context)
+                                                        .deleteRequest(widget.id, orgId),
+                                                  });
+                                        },
+                                        child: Text(
+                                          '  تم التبرع ',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        color: Theme.of(context).primaryColor,
+                                        textColor: Theme.of(context)
+                                            .primaryTextTheme
+                                            .button
+                                            .color,
+                                      ),
+                                      RaisedButton(
+                                        onPressed: () {
+                                          _donationReq = DonationRequest(
+                                            donatorMobileNo: widget.donatorMobileNo,
+                                            availableOn: widget.availableOn,
+                                            donatorAddress: widget.donatorAddress,
+                                            donatorName: widget.donatorName,
+                                            userId: widget.userId,
+                                            id: widget.id,
+                                            orgName: widget.orgName,
+                                            actName: widget.actName,
+                                            donationAmount: widget.donationAmount,
+                                            donationDate: widget.donationDate,
+                                            donationItems: widget.donationItems,
+                                            donationType: widget.donationType,
+                                            image: widget.image,
+                                            status: 'cancel',
+                                          );
+                                          Provider.of<DonationRequests>(context)
+                                              .updateDonationReq(_donationReq, orgId)
+                                              .then((value) => {
+                                            print('from .then ' +
+                                                orgId +
+                                                '\n' +
+                                                _donationReq.userId),
+                                            Provider.of<DonationRequests>(context)
+                                                .updateInMyDonation(
+                                                _donationReq.userId,
+                                                _donationReq),
+                                            Provider.of<DonationRequests>(context)
+                                                .addDonationReq(
+                                                Provider.of<DonationRequests>(
+                                                    context)
+                                                    .findById(widget.id),
+                                                orgId),
+                                            Provider.of<DonationRequests>(context)
+                                                .deleteRequest(widget.id, orgId),
+                                          });
+                                        },
+                                        child: Text(
+                                          '  إلغاء التبرع ',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        color: Theme.of(context).primaryColor,
+                                        textColor: Theme.of(context)
+                                            .primaryTextTheme
+                                            .button
+                                            .color,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+//                      ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Text(widget.donatorName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.purple,
-                        )),
-                  ),
-                  Text(
-                    widget.donationDate,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 100,
-                  child: RaisedButton(
-                    onPressed: () {
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donationDate);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donationType);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donationItems);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donationAmount);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donatorAddress);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donatorMobileNo);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .donatorName);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .id);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .image);
-                      print(Provider.of<DonationRequests>(context)
-                          .findById(widget.id)
-                          .availableOn);
-
-                      Provider.of<DonationRequests>(context).addDonationReq(
-                          Provider.of<DonationRequests>(context).findById(widget.id),orgId);
-
-                      Provider.of<DonationRequests>(context).deleteRequest(widget.id,orgId);
-                    },
-                    child: Text(
-                      '  تم التبرع ',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryTextTheme.button.color,
                   ),
                 ),
-              ),
-            ],
           ),
-        ),
+        ],
       ),
     );
   }
@@ -166,318 +289,23 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
   }
 }
 
-//
-//SizedBox(
-//width: 100,
-//child: RaisedButton(
-//onPressed: () {
-//print(Provider.of<DonationRequests>(context).findById(id).donationDate);
-//print(Provider.of<DonationRequests>(context).findById(id).donationType);
-//print(Provider.of<DonationRequests>(context).findById(id).donationItems);
-//print(Provider.of<DonationRequests>(context).findById(id).donationAmount);
-//print(Provider.of<DonationRequests>(context).findById(id).donatorAddress);
-//print(Provider.of<DonationRequests>(context).findById(id).donatorMobileNo);
-//print(Provider.of<DonationRequests>(context).findById(id).donatorName);
-//print(Provider.of<DonationRequests>(context).findById(id).id);
-//print(Provider.of<DonationRequests>(context).findById(id).image);
-//print(Provider.of<DonationRequests>(context).findById(id).availableOn);
-//
-//Provider.of<DonationRequests>(context)
-//    .addCampaign(Provider.of<DonationRequests>(context).findById(id));
-//},
-//child: Text(
-//'نقل للتبرعات السابقة  ',
-//style: TextStyle(
-//color: Colors.white,
-//fontSize: 15.0,
-//fontWeight: FontWeight.bold),
-//),
-//shape: RoundedRectangleBorder(
-//borderRadius: BorderRadius.circular(10),
-//),
-//color: Theme.of(context).primaryColor,
-//textColor:
-//Theme.of(context).primaryTextTheme.button.color,
-//),
-//),
 
-//import 'package:BorhanAdmin/providers/donation_requests.dart';
-//import 'package:BorhanAdmin/screens/donation_request_details.dart';
-//import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-//
-//class DonationRequestItem extends StatelessWidget {
-////    final String donatorName;
-////  final String donatorMobileNo;
-////  final String donationType;
-////  final String donationDate;
-////  final String id;
-////  final String donationItems;
-////  final String donationAmount;
-////  final String donatorAddress;
-////  final String availableOn;
-////  final String image;
-////
-////  DonationRequestItem(
-////      this.id,
-////      this.donationType,
-////      this.donatorName,
-////      this.donatorMobileNo,
-////      this.donatorAddress,
-////      this.donationItems,
-////      this.donationAmount,
-////      this.donationDate,
-////      this.availableOn,
-////      this.image);
-//  final String donatorName;
-//  final String donatorMobileNo;
-//  final String donationType;
-//  final String donationDate;
-//  final String id;
-//
-//  DonationRequestItem(this.id, this.donatorName, this.donatorMobileNo,
-//      this.donationType, this.donationDate);
-//
-//  @override
-//  Widget build(BuildContext context) {
-////    final scaffold = Scaffold.of(context);
-//    return ListTile(
-//      onTap: () => selectRequest(context),
-//      title: Container(
-//        child: Card(
-//          child: Row(
-//            children: <Widget>[
-//              Container(
-////                margin: EdgeInsets.symmetric(
-////                  vertical: 10,
-////                  horizontal: 15,
-//
-////                decoration: BoxDecoration(
-////                  border: Border.all(
-////                    color: Colors.purple,
-////                    width: 2,
-////                  ),
-////                ),
-//                padding: EdgeInsets.all(5),
-//                child: Text(
-//                  "$donationType",
-//                  style: TextStyle(
-//                    fontWeight: FontWeight.bold,
-//                    fontSize: 20,
-////                    color: Colors.purple,
-//                    color: Theme.of(context).primaryColor,
-////                    textColor:
-////                    Theme.of(context).primaryTextTheme.button.color,
-//                  ),
-//                ),
-//              ),
-//              Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Container(
-//                    decoration: BoxDecoration(
-//                      border: Border.all(
-//                        color: Colors.purple,
-//                        width: 2,
-//                      ),
-//                    ),
-//                    child: Text(donatorName,
-//                        style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 20,
-//                          color: Colors.purple,
-//                        )),
-//                  ),
-//                  Text(
-//                    donationDate ?? 'default value',
-//                    style: TextStyle(
-//                      color: Colors.grey,
-//                    ),
-//                  ),
-//                ],
-//              ),
-//              Container(
-//                margin: EdgeInsets.all(20),
-//                child: SizedBox(
-//                  width: 100,
-//                  child: RaisedButton(
-//                    onPressed: () {
-//                      Provider.of<DonationRequests>(context).addCampaign(
-//                          Provider.of<DonationRequests>(context).findById(id));
-//                      print('Donation date is $donationDate');
-//                      print(
-//                          "Request is ${Provider.of<DonationRequests>(context).findById(id).donationType}");
-//                      Provider.of<DonationRequests>(context).deleteRequest(id);
-//                    },
-//                    child: Text(
-//                      'تم التبرع  ',
-//                      style: TextStyle(
-//                          color: Colors.white,
-//                          fontSize: 15.0,
-//                          fontWeight: FontWeight.bold),
-//                    ),
-//                    shape: RoundedRectangleBorder(
-//                      borderRadius: BorderRadius.circular(10),
-//                    ),
-//                    color: Theme.of(context).primaryColor,
-//                    textColor: Theme.of(context).primaryTextTheme.button.color,
-//                  ),
-//                ),
-//              ),
-//            ],
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-//
-//  void selectRequest(BuildContext context) {
-//    Navigator.of(context).pushNamed(
-//      DonationRequestDetailsScreen.routeName,
-//      arguments: id,
-//    );
-//  }
-//}
-
-//Previous
-//import 'package:BorhanAdmin/models/donation_request.dart';
-//import 'package:BorhanAdmin/providers/donation_requests.dart';
-//import 'package:BorhanAdmin/screens/donation_request_details.dart';
-//import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-//
-//class DonationRequestItem extends StatelessWidget {
-//  final String donatorName;
-//  final String donatorMobileNo;
-//  final String donationType;
-//  final String donationDate;
-//  final String id;
-//  final String donationItems;
-//  final String donationAmount;
-//  final String donatorAddress;
-//  final String availableOn;
-//  final String image;
-//
-//  DonationRequestItem(
-//      this.id,
-//      this.donationType,
-//      this.donatorName,
-//      this.donatorMobileNo,
-//      this.donatorAddress,
-//      this.donationItems,
-//      this.donationAmount,
-//      this.donationDate,
-//      this.availableOn,
-//      this.image);
-//
-////final request = DonationRequestItem()
-//  @override
-//  Widget build(BuildContext context) {
-////    final scaffold = Scaffold.of(context);
-//    final donationRequestsData = Provider.of<DonationRequests>(context);
-//
-//    return ListTile(
-//      onTap: () => selectRequest(context),
-//      title: Container(
-//        child: Card(
-//          child: Row(
-//            children: <Widget>[
-//              Container(
-////                margin: EdgeInsets.symmetric(
-////                  vertical: 10,
-////                  horizontal: 15,
-//
-////                decoration: BoxDecoration(
-////                  border: Border.all(
-////                    color: Colors.purple,
-////                    width: 2,
-////                  ),
-////                ),
-//                padding: EdgeInsets.all(5),
-//                child: Text(
-//                  "$donationType",
-//                  style: TextStyle(
-//                    fontWeight: FontWeight.bold,
-//                    fontSize: 20,
-////                    color: Colors.purple,
-//                    color: Theme.of(context).primaryColor,
-////                    textColor:
-////                    Theme.of(context).primaryTextTheme.button.color,
-//                  ),
-//                ),
-//              ),
-//              Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Container(
-//                    decoration: BoxDecoration(
-//                      border: Border.all(
-//                        color: Colors.purple,
-//                        width: 2,
-//                      ),
-//                    ),
-//                    child: Text(donatorName,
-//                        style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 20,
-//                          color: Colors.purple,
-//                        )),
-//                  ),
-//                  Text(
-//                    donationDate,
-//                    style: TextStyle(
-//                      color: Colors.grey,
-//                    ),
-//                  ),
-//                ],
-//              ),
-//              Container(
-//                margin: EdgeInsets.all(20),
-//                child: SizedBox(
-//                  width: 100,
-//                  child: RaisedButton(
-//                    onPressed: () {
-//                      Provider.of<DonationRequests>(context)
-//                          .addCampaign(DonationRequest(
-////                              id: this.id,
-//                              availableOn: this.availableOn,
-//                              image: this.image,
-//                              donatorName: this.donatorName,
-//                              donationItems: this.donationItems,
-//                              donationAmount: this.donationAmount,
-//                              donatorMobileNo: this.donatorMobileNo,
-//                              donationDate: this.donationDate,
-//                              donatorAddress: this.donatorAddress,
-//                              donationType: this.donationType));
-//                      Provider.of<DonationRequests>(context)
-//                          .deleteRequest(this.id);
-//                    },
-//                    child: Text(
-//                      'تم التبرع  ',
-//                      style: TextStyle(
-//                          color: Colors.white,
-//                          fontSize: 15.0,
-//                          fontWeight: FontWeight.bold),
-//                    ),
-//                    shape: RoundedRectangleBorder(
-//                      borderRadius: BorderRadius.circular(10),
-//                    ),
-//                    color: Theme.of(context).primaryColor,
-//                    textColor: Theme.of(context).primaryTextTheme.button.color,
-//                  ),
-//                ),
-//              ),
-//            ],
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-//
-//  void selectRequest(BuildContext context) {
-//    Navigator.of(context).pushNamed(
-//      DonationRequestDetailsScreen.routeName,
-//      arguments: id,
-//    );
-//  }
-//}
+/*
+*                         Expanded(
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: FittedBox(
+                                child: Text(
+                                  "${widget.donationType}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+*/

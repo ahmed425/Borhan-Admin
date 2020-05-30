@@ -12,8 +12,10 @@ class DonationRequest with ChangeNotifier {
   final String availableOn;
   final String image;
   final String orgName;
-  final String orgId;
   final String actName;
+  final String userId;
+  final String status;
+
   DonationRequest(
       {this.id,
       this.donationType,
@@ -26,6 +28,7 @@ class DonationRequest with ChangeNotifier {
       this.availableOn,
       this.image,
       this.orgName,
-      this.orgId,
-      this.actName});
+      this.actName,
+      this.userId,
+      this.status,});
 }

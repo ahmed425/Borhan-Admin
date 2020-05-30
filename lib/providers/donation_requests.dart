@@ -18,6 +18,7 @@ class DonationRequests with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts(String orgId) async {
+    orgId = '-M8R7YEmnXs8Bxkd8a5-';
     final url = 'https://borhanadmin.firebaseio.com/DonationRequests/$orgId.json';
     try {
       print("from fetch req");
@@ -30,6 +31,9 @@ class DonationRequests with ChangeNotifier {
         extractedData.forEach((prodId, donationData) {
           loadedRequests.add(DonationRequest(
               id: prodId,
+              userId: donationData['userId'],
+              status: donationData['status'],
+              orgName: donationData['organizationName'],
               donatorName: donationData['donatorName'],
               donatorMobileNo: donationData['donatorMobile'],
               donationDate: donationData['donationDate'],
@@ -72,7 +76,11 @@ class DonationRequests with ChangeNotifier {
             "donatorMobile": donationReq.donatorMobileNo,
             "donatorName": donationReq.donatorName,
             "organizationName": donationReq.orgName,
-            "activityName": donationReq.actName
+            "activityName": donationReq.actName,
+            "userId":donationReq.userId,
+            "status": donationReq.status,
+            "orgName":donationReq.orgName,
+
           },
         ),
       );
@@ -108,4 +116,61 @@ class DonationRequests with ChangeNotifier {
     print(response.statusCode);
 //    existingProduct = null;
   }
+
+  Future<void> updateInMyDonation(String userId, DonationRequest donationReq) async {
+    final reqIndex = _donationRequests.indexWhere((request) => request.id == donationReq.id);
+    if (reqIndex >= 0) {
+      var id = donationReq.id;
+      print('');
+      final url = 'https://borhanadmin.firebaseio.com/MyDonations/$userId/$id.json';
+      await http.patch(url,
+          body: json.encode({
+            "userId": donationReq.userId,
+            "status": donationReq.status,
+            "donationDate": donationReq.donationDate,
+            "donationAmount": donationReq.donationAmount,
+            "donationImage": donationReq.image,
+            "donationItems": donationReq.donationItems,
+            "donationType": donationReq.donationType,
+            "donatorAddress": donationReq.donatorAddress,
+            "donatorMobile": donationReq.donatorMobileNo,
+            "donatorName": donationReq.donatorName,
+            "organizationName": donationReq.orgName,
+            "activityName": donationReq.actName
+          }));
+      _donationRequests[reqIndex] = donationReq;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
+
+  Future<void> updateDonationReq(DonationRequest donationReq,String orgId) async {
+    final reqIndex = _donationRequests.indexWhere((request) => request.id == donationReq.id);
+    if (reqIndex >= 0) {
+      var reqId = donationReq.id;
+      final url = 'https://borhanadmin.firebaseio.com/DonationRequests/$orgId/$reqId.json';
+      await http.patch(url,
+          body: json.encode({
+            "userId": donationReq.userId,
+            "status": donationReq.status,
+            "donationDate": donationReq.donationDate,
+            "donationAmount": donationReq.donationAmount,
+            "donationImage": donationReq.image,
+            "donationItems": donationReq.donationItems,
+            "donationType": donationReq.donationType,
+            "donatorAddress": donationReq.donatorAddress,
+            "donatorMobile": donationReq.donatorMobileNo,
+            "donatorName": donationReq.donatorName,
+            "organizationName": donationReq.orgName,
+            "activityName": donationReq.actName
+
+          }));
+      _donationRequests[reqIndex] = donationReq;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
+
 }
