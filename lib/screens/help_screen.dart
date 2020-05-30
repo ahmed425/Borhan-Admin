@@ -9,7 +9,7 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Help/Support'),
+        title: Text('طلبات المساعدة'),
       ),
       body: Container(
         color: Colors.teal[100],
@@ -17,8 +17,7 @@ class HelpScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  width: 250,
+                FittedBox(
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.push(
@@ -27,7 +26,7 @@ class HelpScreen extends StatelessWidget {
                               builder: (context) => EmailScreen()));
                     },
                     child: Text(
-                      'بواسطة البريد الإلكتروني',
+                      'طلب الدعم الفني بواسطة البريد الإلكتروني',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 18.0,
@@ -43,7 +42,7 @@ class HelpScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 35),
                 ),
                 SizedBox(
                   width: 250,

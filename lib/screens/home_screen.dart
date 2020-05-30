@@ -2,6 +2,7 @@
 //import 'package:BorhanAdmin/screens/help_screen.dart';
 
 import 'package:BorhanAdmin/providers/auth.dart';
+import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -23,10 +24,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var orgName = '';
+  var data;
+  var _isInit = true;
+  var orgLogo = '';
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgName = 'جمعية ' + value.orgName,
+                orgLogo = value.logo,
+                print("From Home Charity Org is : " + orgName),
+              });
+    }
+    _isInit = false;
+
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<Auth>(context);
-    print('from Hoooooomeee id :  '+data.adminData.id);
+    print('from Hoooooomeee id :  ' + data.adminData.id);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -34,489 +56,242 @@ class _HomeState extends State<Home> {
         ),
         body: Container(
           color: Colors.teal[100],
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context,
-                            EditOrganizationScreen.routName,arguments: data.adminData.id);
-                      },
-                      child: Text(
-                        'تعديل بيانات الجمعية',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(orgLogo),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                    padding: EdgeInsets.all(10),
                   ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ActivityScreen()));
-                      },
-                      child: Text(
-                        'إدارة أنشطة الجمعية',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CampaignScreen()));
-                      },
-                      child: Text(
-                        'إدارة الحملات',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DonationTabsScreen()));
-                      },
-                      child: Text(
-                        'متابعة التبرعات',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => VideoPlayerScreen()));
-                      },
-                      child: Text(
-                        'مشاهدة فيديو توضيحي',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HelpScreen()));
-                      },
-                      child: Text(
-                        'المساعدة',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'الرجوع إلي صفحة الدخول',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
-                    ),
+                  Text(
+                    orgName,
+                    style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, EditOrganizationScreen.routName,
+                              arguments: data.adminData.id);
+                        },
+                        child: Text(
+                          'تعديل بيانات الجمعية',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ActivityScreen()));
+                        },
+                        child: Text(
+                          'إدارة أنشطة الجمعية',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CampaignScreen()));
+                        },
+                        child: Text(
+                          'إدارة الحملات',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DonationTabsScreen()));
+                        },
+                        child: Text(
+                          'متابعة التبرعات',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VideoPlayerScreen()));
+                        },
+                        child: Text(
+                          'مشاهدة فيديو توضيحي',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HelpScreen()));
+                        },
+                        child: Text(
+                          'المساعدة',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'الرجوع إلي صفحة الدخول',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 }
-
-//import 'dart:io';
-//
-//import 'package:BorhanAdmin/screens/chat_screen.dart';
-//import 'package:BorhanAdmin/screens/email_screen.dart';
-//
-//import '../screens/video_screen.dart';
-//import '../screens/donation_tabs_screen.dart';
-//import 'package:flutter/material.dart';
-//import '../screens/campaign_screen.dart';
-//import '../screens/activity_screen.dart';
-//import '../screens/edit_organization_details.dart';
-//import 'activity_screen.dart';
-//import 'edit_organization_details.dart';
-//
-//class Home extends StatelessWidget {
-//  static const routeName = '/home';
-////  File _userImageFile;
-////
-////  void _pickedImage(File image) {
-////    _userImageFile = image;
-////  }
-//  File _image;
-//  String _downloadUrl;
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-////      decoration: BoxDecoration(
-////        gradient: LinearGradient(
-////          colors: [
-////            Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-////            Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-////          ],
-////          begin: Alignment.topLeft,
-////          end: Alignment.bottomRight,
-////          stops: [0, 1],
-////        ),
-////      ),
-//      child: Scaffold(
-//        appBar: AppBar(
-//          title: Text("الصفحة الرئيسية"),
-//        ),
-//        body: Container(
-//          color: Colors.teal[100],
-////          decoration: BoxDecoration(
-////            gradient: LinearGradient(
-////              colors: [
-////                Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-////                Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-////              ],
-////              begin: Alignment.topLeft,
-////              end: Alignment.bottomRight,
-////              stops: [0, 1],
-////            ),
-////          ),
-//          child: Center(
-//            child: SingleChildScrollView(
-//              child: Column(
-//                children: <Widget>[
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) =>
-//                                    EditOrganizationScreen()));
-//                      },
-//                      child: Text(
-//                        'تعديل بيانات الجمعية',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => ActivityScreen()));
-//                      },
-//                      child: Text(
-//                        'إدارة أنشطة الجمعية',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => CampaignScreen()));
-//                      },
-//                      child: Text(
-//                        'إدارة الحملات',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => DonationTabsScreen()));
-//                      },
-//                      child: Text(
-//                        'متابعة التبرعات',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => VideoPlayerScreen()));
-//                      },
-//                      child: Text(
-//                        'مشاهدة فيديو توضيحي',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => EmailScreen()));
-//                      },
-//                      child: Text(
-//                        'المساعدة',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 10.0),
-//                  ),
-//                  SizedBox(
-//                    width: 250,
-//                    child: RaisedButton(
-//                      onPressed: () {
-////                        Navigator.pop(context);
-//
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => ChatScreen()));
-//                      },
-//                      child: Text(
-//                        'الرجوع إلي صفحة الدخول',
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.bold),
-//                      ),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(30),
-//                      ),
-//                      padding:
-//                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-//                      color: Theme.of(context).primaryColor,
-//                      textColor:
-//                          Theme.of(context).primaryTextTheme.button.color,
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-//}

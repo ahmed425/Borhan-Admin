@@ -90,7 +90,7 @@ class _AddActivityState extends State<AddActivity> {
       );
       print(_addActivity.imagesUrl);
       Provider.of<Activities>(context, listen: false)
-          .updateActivity(_addActivity.id, _addActivity , orgId);
+          .updateActivity(_addActivity.id, _addActivity, orgId);
       setState(() {
         _isLoading = false;
       });
@@ -105,7 +105,7 @@ class _AddActivityState extends State<AddActivity> {
       print(_addActivity.imagesUrl);
       try {
         await Provider.of<Activities>(context, listen: false)
-            .addActivity(_addActivity,orgId);
+            .addActivity(_addActivity, orgId);
       } catch (error) {
         await showDialog(
           context: context,
@@ -135,16 +135,20 @@ class _AddActivityState extends State<AddActivity> {
   void didChangeDependencies() {
     if (_isInit) {
       final data = Provider.of<Auth>(context);
-      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
-        orgId = value.id,
-        print(orgId),
-      });
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+              });
       final activityId = ModalRoute.of(context).settings.arguments as String;
       if (activityId != null) {
         _addActivity = Provider.of<Activities>(context, listen: false)
             .findById(activityId);
-        print('After Find Activity  _addActivity =  '+_addActivity.toString());
-        print('After Find Activity  Activity Name =  '+_addActivity.activityName);
+        print(
+            'After Find Activity  _addActivity =  ' + _addActivity.toString());
+        print('After Find Activity  Activity Name =  ' +
+            _addActivity.activityName);
         _initValues = {
           'actName': _addActivity.activityName,
           'actDescription': _addActivity.activityDescription,
@@ -159,6 +163,7 @@ class _AddActivityState extends State<AddActivity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal[100],
       appBar: AppBar(
         title: _addActivity.id != null
             ? Text('تعديل النشاط')
@@ -168,8 +173,9 @@ class _AddActivityState extends State<AddActivity> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Container(color: Colors.teal[100],
-            child: Padding(
+          : Container(
+              color: Colors.teal[100],
+              child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Form(
                   key: _form,
@@ -239,6 +245,7 @@ class _AddActivityState extends State<AddActivity> {
                         ),
                         Container(
                           padding: const EdgeInsets.all(10.0),
+                          color: Colors.teal[100],
                           child: _isLoadImg
                               ? Center(
                                   child: CircularProgressIndicator(),
@@ -247,6 +254,7 @@ class _AddActivityState extends State<AddActivity> {
 //                      child: addImage(),
                         ),
                         Container(
+                          color: Colors.teal[100],
                           padding: const EdgeInsets.all(10.0),
                           child: new RaisedButton(
                             textColor: Colors.white,
@@ -262,7 +270,7 @@ class _AddActivityState extends State<AddActivity> {
                   ),
                 ),
               ),
-          ),
+            ),
     );
   }
 
@@ -270,6 +278,7 @@ class _AddActivityState extends State<AddActivity> {
     return Center(
       child: Container(
         height: 300,
+        color: Colors.teal[100],
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -290,15 +299,23 @@ class _AddActivityState extends State<AddActivity> {
                 },
               ),
               _addActivity.id != null && _image != null
-                  ? Image.file(_image)
+                  ? Image.file(
+                      _image,
+                      height: MediaQuery.of(context).size.width,
+                    )
                   : _addActivity.id != null &&
                           _addActivity.imagesUrl != null //update
-                      ? Image.network(_addActivity.imagesUrl)
+                      ? Container(
+                          color: Colors.teal[100],
+                          height: MediaQuery.of(context).size.width,
+                          child: Image.network(_addActivity.imagesUrl))
                       : _image == null
-                          ? Container()
+                          ? Container(
+                              color: Colors.teal[100],
+                            )
                           : Image.file(
                               _image,
-                              height: 250,
+                              height: MediaQuery.of(context).size.width,
                             ),
             ],
           ),

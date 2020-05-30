@@ -75,14 +75,9 @@ class _CampaignItemState extends State<CampaignItem> {
           ],
         ),
       ),
-      leading: FittedBox(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: Padding(
-            padding: EdgeInsets.all(6),
-            child: Image.network(widget.image),
-          ),
-        ),
+      leading: CircleAvatar(
+        radius: 25,
+        backgroundImage: NetworkImage(widget.image),
       ),
     );
   }
