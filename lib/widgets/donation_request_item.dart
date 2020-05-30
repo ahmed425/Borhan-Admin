@@ -115,10 +115,10 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
                       padding: EdgeInsets.all(8),
                     ),
                     Text(
-                      'عيني',
+                      _donationReq.donationType,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 20,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),

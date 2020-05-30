@@ -142,10 +142,12 @@ class _AddCampaignState extends State<AddCampaign> {
   void didChangeDependencies() {
     if (_isInit) {
       final data = Provider.of<Auth>(context);
-      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
-        orgId = value.id,
-        print(orgId),
-      });
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(data.adminData.id)
+          .then((value) => {
+                orgId = value.id,
+                print(orgId),
+              });
       final campaignId = ModalRoute.of(context).settings.arguments as String;
       if (campaignId != null) {
         _addCampaign =
@@ -165,6 +167,7 @@ class _AddCampaignState extends State<AddCampaign> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal[100],
       appBar: AppBar(
         title: _addCampaign.id != null
             ? Text('تعديل الحملة')
@@ -174,8 +177,9 @@ class _AddCampaignState extends State<AddCampaign> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Container(color: Colors.teal[100],
-            child: Padding(
+          : Container(
+              color: Colors.teal[100],
+              child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Form(
                   key: _form,
@@ -297,7 +301,7 @@ class _AddCampaignState extends State<AddCampaign> {
                   ),
                 ),
               ),
-          ),
+            ),
     );
   }
 

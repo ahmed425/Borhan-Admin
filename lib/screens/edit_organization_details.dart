@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:BorhanAdmin/models/place.dart';
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/widgets/location_input.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -229,9 +230,10 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
               color: Colors.teal[100],
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _form,
-                  child: SingleChildScrollView(
+
+//                  key: _form,
+                child: SingleChildScrollView(
+                  child: Form(
                     child: Column(
                       children: <Widget>[
                         Text(
@@ -418,7 +420,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        LocationInput(_selectPlace),
+//                        LocationInput(_selectPlace),
                       ],
                     ),
                   ),
@@ -431,7 +433,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
   Widget newImage() {
     return Center(
       child: Container(
-        height: 200,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -447,8 +448,22 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
               _image != null
                   ? Image.file(_image)
                   : _editedOrg.logo != null //update
-                      ? Image.network(_editedOrg.logo)
-                      : Container(),
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: SizedBox(
+                                height: MediaQuery.of(context).size.width / 2,
+//                                  height: MediaQuery.of(context).size.width,
+                                child: CachedNetworkImage(
+                                  imageUrl: _editedOrg.logo,
+                                ),
+                              ),
+//                          fit: BoxFit.cover,
+                            ),
+                          ],
+                        )
+                      : Container()
             ],
           ),
         ),

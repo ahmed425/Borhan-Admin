@@ -19,7 +19,8 @@ class DonationRequests with ChangeNotifier {
 
   Future<void> fetchAndSetProducts(String orgId) async {
 //    orgId = '-M8R7YEmnXs8Bxkd8a5-';
-    final url = 'https://borhanadmin.firebaseio.com/DonationRequests/$orgId.json';
+    final url =
+        'https://borhanadmin.firebaseio.com/DonationRequests/$orgId.json';
     try {
       print("from fetch req");
       print(_donationRequests);
@@ -60,8 +61,9 @@ class DonationRequests with ChangeNotifier {
   }
 
   // ignore: non_constant_identifier_names
-  Future<void> addDonationReq(DonationRequest donationReq,String orgId) async {
-    final url = 'https://borhanadmin.firebaseio.com/DonationHistory/$orgId.json';
+  Future<void> addDonationReq(DonationRequest donationReq, String orgId) async {
+    final url =
+        'https://borhanadmin.firebaseio.com/DonationHistory/$orgId.json';
     try {
       final response = await http.post(
         url,
@@ -77,10 +79,9 @@ class DonationRequests with ChangeNotifier {
             "donatorName": donationReq.donatorName,
             "organizationName": donationReq.orgName,
             "activityName": donationReq.actName,
-            "userId":donationReq.userId,
+            "userId": donationReq.userId,
             "status": donationReq.status,
-            "orgName":donationReq.orgName,
-
+            "orgName": donationReq.orgName,
           },
         ),
       );
@@ -99,10 +100,11 @@ class DonationRequests with ChangeNotifier {
     }
   }
 
-  Future<void> deleteRequest(String id,String orgId) async {
-    final url = 'https://borhanadmin.firebaseio.com/DonationRequests/$orgId/$id.json';
+  Future<void> deleteRequest(String id, String orgId) async {
+    final url =
+        'https://borhanadmin.firebaseio.com/DonationRequests/$orgId/$id.json';
     final existingProductIndex =
-    _donationRequests.indexWhere((prod) => prod.id == id);
+        _donationRequests.indexWhere((prod) => prod.id == id);
     var existingProduct = _donationRequests[existingProductIndex];
     _donationRequests.removeWhere((campaign) => campaign.id == id);
     notifyListeners();
@@ -117,12 +119,15 @@ class DonationRequests with ChangeNotifier {
 //    existingProduct = null;
   }
 
-  Future<void> updateInMyDonation(String userId, DonationRequest donationReq) async {
-    final reqIndex = _donationRequests.indexWhere((request) => request.id == donationReq.id);
+  Future<void> updateInMyDonation(
+      String userId, DonationRequest donationReq) async {
+    final reqIndex =
+        _donationRequests.indexWhere((request) => request.id == donationReq.id);
     if (reqIndex >= 0) {
       var id = donationReq.id;
       print('');
-      final url = 'https://borhanadmin.firebaseio.com/MyDonations/$userId/$id.json';
+      final url =
+          'https://borhanadmin.firebaseio.com/MyDonations/$userId/$id.json';
       await http.patch(url,
           body: json.encode({
             "userId": donationReq.userId,
@@ -145,11 +150,14 @@ class DonationRequests with ChangeNotifier {
     }
   }
 
-  Future<void> updateDonationReq(DonationRequest donationReq,String orgId) async {
-    final reqIndex = _donationRequests.indexWhere((request) => request.id == donationReq.id);
+  Future<void> updateDonationReq(
+      DonationRequest donationReq, String orgId) async {
+    final reqIndex =
+        _donationRequests.indexWhere((request) => request.id == donationReq.id);
     if (reqIndex >= 0) {
       var reqId = donationReq.id;
-      final url = 'https://borhanadmin.firebaseio.com/DonationRequests/$orgId/$reqId.json';
+      final url =
+          'https://borhanadmin.firebaseio.com/DonationRequests/$orgId/$reqId.json';
       await http.patch(url,
           body: json.encode({
             "userId": donationReq.userId,
@@ -164,7 +172,6 @@ class DonationRequests with ChangeNotifier {
             "donatorName": donationReq.donatorName,
             "organizationName": donationReq.orgName,
             "activityName": donationReq.actName
-
           }));
       _donationRequests[reqIndex] = donationReq;
       notifyListeners();
@@ -172,5 +179,4 @@ class DonationRequests with ChangeNotifier {
       print('...');
     }
   }
-
 }
