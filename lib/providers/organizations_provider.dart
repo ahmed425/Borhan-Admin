@@ -10,13 +10,11 @@ import 'package:http/http.dart' as http;
 import '../helpers/location_helper.dart';
 
 class Organizations with ChangeNotifier {
-
   List<Organization> _items = [];
 
   List<Organization> get items {
     return [..._items];
   }
-
 
 //  Organization findById(String id) {
 //    var organization = _items.firstWhere((org) => org.orgLocalId == id);
@@ -25,42 +23,41 @@ class Organizations with ChangeNotifier {
 //  }
 
   Future<Organization> fetchAndSetOrg(String orgLocalId) async {
-    final url = 'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
+    final url =
+        'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Organization> loadedActivities = [];
-      if(extractedData!=null){
+      if (extractedData != null) {
         print('from fetch extracted data' + extractedData.toString());
-      extractedData.forEach((autoOrgId, orgData) {
-        print("ID"+ autoOrgId);
-        print(orgData);
-        loadedActivities.add(
-            Organization(
-          id: autoOrgId,
-          orgName: orgData['orgName'],
-          address: orgData['address'],
-          bankAccounts: orgData['bankAccounts'],
-          landLineNo: orgData['landLineNo'],
-          description: orgData['description'],
-          licenseNo: orgData['licenseNo'],
-          mobileNo: orgData['mobileNo'],
-          webPage: orgData['webPage'],
-          logo: orgData['logo'],
-              orgLocalId: orgData['orgLocalId']
-        ));
-      });
-      _items = loadedActivities;
-      print("from fetch  "+ _items.toString());
-      print("from fetch  "+ _items[1].id);
-      print("from fetch  "+ _items[1].orgName);
-      print("orgLocalId" + orgLocalId);
-      notifyListeners();
-      var organization = _items.firstWhere((org) => org.orgLocalId == orgLocalId);
-      print("from fetch Organization  "+ organization.id);
-      return organization;
-
-      }else {
+        extractedData.forEach((autoOrgId, orgData) {
+          print("ID" + autoOrgId);
+          print(orgData);
+          loadedActivities.add(Organization(
+              id: autoOrgId,
+              orgName: orgData['orgName'],
+              address: orgData['address'],
+              bankAccounts: orgData['bankAccounts'],
+              landLineNo: orgData['landLineNo'],
+              description: orgData['description'],
+              licenseNo: orgData['licenseNo'],
+              mobileNo: orgData['mobileNo'],
+              webPage: orgData['webPage'],
+              logo: orgData['logo'],
+              orgLocalId: orgData['orgLocalId']));
+        });
+        _items = loadedActivities;
+        print("from fetch  " + _items.toString());
+        print("from fetch  " + _items[1].id);
+        print("from fetch  " + _items[1].orgName);
+        print("orgLocalId" + orgLocalId);
+        notifyListeners();
+        var organization =
+            _items.firstWhere((org) => org.orgLocalId == orgLocalId);
+        print("from fetch Organization  " + organization.id);
+        return organization;
+      } else {
         print('No Data in this chat');
       }
     } catch (error) {
@@ -76,8 +73,6 @@ class Organizations with ChangeNotifier {
         }
       }*/
 
-
-
   Future<LocationData> getTheCurrentUserLocation() async {
     final locData = await Location().getLocation();
     // final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
@@ -91,12 +86,14 @@ class Organizations with ChangeNotifier {
     return locData;
   }
 
-  Future<void> updateOrgWithCurrentLocation(String orgId, Organization newOrg, LocationData currentLocation) async {
+  Future<void> updateOrgWithCurrentLocation(
+      String orgId, Organization newOrg, LocationData currentLocation) async {
     print(
         "  Current Address is   :  ${currentLocation.longitude}+${currentLocation.latitude}");
 //    final address = currentLocation.longitude+currentLocation.latitude;
 //    await LocationHelper.getPlaceAddress(currentLocation.latitude, currentLocation.longitude);
-    final url = 'https://borhanadmin.firebaseio.com/CharitableOrganizations/$orgId.json';
+    final url =
+        'https://borhanadmin.firebaseio.com/CharitableOrganizations/$orgId.json';
 //    print("  Current Address is   :  $address");
 
     await http.patch(url,
@@ -114,30 +111,30 @@ class Organizations with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateOrgWithSelectedLocation(
-      String id, Organization newOrg, PlaceLocation pickedLocation) async {
-    print(
-        "  pickedLocation Address is   :  ${pickedLocation.longitude}+${pickedLocation.latitude}");
-    final address = await LocationHelper.getPlaceAddress(
-        pickedLocation.latitude, pickedLocation.longitude);
-    final url =
-        'https://borhanadmin.firebaseio.com/CharitableOrganizations/-M7m8Gs9EitK0NIqAC-Y.json';
-    print("  pickedLocation Address is   :  $address");
-
-    await http.patch(url,
-        body: json.encode({
-          'orgName': newOrg.orgName,
-          'logo': newOrg.logo,
-          'address': address,
-          'description': newOrg.description,
-          'licenseNo': newOrg.licenseNo,
-          'landLineNo': newOrg.landLineNo,
-          'mobileNo': newOrg.mobileNo,
-          'bankAccounts': newOrg.bankAccounts,
-          'webPage': newOrg.webPage,
-        }));
-    notifyListeners();
-  }
+//  Future<void> updateOrgWithSelectedLocation(
+//      String id, Organization newOrg, PlaceLocation pickedLocation) async {
+//    print(
+//        "  pickedLocation Address is   :  ${pickedLocation.longitude}+${pickedLocation.latitude}");
+//    final address = await LocationHelper.getPlaceAddress(
+//        pickedLocation.latitude, pickedLocation.longitude);
+//    final url =
+//        'https://borhanadmin.firebaseio.com/CharitableOrganizations/-M7m8Gs9EitK0NIqAC-Y.json';
+//    print("  pickedLocation Address is   :  $address");
+//
+//    await http.patch(url,
+//        body: json.encode({
+//          'orgName': newOrg.orgName,
+//          'logo': newOrg.logo,
+//          'address': address,
+//          'description': newOrg.description,
+//          'licenseNo': newOrg.licenseNo,
+//          'landLineNo': newOrg.landLineNo,
+//          'mobileNo': newOrg.mobileNo,
+//          'bankAccounts': newOrg.bankAccounts,
+//          'webPage': newOrg.webPage,
+//        }));
+//    notifyListeners();
+//  }
 
   Future<String> uploadImage(File image) async {
     print("in upload");

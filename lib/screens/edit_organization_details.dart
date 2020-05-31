@@ -99,6 +99,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                       'orgName': _editedOrg.orgName,
                     };
                     print("After init value" + _editedOrg.orgName);
+                    print(_editedOrg.logo);
                     _nameController.text = _initValues['orgName'];
                     _addressController.text = _initValues['address'];
                     _descController.text = _initValues['description'];
@@ -145,6 +146,21 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       _isLoading = true;
     });
     if (_editedOrg.id != null) {
+      print(_editedOrg.logo);
+      final currentLocData =
+          await Provider.of<Organizations>(context, listen: false)
+              .getTheCurrentUserLocation();
+      if (_editedOrg.logo != null && _editedOrg.logo != '') {
+        Provider.of<Organizations>(context, listen: false)
+            .deleteImage(_editedOrg.logo);
+      }
+      print(
+          "loca is : ${currentLocData.longitude} + ${currentLocData.latitude}");
+      // _currentLocation.longitude=LocationInput.
+//      myCurrentLocation.latitude = currentLocData.latitude;
+//      myCurrentLocation.longitude = currentLocData.longitude;
+//      if (currentLocData.longitude != null && currentLocData.latitude != null) {
+      print("Current Location is not Null");
       _editedOrg = Organization(
         logo: _downloadUrl != null ? _downloadUrl : _editedOrg.logo,
         id: _editedOrg.id,
@@ -158,37 +174,24 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
         webPage: _editedOrg.webPage,
         orgLocalId: _editedOrg.orgLocalId,
       );
-      final currentLocData =
-          await Provider.of<Organizations>(context, listen: false)
-              .getTheCurrentUserLocation();
-      if (_editedOrg.logo != null && _editedOrg.logo != '') {
-        Provider.of<Organizations>(context, listen: false)
-            .deleteImage(_downloadUrl);
-      }
-      print(
-          "loca is : ${currentLocData.longitude} + ${currentLocData.latitude}");
-      // _currentLocation.longitude=LocationInput.
-//      myCurrentLocation.latitude = currentLocData.latitude;
-//      myCurrentLocation.longitude = currentLocData.longitude;
-      if (currentLocData.longitude != null && currentLocData.latitude != null) {
-        print("Current Location is not Null");
-        await Provider.of<Organizations>(context, listen: false)
-            .updateOrgWithCurrentLocation(
-                _editedOrg.id, _editedOrg, currentLocData);
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
-      } else {
+      await Provider.of<Organizations>(context, listen: false)
+          .updateOrgWithCurrentLocation(
+              _editedOrg.id, _editedOrg, currentLocData);
+      setState(() {
+        _isLoading = false;
+      });
+
+      Navigator.of(context).pop();
+
 //        print("select on map");
-        await Provider.of<Organizations>(context, listen: false)
-            .updateOrgWithSelectedLocation(
-                _editedOrg.id, _editedOrg, _pickedLocation);
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
-      }
+//        await Provider.of<Organizations>(context, listen: false)
+//            .updateOrgWithSelectedLocation(
+//                _editedOrg.id, _editedOrg, _pickedLocation);
+//        setState(() {
+//          _isLoading = false;
+//        });
+//      Navigator.of(context).pop();
+
       Toast.show("تم حفظ البيانات بنجاح", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
     }
