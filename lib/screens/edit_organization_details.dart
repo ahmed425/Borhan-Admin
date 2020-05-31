@@ -99,6 +99,14 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                       'orgName': _editedOrg.orgName,
                     };
                     print("After init value" + _editedOrg.orgName);
+                    _nameController.text = _initValues['orgName'];
+                    _addressController.text = _initValues['address'];
+                    _descController.text = _initValues['description'];
+                    _landController.text = _initValues['landLineNo'];
+                    _licenseController.text = _initValues['licenseNo'];
+                    _mobileController.text = _initValues['mobileNo'];
+                    _webController.text = _initValues['webPage'];
+                    _bankController.text = _initValues['bankAccounts'];
                   }),
                 });
       }
@@ -193,14 +201,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _nameController.text = _initValues['orgName'];
-    _addressController.text = _initValues['address'];
-    _descController.text = _initValues['description'];
-    _landController.text = _initValues['landLineNo'];
-    _licenseController.text = _initValues['licenseNo'];
-    _mobileController.text = _initValues['mobileNo'];
-    _webController.text = _initValues['webPage'];
-    _bankController.text = _initValues['bankAccounts'];
     return Scaffold(
       appBar: AppBar(
         title: Text('تعديل بيانات الجمعية'),
@@ -230,10 +230,15 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
               color: Colors.teal[100],
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-
-//                  key: _form,
-                child: SingleChildScrollView(
-                  child: Form(
+//    child: Padding(
+//    padding: const EdgeInsets.all(16.0),
+//    child: Form(
+//    key: _form,
+//    child: SingleChildScrollView(
+//    child: Column(
+                child: Form(
+                  key: _form,
+                  child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         Text(
@@ -286,7 +291,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         TextField(
                           controller: _descController,
 //                    textDirection: TextDirection.rtl,
-                          onChanged: (val) {
+                          onSubmitted: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
                               id: _editedOrg.id,

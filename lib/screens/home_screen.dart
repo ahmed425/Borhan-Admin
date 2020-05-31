@@ -66,9 +66,11 @@ class _HomeState extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(orgLogo),
+                    FittedBox(
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(orgLogo),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
@@ -77,7 +79,7 @@ class _HomeState extends State<Home> {
                       orgName,
                       style: TextStyle(
                           color: Colors.teal,
-                          fontSize: 30,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -184,7 +186,8 @@ class _HomeState extends State<Home> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DonationTabsScreen()));
+                                    builder: (context) =>
+                                        DonationTabsScreen()));
                           },
                           child: Text(
                             'متابعة التبرعات',
