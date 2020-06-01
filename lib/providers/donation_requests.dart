@@ -22,7 +22,7 @@ class DonationRequests with ChangeNotifier {
     final url =
         'https://borhanadmin.firebaseio.com/DonationRequests/$orgId.json';
     try {
-      print("from fetch req");
+      print("from fetch req orgid " + orgId);
       print(_donationRequests);
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -48,8 +48,8 @@ class DonationRequests with ChangeNotifier {
         });
 
         _donationRequests = loadedRequests;
-        print("id is ${_donationRequests[0].id}");
-        print("id is ${_donationRequests[0].donatorName}");
+        print("from fetch id is ${_donationRequests[0].id}");
+        print("from fetch id is ${_donationRequests[0].donatorName}");
         notifyListeners();
       } else {
         print("no requests");
@@ -61,7 +61,7 @@ class DonationRequests with ChangeNotifier {
   }
 
   // ignore: non_constant_identifier_names
-  Future<void> addDonationReq(DonationRequest donationReq, String orgId) async {
+  Future<void> addDonationReqInHistory(DonationRequest donationReq, String orgId) async {
     final url =
         'https://borhanadmin.firebaseio.com/DonationHistory/$orgId.json';
     try {
@@ -85,14 +85,6 @@ class DonationRequests with ChangeNotifier {
           },
         ),
       );
-//      final newCampaign = DonationRequest(
-//        id: json.decode(response.body)['name'],
-//        donatorName: campaign.donatorName,
-//        donationItems: campaign.donationItems,
-//        image: campaign.image,
-//        donationDate: campaign.donationDate,
-//      );
-//      _donationRequests.add(newCampaign);
       notifyListeners();
     } catch (error) {
       print(error);

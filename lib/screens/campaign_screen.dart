@@ -26,13 +26,9 @@ class _CampaignScreenState extends State<CampaignScreen> {
 
     if (_isInit) {
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
-          .then((value) => {
-                orgId = value.id,
+          .fetchAndSetOrg(data.adminData.id).then((value) => {orgId = value.id,
                 print(orgId),
-                Provider.of<Campaigns>(context)
-                    .fetchAndSetProducts(orgId)
-                    .then((_) {
+                Provider.of<Campaigns>(context).fetchAndSetProducts(orgId).then((_) {
                   setState(() {
                     _isLoading = false;
                   });
@@ -50,6 +46,7 @@ class _CampaignScreenState extends State<CampaignScreen> {
   @override
   Widget build(BuildContext context) {
     final campaignsData = Provider.of<Campaigns>(context);
+    print("from campagn " + campaignsData.campaigns.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('الحملات'),

@@ -20,12 +20,12 @@ class Campaigns with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts(String orgId) async {
-    print(orgId);
+    print("from fetch   hhhhhh    hhhhh    org ig  "+orgId);
     final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print("Response body"+ response.body);
+      print("Response body from fetch   hhhhhh    hhhhh "+ response.body);
       final List<Campaign> loadedCampaigns = [];
       if(extractedData!=null) {
         extractedData.forEach((prodId, prodData) {
@@ -38,7 +38,7 @@ class Campaigns with ChangeNotifier {
           ));
         });
         _campaigns = loadedCampaigns;
-        print(_campaigns[0].id);
+        print("from fetch   hhhhhh    hhhhh "+_campaigns[0].id);
         print(_campaigns[0].campaignDescription);
         notifyListeners();
       }else {
@@ -52,19 +52,7 @@ class Campaigns with ChangeNotifier {
   // ignore: non_constant_identifier_names
   Future<void> addCampaign(Campaign campaign,String orgId) async {
     final adminUrl = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId.json';
-    final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns.json';
     try {
-//      await http.post(
-//        userUrl,
-//        body: json.encode(
-//          {
-//            'name': campaign.campaignName,
-//            'description': campaign.campaignDescription,
-//            'image': campaign.imagesUrl,
-//            'time': campaign.time,
-//          },
-//        ),
-//      );
       final response = await http.post(
         adminUrl,
         body: json.encode(

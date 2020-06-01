@@ -37,7 +37,6 @@ class _ActivityItemState extends State<ActivityItem> {
 
   @override
   Widget build(BuildContext context) {
-//    final scaffold = Scaffold.of(context);
     return ListTile(
       title: Text(
         widget.name,

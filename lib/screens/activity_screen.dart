@@ -70,8 +70,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
+            context, MaterialPageRoute(
               builder: (context) => AddActivity(),
             ),
           );

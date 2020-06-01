@@ -17,8 +17,7 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   var _isLoading = false;
   var _isInit = true;
   String orgId = '';
-//  static  var format = DateFormat.yMd('ar');
-//  var dateString = format.format(DateTime.now());
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -50,7 +49,12 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
     print('from build in req donation' + donationsData.toString());
     return Container(
       color: Colors.teal[100],
-      child: ListView.builder(
+      child: _isLoading
+          ? Center(
+        child: CircularProgressIndicator(),
+      )
+          : ListView.builder(
+        itemCount: donationsData.donationRequests.length,
         itemBuilder: (ctx, index) {
           return donationsData.donationRequests.length != 0
               ? Container(
@@ -81,7 +85,6 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
                 )
               : Container();
         },
-        itemCount: donationsData.donationRequests.length,
       ),
     );
   }

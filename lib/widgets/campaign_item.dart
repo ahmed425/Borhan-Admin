@@ -24,9 +24,7 @@ class _CampaignItemState extends State<CampaignItem> {
     // TODO: implement didChangeDependencies
     if (_isInit) {
       final data = Provider.of<Auth>(context);
-      Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
-          .then((value) => {
+      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
@@ -60,25 +58,18 @@ class _CampaignItemState extends State<CampaignItem> {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                Provider.of<Campaigns>(context, listen: false)
-                    .deleteCampaign(widget.id, orgId);
-//                  } catch (error) {
-//                    scaffold.showSnackBar(
-//                      SnackBar(
-//                        content: Text('فشل الحذف!', textAlign: TextAlign.center,),
-//                      ),
-//                    );
-//                  }
+                Provider.of<Campaigns>(context, listen: false).deleteCampaign(widget.id, orgId);
               },
               color: Theme.of(context).errorColor,
             ),
           ],
         ),
       ),
-      leading: CircleAvatar(
+      leading: widget.image!=null?
+      CircleAvatar(
         radius: 25,
         backgroundImage: NetworkImage(widget.image),
-      ),
+      ):Container(),
     );
   }
 }
