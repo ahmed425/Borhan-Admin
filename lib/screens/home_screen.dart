@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(data.adminData.id)
           .then((value) => {
-                orgName = 'جمعية ' + value.orgName,
+                orgName = value.orgName,
                 orgLogo = value.logo,
                 print("From Home Charity Org is : " + orgName),
               });
