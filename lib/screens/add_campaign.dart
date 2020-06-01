@@ -59,13 +59,18 @@ class _AddCampaignState extends State<AddCampaign> {
       print("value from upload" + _downloadUrl);
     });
   }
-
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    _descFocusNode.dispose();
-//    super.dispose();
-//  }
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _descFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();

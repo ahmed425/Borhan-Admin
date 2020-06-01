@@ -59,13 +59,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     .fetchAndSetChat(widget.id, orgId),
               });
     }
-    _isInit = false;
+    _isInit = true;
+//    _isInit = false;
     super.didChangeDependencies();
   }
 
   Future _getData() async {
     final url =
-        'https://borhanadmin.firebaseio.com/chat/$orgId/$widget.id.json';
+        'https://borhanadmin.firebaseio.com/chat/$orgId/${widget.id}.json';
     var response = await http.get(url);
     return response;
   }
@@ -85,19 +86,19 @@ class _ChatScreenState extends State<ChatScreen> {
               child: FutureBuilder(
                 future: _getData(),
                 builder: (ctx, futureSnapshot) {
-                  if (futureSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
+//                  if (futureSnapshot.connectionState ==
+//                      ConnectionState.waiting) {
+//                    return Center(
+//                      child: CircularProgressIndicator(),
+//                    );
+//                  }
                   return StreamBuilder(builder: (ctx, chatSnapshot) {
-                    if (chatSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+//                    if (chatSnapshot.connectionState ==
+//                        ConnectionState.waiting) {
+//                      return Center(
+//                        child: CircularProgressIndicator(),
+//                      );
+//                    }
                     return ListView.builder(
                       reverse: true,
                       itemCount: chatDocs.items.length,
@@ -129,8 +130,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         });
                         print('from wigdet Message is : ' + value);
 //                        _isInit = true;
-                        Provider.of<ChatProvider>(context)
-                            .fetchAndSetChat(widget.id, orgId);
+//                        Provider.of<ChatProvider>(context)
+//                            .fetchAndSetChat(widget.id, orgId);
                         chat = Chat(
                           img: chat.img,
                           text: value,

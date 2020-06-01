@@ -216,18 +216,20 @@ class HistoryItem extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: status != '' && status != null ?
                 status == 'done'?
-                Text('تبرع مقبول',
-                  style: TextStyle(
-                      color: Colors.green,
-                      backgroundColor: Colors.white,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold),
-                ):Text('تبرع مرفوض',
-                  style: TextStyle(
-                      color: Colors.red,
-                      backgroundColor: Colors.white,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold),
+                Material(
+                  child: Text('تبرع مقبول',
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ):Material(
+                  child: Text('تبرع مرفوض',
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ) : Container(),
           ),
         ),

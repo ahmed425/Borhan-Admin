@@ -54,6 +54,8 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.teal[100],
         appBar: AppBar(
           title: Text("الصفحة الرئيسية"),
+          centerTitle: true,
+          leading: Container(),
         ),
         body: Container(
           color: Colors.teal[100],

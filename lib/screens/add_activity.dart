@@ -56,6 +56,13 @@ class _AddActivityState extends State<AddActivity> {
   }
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     _descFocusNode.dispose();

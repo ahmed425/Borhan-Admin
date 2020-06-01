@@ -28,18 +28,30 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(data.adminData.id)
           .then((value) => {
-                orgId = value.id,
-                print(orgId),
-                Provider.of<UserChatProvider>(context)
-                    .fetchAndSetAllUsersLocalId(orgId)
-                    .then((_) => {
-                          print('from provider'),
-                  Provider.of<UserChatProvider>(context).fetchAndSetAllUsersNames(orgId),
-                          setState(() {
-                            _isLoading = false;
-                          }),
-                        }),
-              });
+        orgId = value.id,
+        print(orgId),
+        Provider.of<UserChatProvider>(context)
+            .fetchAndSetAllUsers(orgId)
+            .then((_) => {
+          print('from provider'),
+          setState(() {
+            _isLoading = false;
+          }),
+        }),
+      });
+//      then((value) => {
+//                orgId = value.id,
+//                print(orgId),
+//                Provider.of<UserChatProvider>(context)
+//                    .fetchAndSetAllUsersLocalId(orgId)
+//                    .then((_) => {
+//                          print('from provider'),
+//                  Provider.of<UserChatProvider>(context).fetchAndSetAllUsersNames(orgId),
+//                          setState(() {
+//                            _isLoading = false;
+//                          }),
+//                        }),
+//              });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -119,7 +131,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ChatScreen(id: documents[i].split('.')[0])));
+                        ChatScreen(id: documents[i])));
           },
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
           shape:

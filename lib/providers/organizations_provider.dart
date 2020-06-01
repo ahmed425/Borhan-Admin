@@ -88,14 +88,14 @@ class Organizations with ChangeNotifier {
 
   Future<void> updateOrgWithCurrentLocation(
       String orgId, Organization newOrg, LocationData currentLocation) async {
-    print(
-        "  Current Address is   :  ${currentLocation.longitude}+${currentLocation.latitude}");
+//    print("  Current Address is   :  ${currentLocation.longitude}+${currentLocation.latitude}");
 //    final address = currentLocation.longitude+currentLocation.latitude;
 //    await LocationHelper.getPlaceAddress(currentLocation.latitude, currentLocation.longitude);
     final url =
         'https://borhanadmin.firebaseio.com/CharitableOrganizations/$orgId.json';
 //    print("  Current Address is   :  $address");
-
+    print('befor update logo from provider');
+    print(newOrg.logo);
     await http.patch(url,
         body: json.encode({
           'orgName': newOrg.orgName,

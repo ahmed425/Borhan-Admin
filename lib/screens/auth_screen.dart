@@ -33,12 +33,12 @@ class AuthScreen extends StatelessWidget {
                 children: <Widget>[
                   Flexible(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 20.0),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
+                        margin: EdgeInsets.only(bottom: 20.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 94.0),
 //                      transform: Matrix4.rotationZ(-8 * pi / 180)
 //                        ..translate(-10.0),
-                      // ..translate(-10.0),
+                        // ..translate(-10.0),
 //                      decoration: BoxDecoration(
 //                        borderRadius: BorderRadius.circular(20),
 //                        color: Colors.deepOrange.shade900,
@@ -50,8 +50,8 @@ class AuthScreen extends StatelessWidget {
 //                          )
 //                        ],
 //                      ),
-                      child: Image.network('https://i.postimg.cc/xTc5yTTV/borhan-alireza.jpg')
-                    ),
+                        child: Image.network(
+                            'https://i.postimg.cc/xTc5yTTV/borhan-alireza.jpg')),
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
@@ -85,6 +85,7 @@ class _AuthCardState extends State<AuthCard> {
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+
   void _showErrorDialog(String message) {
     print("alert");
     showDialog(
@@ -94,7 +95,7 @@ class _AuthCardState extends State<AuthCard> {
         content: Text(message),
         actions: <Widget>[
           FlatButton(
-            child: Text('Okay'),
+            child: Text('حسنا'),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -123,9 +124,7 @@ class _AuthCardState extends State<AuthCard> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home()));
         // Navigator.of(context).pushReplacementNamed('/home');
-      }
-      
-      catch (error) {
+      } catch (error) {
         const errorMessage =
             'البريد الإلكتروني أو كلمة المرور غير صحيحة,رجاء المحاولة مرة أخري';
         _showErrorDialog(errorMessage);
@@ -174,9 +173,10 @@ class _AuthCardState extends State<AuthCard> {
                   decoration: InputDecoration(labelText: 'البريد الإلكتروني'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
+                    if (value.isEmpty) {
+                      return 'يجب إدخال البريد الإلكتروني';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _authData['email'] = value;
@@ -188,15 +188,15 @@ class _AuthCardState extends State<AuthCard> {
                     obscureText: true,
                     controller: _passwordController,
                     validator: (value) {
-                      if (value.isEmpty || value.length < 5) {
-                        return 'Password is too short!';
+                      if (value.isEmpty) {
+                        return 'يجب إدخال كلمة المرور';
                       }
+                      return null;
                     },
                     onSaved: (value) {
                       _authData['password'] = value;
                     },
                   ),
-                
                 SizedBox(
                   height: 20,
                 ),
@@ -232,4 +232,3 @@ class _AuthCardState extends State<AuthCard> {
     );
   }
 }
-
