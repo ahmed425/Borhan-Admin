@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(data.adminData.id)
           .then((value) => {
-                orgName = 'جمعية ' + value.orgName,
+                orgName = value.orgName,
                 orgLogo = value.logo,
                 print("From Home Charity Org is : " + orgName),
               });
@@ -269,27 +269,30 @@ class _HomeState extends State<Home> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                       ),
-                      SizedBox(
-                        width: 250,
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'الرجوع إلي صفحة الدخول',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: SizedBox(
+                          width: 250,
+                          child: RaisedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'الرجوع إلي صفحة الدخول',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30.0, vertical: 8.0),
+                            color: Theme.of(context).primaryColor,
+                            textColor:
+                                Theme.of(context).primaryTextTheme.button.color,
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 8.0),
-                          color: Theme.of(context).primaryColor,
-                          textColor:
-                              Theme.of(context).primaryTextTheme.button.color,
                         ),
                       ),
                     ],
