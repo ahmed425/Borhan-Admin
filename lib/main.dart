@@ -1,4 +1,5 @@
 import 'package:BorhanAdmin/screens/edit_organization_details.dart';
+import 'package:BorhanAdmin/screens/splash_screen.dart';
 
 import './providers/chat_provider.dart';
 import './providers/user_chat_provider.dart';
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.teal,
           ),
-          home: AuthScreen(),
+          home: SplashScreen(),
           routes: {
             Home.routeName: (ctx) => Home(),
             ActivityScreen.routeName: (ctx) => ActivityScreen(),
