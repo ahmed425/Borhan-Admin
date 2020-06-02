@@ -21,7 +21,7 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            color: Colors.teal[200],
+            color: Color.fromRGBO(57, 162, 139, 1),
           ),
           SingleChildScrollView(
             child: Container(
@@ -50,8 +50,11 @@ class AuthScreen extends StatelessWidget {
 //                          )
 //                        ],
 //                      ),
-                        child: Image.network(
-                            'https://i.postimg.cc/xTc5yTTV/borhan-alireza.jpg')),
+                        child: Image.asset(
+                          'assets/images/borhan3.png',
+                          fit: BoxFit.fill,
+                        ),
+                    ),
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
