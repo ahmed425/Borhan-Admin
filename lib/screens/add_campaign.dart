@@ -59,12 +59,14 @@ class _AddCampaignState extends State<AddCampaign> {
       print("value from upload" + _downloadUrl);
     });
   }
+
   @override
   void setState(fn) {
     if (mounted) {
       super.setState(fn);
     }
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -105,7 +107,7 @@ class _AddCampaignState extends State<AddCampaign> {
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pop();
+//      Navigator.of(context).pop();
     } else {
       _addCampaign = Campaign(
         id: _addCampaign.id,
@@ -117,7 +119,7 @@ class _AddCampaignState extends State<AddCampaign> {
       print(_addCampaign.imagesUrl);
       try {
         await Provider.of<Campaigns>(context, listen: false)
-            .addCampaign(_addCampaign, orgId);
+            .addAdminCampaign(_addCampaign, orgId);
       } catch (error) {
         await showDialog(
           context: context,
@@ -138,9 +140,34 @@ class _AddCampaignState extends State<AddCampaign> {
         setState(() {
           _isLoading = false;
         });
-        Navigator.of(context).pop();
+//        Navigator.of(context).pop();
       }
     }
+//      try {
+//        Provider.of<Campaigns>(context, listen: false)
+//            .addUsersCampaign(_addCampaign, orgId);
+//      } catch (error) {
+//        await showDialog(
+//          context: context,
+//          builder: (ctx) => AlertDialog(
+//            title: Text('خطأ'),
+//            content: Text('حدث خطأ ما'),
+//            actions: <Widget>[
+//              FlatButton(
+//                child: Text('حسنا'),
+//                onPressed: () {
+//                  Navigator.of(ctx).pop();
+//                },
+//              )
+//            ],
+//          ),
+//        );
+//      } finally {
+//        setState(() {
+//          _isLoading = false;
+//        });
+//      }
+//    }
   }
 
   @override
@@ -298,7 +325,12 @@ class _AddCampaignState extends State<AddCampaign> {
                                 ? Text('حفظ')
                                 : Text('إضافة'),
                             color: Colors.teal,
-                            onPressed: _saveForm,
+                            onPressed: () {
+                              _saveForm();
+                              Provider.of<Campaigns>(context, listen: false)
+                                  .addUsersCampaign(_addCampaign, orgId)
+                                  .then((value) => Navigator.of(context).pop());
+                            },
                           ),
                         ),
                       ],

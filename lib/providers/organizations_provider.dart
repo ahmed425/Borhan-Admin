@@ -16,11 +16,59 @@ class Organizations with ChangeNotifier {
     return [..._items];
   }
 
-//  Organization findById(String id) {
-//    var organization = _items.firstWhere((org) => org.orgLocalId == id);
-//    print("from find  "+ organization.toString());
-//    return organization;
-//  }
+  Organization findById(String id) {
+    var organization = _items.firstWhere((org) => org.orgLocalId == id);
+    print("from find  " + organization.toString());
+    return organization;
+  }
+
+  Organization findByOrgId(String orgId) {
+    var organization = _items.firstWhere((org) => org.id == orgId);
+    print("from find  " + organization.toString());
+    return organization;
+  }
+
+  Future<String> fetchAndSetOrgName(String orgId) async {
+    final url =
+        'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Organization> loadedActivities = [];
+      if (extractedData != null) {
+        print('from fetch extracted data' + extractedData.toString());
+        extractedData.forEach((autoOrgId, orgData) {
+          print("ID" + autoOrgId);
+          print(orgData);
+          loadedActivities.add(Organization(
+              id: autoOrgId,
+              orgName: orgData['orgName'],
+              address: orgData['address'],
+              bankAccounts: orgData['bankAccounts'],
+              landLineNo: orgData['landLineNo'],
+              description: orgData['description'],
+              licenseNo: orgData['licenseNo'],
+              mobileNo: orgData['mobileNo'],
+              webPage: orgData['webPage'],
+              logo: orgData['logo'],
+              orgLocalId: orgData['orgLocalId']));
+        });
+        _items = loadedActivities;
+        print("from fetch  " + _items.toString());
+        print("from fetch  " + _items[1].id);
+        print("from fetch  " + _items[1].orgName);
+        print("orgLocalId" + orgId);
+        notifyListeners();
+        var organization = _items.firstWhere((org) => org.id == orgId);
+        print("from fetch Organization  " + organization.id);
+        return organization.orgName;
+      } else {
+        print('No Data in this chat');
+      }
+    } catch (error) {
+      throw (error);
+    }
+  }
 
   Future<Organization> fetchAndSetOrg(String orgLocalId) async {
     final url =

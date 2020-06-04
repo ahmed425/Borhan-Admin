@@ -283,7 +283,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         TextField(
                           controller: _descController,
 //                    textDirection: TextDirection.rtl,
-                          onSubmitted: (val) {
+                          onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
                               id: _editedOrg.id,
@@ -393,9 +393,8 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         TextField(
                           controller: _webController,
                           style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue
-                          ),
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue),
 //                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
@@ -416,10 +415,10 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                           ),
                         ),
                         Container(
-                          child:  _isLoadImg
+                          child: _isLoadImg
                               ? Center(
-                            child: CircularProgressIndicator(),
-                          )
+                                  child: CircularProgressIndicator(),
+                                )
                               : newImage(),
                         ),
                         SizedBox(
