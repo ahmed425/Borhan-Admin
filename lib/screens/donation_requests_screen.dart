@@ -15,6 +15,8 @@ class DonationRequestsScreen extends StatefulWidget {
 
 class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   var _isLoading = false;
+  double opacityLevel = 0.0;
+
   var _isInit = true;
   String orgId = '';
 
@@ -45,47 +47,59 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      opacityLevel = 1.0;
+    });
+
     final donationsData = Provider.of<DonationRequests>(context);
     print('from build in req donation' + donationsData.toString());
     return Container(
       color: Colors.teal[100],
       child: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : ListView.builder(
-        itemCount: donationsData.donationRequests.length,
-        itemBuilder: (ctx, index) {
-          return donationsData.donationRequests.length != 0
-              ? Container(
-                  child: DonationRequestItem(
-                    id: donationsData.donationRequests[index].id,
-                    donatorName:
-                        donationsData.donationRequests[index].donatorName,
-                    donationDate:
-                        donationsData.donationRequests[index].donationDate,
-                    donationType:
-                        donationsData.donationRequests[index].donationType,
-                    donatorMobileNo:
-                        donationsData.donationRequests[index].donatorMobileNo,
-                    donationAmount:
-                        donationsData.donationRequests[index].donationAmount,
-                    donationItems:
-                        donationsData.donationRequests[index].donationItems,
-                    donatorAddress:
-                        donationsData.donationRequests[index].donatorAddress,
-                    orgName: donationsData.donationRequests[index].orgName,
-                    actName: donationsData.donationRequests[index].actName,
-                    availableOn:
-                        donationsData.donationRequests[index].availableOn,
-                    image: donationsData.donationRequests[index].image,
-                    status: donationsData.donationRequests[index].status,
-                    userId: donationsData.donationRequests[index].userId,
-                  ),
-                )
-              : Container();
-        },
-      ),
+              itemCount: donationsData.donationRequests.length,
+              itemBuilder: (ctx, index) {
+                return donationsData.donationRequests.length != 0
+                    ? AnimatedOpacity(
+                        duration: Duration(seconds: 3),
+                        opacity: opacityLevel,
+                        child: Container(
+                          child: DonationRequestItem(
+                            id: donationsData.donationRequests[index].id,
+                            donatorName: donationsData
+                                .donationRequests[index].donatorName,
+                            donationDate: donationsData
+                                .donationRequests[index].donationDate,
+                            donationType: donationsData
+                                .donationRequests[index].donationType,
+                            donatorMobileNo: donationsData
+                                .donationRequests[index].donatorMobileNo,
+                            donationAmount: donationsData
+                                .donationRequests[index].donationAmount,
+                            donationItems: donationsData
+                                .donationRequests[index].donationItems,
+                            donatorAddress: donationsData
+                                .donationRequests[index].donatorAddress,
+                            orgName:
+                                donationsData.donationRequests[index].orgName,
+                            actName:
+                                donationsData.donationRequests[index].actName,
+                            availableOn: donationsData
+                                .donationRequests[index].availableOn,
+                            image: donationsData.donationRequests[index].image,
+                            status:
+                                donationsData.donationRequests[index].status,
+                            userId:
+                                donationsData.donationRequests[index].userId,
+                          ),
+                        ),
+                      )
+                    : Container();
+              },
+            ),
     );
   }
 }

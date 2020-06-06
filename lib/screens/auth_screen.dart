@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
@@ -33,12 +37,12 @@ class AuthScreen extends StatelessWidget {
                 children: <Widget>[
                   Flexible(
                     child: Container(
-                        margin: EdgeInsets.only(bottom: 20.0),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 94.0),
+                      margin: EdgeInsets.only(bottom: 20.0),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
 //                      transform: Matrix4.rotationZ(-8 * pi / 180)
 //                        ..translate(-10.0),
-                        // ..translate(-10.0),
+                      // ..translate(-10.0),
 //                      decoration: BoxDecoration(
 //                        borderRadius: BorderRadius.circular(20),
 //                        color: Colors.deepOrange.shade900,
@@ -50,10 +54,10 @@ class AuthScreen extends StatelessWidget {
 //                          )
 //                        ],
 //                      ),
-                        child: Image.asset(
-                          'assets/images/borhan3.png',
-                          fit: BoxFit.fill,
-                        ),
+                      child: Image.asset(
+                        'assets/images/borhan3.png',
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                   Flexible(
@@ -80,6 +84,81 @@ class AuthCard extends StatefulWidget {
 }
 
 class _AuthCardState extends State<AuthCard> {
+  StreamSubscription connectivitySubscription;
+  ConnectivityResult _previousResult;
+  bool dialogShown = false;
+
+  Future<bool> checkinternet() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return Future.value(true);
+      }
+    } on SocketException catch (_) {
+      return Future.value(false);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connresult) {
+      if (connresult == ConnectivityResult.none) {
+        dialogShown = true;
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            child: AlertDialog(
+              title: const Text('حدث خطأ ما '),
+              content: Text(
+                  'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () => {
+                          SystemChannels.platform
+                              .invokeMethod('SystemNavigator.pop'),
+//                          Navigator.pop(context),
+                        },
+                    child: Text(
+                      'خروج ',
+                      style: TextStyle(color: Colors.red),
+                    ))
+              ],
+            ));
+      } else if (_previousResult == ConnectivityResult.none) {
+        checkinternet().then((result) {
+          if (result == true) {
+            if (dialogShown == true) {
+              dialogShown = false;
+              print(
+                  '-------------------------put your fix here ----------------------');
+//              getOrganizationsAndCampaign();
+
+              Navigator.pop(context);
+            }
+          }
+        });
+      }
+      _previousResult = connresult;
+    });
+  }
+//
+//  @override
+//  void initState(){
+//
+//
+//  }
+//
+
+  @override
+  void dispose() {
+    super.dispose();
+    connectivitySubscription.cancel();
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {

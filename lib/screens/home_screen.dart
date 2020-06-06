@@ -3,6 +3,7 @@
 
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
+import 'package:BorhanAdmin/screens/auth_screen.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,9 @@ import '../screens/edit_organization_details.dart';
 import 'activity_screen.dart';
 import 'edit_organization_details.dart';
 import 'image_chatting.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+
+//var timeDilation = 2.0; // Will slow down animations by a factor of two
 
 class Home extends StatefulWidget {
   static const routeName = '/home';
@@ -25,9 +29,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var orgName = '';
+
   var data;
   var _isInit = true;
   var orgLogo = '';
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -44,6 +50,124 @@ class _HomeState extends State<Home> {
 
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+  }
+
+//
+
+  Route _createRoute1() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ActivityScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.decelerate;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route _createRoute3() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => CampaignScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.decelerate;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route _createRoute4() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          DonationTabsScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.decelerate;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route _createRoute5() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          VideoPlayerScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.decelerate;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route _createRoute6() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => HelpScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.decelerate;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route _createRoute7() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AuthScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.decelerate;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 
   @override
@@ -127,10 +251,8 @@ class _HomeState extends State<Home> {
                         width: 250,
                         child: RaisedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ActivityScreen()));
+                            timeDilation = 3;
+                            Navigator.of(context).push(_createRoute1());
                           },
                           child: Text(
                             'إدارة أنشطة الجمعية',
@@ -156,10 +278,9 @@ class _HomeState extends State<Home> {
                         width: 250,
                         child: RaisedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CampaignScreen()));
+                            timeDilation = 3;
+
+                            Navigator.of(context).push(_createRoute3());
                           },
                           child: Text(
                             'إدارة الحملات',
@@ -185,11 +306,9 @@ class _HomeState extends State<Home> {
                         width: 250,
                         child: RaisedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DonationTabsScreen()));
+                            timeDilation = 3;
+
+                            Navigator.of(context).push(_createRoute4());
                           },
                           child: Text(
                             'متابعة التبرعات',
@@ -215,10 +334,9 @@ class _HomeState extends State<Home> {
                         width: 250,
                         child: RaisedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => VideoPlayerScreen()));
+                            timeDilation = 3;
+
+                            Navigator.of(context).push(_createRoute5());
                           },
                           child: Text(
                             'مشاهدة فيديو توضيحي',
@@ -244,10 +362,9 @@ class _HomeState extends State<Home> {
                         width: 250,
                         child: RaisedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HelpScreen()));
+                            timeDilation = 3;
+
+                            Navigator.of(context).push(_createRoute6());
                           },
                           child: Text(
                             'المساعدة',
@@ -275,7 +392,9 @@ class _HomeState extends State<Home> {
                           width: 250,
                           child: RaisedButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              timeDilation = 3;
+
+                              Navigator.of(context).pop(_createRoute7());
                             },
                             child: Text(
                               'الرجوع إلي صفحة الدخول',

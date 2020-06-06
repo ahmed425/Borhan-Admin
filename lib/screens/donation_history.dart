@@ -177,7 +177,8 @@ class _DonationHistoryState extends State<DonationHistory> {
                                                     .items[i].donationDate,
                                                 donationAmount: historyData
                                                     .items[i].donationAmount,
-                                                status: historyData.items[i].status,
+                                                status:
+                                                    historyData.items[i].status,
                                               ),
                                             ],
                                           ),

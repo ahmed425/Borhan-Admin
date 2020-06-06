@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 class VideoPlayerScreen extends StatefulWidget {
   static const routeName = '/video';
@@ -14,7 +15,8 @@ class VideoPlayerScreen extends StatefulWidget {
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
-
+  double _scale = 1.0;
+  double _previousScale = 1.0;
   @override
   void initState() {
     // Create and store the VideoPlayerController. The VideoPlayerController
@@ -51,31 +53,93 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ),
       // Use a FutureBuilder to display a loading spinner while waiting for the
       // VideoPlayerController to finish initializing.
+//      body: Center(
+//        child:
+//        ClipRRect(
+//          borderRadius: new BorderRadius.circular(24.0),
+//          child: FutureBuilder(
+//            future: _initializeVideoPlayerFuture,
+//            builder: (context, snapshot) {
+//              if (snapshot.connectionState == ConnectionState.done) {
+//                // If the VideoPlayerController has finished initialization, use
+//                // the data it provides to limit the aspect ratio of the video.
+//                return Container(
+//                  height: deviceSize.height,
+//                  width: deviceSize.width,
+//                  child: AspectRatio(
+////                aspectRatio: _controller.value.aspectRatio,
+//                    aspectRatio: _controller.value.aspectRatio,
+//                    // Use the VideoPlayer widget to display the video.
+//                    child: VideoPlayer(
+//                      _controller,
+//                    ),
+//                  ),
+//                );
+//              } else {
+//                // If the VideoPlayerController is still initializing, show a
+//                // loading spinner.
+//                return Center(child: CircularProgressIndicator());
+//              }
+//            },
+//          ),
+//        ),
+//      ),
+
       body: Center(
-        child: ClipRRect(
-          borderRadius: new BorderRadius.circular(24.0),
-          child: FutureBuilder(
-            future: _initializeVideoPlayerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                // If the VideoPlayerController has finished initialization, use
-                // the data it provides to limit the aspect ratio of the video.
-                return Container(
-                  height: deviceSize.height,
-                  width: deviceSize.width,
-                  child: AspectRatio(
+        child: GestureDetector(
+          onScaleStart: (ScaleStartDetails details) {
+            print(details);
+            _previousScale = _scale;
+            setState(() {});
+          },
+          onScaleUpdate: (ScaleUpdateDetails details) {
+            print(details);
+            _scale = _previousScale * details.scale;
+            setState(() {});
+          },
+          onScaleEnd: (ScaleEndDetails details) {
+            print(details);
+
+            _previousScale = 1.0;
+            setState(() {});
+          },
+          child: RotatedBox(
+            quarterTurns: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Transform(
+                alignment: FractionalOffset.center,
+                transform: Matrix4.diagonal3(Vector3(_scale, _scale, _scale)),
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(24.0),
+                  child: FutureBuilder(
+                    future: _initializeVideoPlayerFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        // If the VideoPlayerController has finished initialization, use
+                        // the data it provides to limit the aspect ratio of the video.
+                        return Container(
+                          height: deviceSize.height,
+                          width: deviceSize.width,
+                          child: AspectRatio(
 //                aspectRatio: _controller.value.aspectRatio,
-                    aspectRatio: _controller.value.aspectRatio,
-                    // Use the VideoPlayer widget to display the video.
-                    child: VideoPlayer(_controller,),
+                            aspectRatio: _controller.value.aspectRatio,
+                            // Use the VideoPlayer widget to display the video.
+                            child: VideoPlayer(
+                              _controller,
+                            ),
+                          ),
+                        );
+                      } else {
+                        // If the VideoPlayerController is still initializing, show a
+                        // loading spinner.
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
-                );
-              } else {
-                // If the VideoPlayerController is still initializing, show a
-                // loading spinner.
-                return Center(child: CircularProgressIndicator());
-              }
-            },
+                ),
+              ),
+            ),
           ),
         ),
       ),

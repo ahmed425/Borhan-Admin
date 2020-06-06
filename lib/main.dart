@@ -27,8 +27,13 @@ import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/video_screen.dart';
 import './screens/email_screen.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
-void main() => runApp(MyApp());
+//var timeDilation = 2.0; // Will slow down animations by a factor of two
+
+void main() {
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -70,6 +75,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           builder: (BuildContext context, Widget child) {
             return new Directionality(
               textDirection: TextDirection.rtl,

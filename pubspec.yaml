@@ -37,11 +37,19 @@ dependencies:
   font_awesome_flutter: ^8.2.0
   google_maps_flutter: ^0.5.28+1
   cached_network_image: ^2.2.0+1
+  connectivity: ^0.4.8+6
+  zoom_widget: ^0.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.7.5
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/borhan3.png"
+  adaptive_icon_background: "#191919"
+  adaptive_icon_foreground: "assets/images/borhan3.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
