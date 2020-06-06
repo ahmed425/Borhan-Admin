@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -112,22 +113,53 @@ class _AuthCardState extends State<AuthCard> {
             context: context,
             barrierDismissible: false,
             child: AlertDialog(
-              title: const Text('حدث خطأ ما '),
-              content: Text(
-                  'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () => {
-                          SystemChannels.platform
-                              .invokeMethod('SystemNavigator.pop'),
-//                          Navigator.pop(context),
-                        },
-                    child: Text(
-                      'خروج ',
-                      style: TextStyle(color: Colors.red),
-                    ))
-              ],
-            ));
+                title: const Text('حدث خطأ ما '),
+                content: Text(
+                    'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () => {
+//                            SystemChannels.platform
+//                                .invokeMethod('SystemNavigator.pop'),
+                            Navigator.pop(context),
+                          },
+                      child: Text(
+                        'خروج ',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold),
+                      )),
+                  FlatButton(
+                      onPressed: () => {
+                            AppSettings.openWIFISettings(),
+                          },
+                      child: Text(
+                        ' اعدادت Wi-Fi ',
+                        style: TextStyle(color: Colors.blue),
+                      )),
+                  FlatButton(
+                      onPressed: () => {
+                            AppSettings.openDataRoamingSettings(),
+                          },
+                      child: Text(
+                        ' اعدادت الباقه ',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ))
+                ]
+//              actions: <Widget>[
+//                FlatButton(
+//                    onPressed: () => {
+//                          SystemChannels.platform
+//                              .invokeMethod('SystemNavigator.pop'),
+////                          Navigator.pop(context),
+//                        },
+//                    child: Text(
+//                      'خروج ',
+//                      style: TextStyle(color: Colors.red),
+//                    ))
+//              ],
+                ));
       } else if (_previousResult == ConnectivityResult.none) {
         checkinternet().then((result) {
           if (result == true) {

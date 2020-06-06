@@ -1,6 +1,5 @@
 import 'package:BorhanAdmin/screens/edit_organization_details.dart';
 import 'package:BorhanAdmin/screens/splash_screen.dart';
-
 import './providers/chat_provider.dart';
 import './providers/user_chat_provider.dart';
 import './screens/all_users_chat.dart';
