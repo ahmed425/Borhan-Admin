@@ -19,6 +19,8 @@ class DonationRequestsScreen extends StatefulWidget {
 
 class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   var _isLoading = false;
+  double opacityLevel = 0.0;
+
   var _isInit = true;
   String orgId = '';
 
@@ -50,6 +52,10 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      opacityLevel = 1.0;
+    });
+
     final donationsData = Provider.of<DonationRequests>(context);
     print('from build in req donation' + donationsData.toString());
     return Container(

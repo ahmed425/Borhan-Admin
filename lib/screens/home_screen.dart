@@ -17,6 +17,9 @@ import '../screens/edit_organization_details.dart';
 import 'activity_screen.dart';
 import 'edit_organization_details.dart';
 import 'image_chatting.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+
+//var timeDilation = 2.0; // Will slow down animations by a factor of two
 
 class Home extends StatefulWidget {
   static const routeName = '/home';

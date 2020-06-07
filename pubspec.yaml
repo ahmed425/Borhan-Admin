@@ -21,6 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^3.0.0
+  app_settings: ^4.0.0
   intl: ^0.15.8
   http: ^0.12.0+2
   image_picker: ^0.6.6+1
@@ -38,11 +39,19 @@ dependencies:
   google_maps_flutter: ^0.5.28+1
   cached_network_image: ^2.2.0+1
   shared_preferences: ^0.5.7+3
+  connectivity: ^0.4.8+6
+  zoom_widget: ^0.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.7.5
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/borhan3.png"
+  adaptive_icon_background: "#191919"
+  adaptive_icon_foreground: "assets/images/borhan3.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

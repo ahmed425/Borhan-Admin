@@ -1,6 +1,5 @@
 import 'package:BorhanAdmin/screens/edit_organization_details.dart';
 import 'package:BorhanAdmin/screens/splash_screen.dart';
-
 import './providers/chat_provider.dart';
 import './providers/user_chat_provider.dart';
 import './screens/all_users_chat.dart';
@@ -27,8 +26,13 @@ import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/video_screen.dart';
 import './screens/email_screen.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
-void main() => runApp(MyApp());
+//var timeDilation = 2.0; // Will slow down animations by a factor of two
+
+void main() {
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -70,6 +74,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           builder: (BuildContext context, Widget child) {
             return new Directionality(
               textDirection: TextDirection.rtl,
