@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
             child: Text('نعم'),
             onPressed: () {
               SharedPref sharedPref = SharedPref();
-              sharedPref.remove("user");
+              sharedPref.remove("admin");
 //              Navigator.of(ctx).pop();
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (BuildContext context) => AuthScreen()));
