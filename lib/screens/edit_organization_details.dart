@@ -104,8 +104,8 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                       'mobileNo': _editedOrg.mobileNo,
                       'orgName': _editedOrg.orgName,
                     };
-                    print("After init value" + _editedOrg.orgName);
-                    print("from edit org details logo = " + _editedOrg.logo);
+//                    print("After init value" + _editedOrg.orgName);
+//                    print("from edit org details logo = " + _editedOrg.logo);
                     _nameController.text = _initValues['orgName'];
                     _addressController.text = _initValues['address'];
                     _descController.text = _initValues['description'];
@@ -164,19 +164,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
             .deleteImage(_initValues['logo']);
       }
     }
-
-//      print("loca is : ${currentLocData.longitude} + ${currentLocData.latitude}");
-    // _currentLocation.longitude=LocationInput.
-//      myCurrentLocation.latitude = currentLocData.latitude;
-//      myCurrentLocation.longitude = currentLocData.longitude;
-//      if (currentLocData.longitude != null && currentLocData.latitude != null) {
-//      print("Current Location is not Null");
-    print("Logo from save before delete");
-    print(_editedOrg.logo);
-    print("Logo from save before delete url");
-    print(_downloadUrl);
-    print("Logo from save before delete url");
-    print(_initValues['logo']);
 
     _editedOrg = Organization(
       logo: _downloadUrl != null ? _downloadUrl : _initValues['logo'],

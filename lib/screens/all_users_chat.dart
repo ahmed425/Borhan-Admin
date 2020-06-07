@@ -5,12 +5,13 @@ import 'package:BorhanAdmin/providers/user_chat_provider.dart';
 import 'package:BorhanAdmin/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/activities.dart';
 
 class AllUsersChatScreen extends StatefulWidget {
   static const routeName = '/usersChat';
   final orgLocalId;
+
   AllUsersChatScreen({this.orgLocalId});
+
   @override
   _UsersChatScreenState createState() => _UsersChatScreenState();
 }
@@ -20,39 +21,23 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
   var _isInit = true;
   var _isLoading = false;
 
-//  String currentUserId = '1212145f';
-//String currentUserId ='M8CoA0TH86hmKSikh1K';
   @override
   void didChangeDependencies() {
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
-        orgId = value.id,
-        print(orgId),
-        Provider.of<UserChatProvider>(context)
-            .fetchAndSetAllUsers(orgId)
-            .then((_) => {
-          print('from provider'),
-          setState(() {
-            _isLoading = false;
-          }),
-        }),
-      });
-//      .then((value) => {
-//                orgId = value.id,
-//                print(orgId),
-//                Provider.of<UserChatProvider>(context)
-//                    .fetchAndSetAllUsersLocalId(orgId)
-//                    .then((_) => {
-//                          print('from provider'),
-//                  Provider.of<UserChatProvider>(context).fetchAndSetAllUsersNames(orgId),
-//                          setState(() {
-//                            _isLoading = false;
-//                          }),
-//                        }),
-//              });
+                orgId = value.id,
+                print(orgId),
+                Provider.of<UserChatProvider>(context)
+                    .fetchAndSetAllUsers(orgId)
+                    .then((_) => {
+                          print('from provider'),
+                          setState(() {
+                            _isLoading = false;
+                          }),
+                        }),
+              });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -65,26 +50,29 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
       appBar: AppBar(
         title: const Text('المحادثات'),
       ),
-      body: Container(color: Colors.teal[100],
-        child: WillPopScope(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                child: _isLoading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView.builder(
-                        padding: EdgeInsets.all(10.0),
-                        itemBuilder: (context, index) =>
-                            buildItem(context, allUsers.users, index),
-                        itemCount: allUsers.users.length,
-                      ),
+      body: _isLoading
+          ? Container(
+              color: Colors.teal[100],
+              child: WillPopScope(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      child: _isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ListView.builder(
+                              padding: EdgeInsets.all(10.0),
+                              itemBuilder: (context, index) =>
+                                  buildItem(context, allUsers.users, index),
+                              itemCount: allUsers.users.length,
+                            ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -93,7 +81,6 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
     if (documents[i] == null) {
       return Container();
     } else {
-//      print("documents"+documents.toString());
       return Container(
         child: FlatButton(
           child: Row(
@@ -134,7 +121,10 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 MaterialPageRoute(
                     builder: (context) =>
 //                        ChatScreen(id: users.usersLocalId[i])));
-                    ChatScreen(id: documents[i],orgLocalId: widget.orgLocalId,)));
+                        ChatScreen(
+                          id: documents[i],
+                          orgLocalId: widget.orgLocalId,
+                        )));
           },
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
           shape:

@@ -1,7 +1,5 @@
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../providers/chat_provider.dart';
@@ -11,6 +9,7 @@ import '../models/chat.dart';
 class ChatScreen extends StatefulWidget {
   static const routeName = '/chat';
   final orgLocalId;
+
   var id = '';
   ChatScreen({this.id,this.orgLocalId});
 
@@ -19,11 +18,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // the id for specific user i(admin) chat with him
-//  var id = '1212145f';
   String orgId = '';
   var _enteredMessage = '';
   var _isInit = true;
+  bool _loading = false;
   var chat = Chat(
       time: '',
       text: '',
@@ -57,14 +55,15 @@ class _ChatScreenState extends State<ChatScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
                 Provider.of<ChatProvider>(context)
-                    .fetchAndSetChat(widget.id, orgId),
+                    .fetchAndSetChat(widget.id, orgId).then((value) => {
+                  _loading =true,
+                }),
               });
     }
 //    _isInit = true;
@@ -86,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: Text('المحادثة'),
       ),
-      body: Container(
+      body: _loading ?Container(
         color: Colors.teal[100],
         child: Column(
           children: <Widget>[
@@ -94,19 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: FutureBuilder(
                 future: chatDocs.fetchAndSetChat(widget.id, orgId),
                 builder: (ctx, futureSnapshot) {
-//                  if (futureSnapshot.connectionState ==
-//                      ConnectionState.waiting) {
-//                    return Center(
-//                      child: CircularProgressIndicator(),
-//                    );
-//                  }
                   return StreamBuilder(builder: (ctx, chatSnapshot) {
-//                    if (chatSnapshot.connectionState ==
-//                        ConnectionState.waiting) {
-//                      return Center(
-//                        child: CircularProgressIndicator(),
-//                      );
-//                    }
                     return ListView.builder(
                       reverse: true,
                       itemCount: chatDocs.items.length,
@@ -129,25 +116,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(labelText: 'كتابة رسالة ...'),
-//                      onTap: () {
-////                        _isInit = true;
-//                      },
                       onChanged: (value) {
                         setState(() {
                           _enteredMessage = value;
                         });
                         print('from wigdet Message is : ' + _enteredMessage);
-//                        _isInit = true;
-//                        Provider.of<ChatProvider>(context)
-//                            .fetchAndSetChat(widget.id, orgId);
-//                        chat = Chat(
-//                          img: chat.img,
-//                          text: value,
-//                          userName: chat.userName,
-//                          userId: chat.userId,
-//                          id: chat.id,
-//                          time: chat.time,
-//                        );
                       },
                     ),
                   ),
@@ -164,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-      ),
+      ):Center(child: CircularProgressIndicator()),
     );
   }
 }
