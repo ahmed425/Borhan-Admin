@@ -10,7 +10,8 @@ import '../widgets/campaign_item.dart';
 
 class CampaignScreen extends StatefulWidget {
   static const routeName = '/Campaigns';
-
+  final orgLocalId;
+  CampaignScreen({this.orgLocalId});
   @override
   _CampaignScreenState createState() => _CampaignScreenState();
 }
@@ -22,11 +23,10 @@ class _CampaignScreenState extends State<CampaignScreen> {
 
   @override
   void didChangeDependencies() {
-    final data = Provider.of<Auth>(context);
-
+//    final data = Provider.of<Auth>(context);
     if (_isInit) {
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id).then((value) => {orgId = value.id,
+          .fetchAndSetOrg(widget.orgLocalId).then((value) => {orgId = value.id,
                 print(orgId),
                 Provider.of<Campaigns>(context).fetchAndSetProducts(orgId).then((_) {
                   setState(() {
@@ -64,6 +64,7 @@ class _CampaignScreenState extends State<CampaignScreen> {
                   campaignsData.campaigns[i].campaignName,
                   campaignsData.campaigns[i].id,
                   campaignsData.campaigns[i].imagesUrl,
+                  widget.orgLocalId,
                 ),
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),
@@ -74,7 +75,7 @@ class _CampaignScreenState extends State<CampaignScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddCampaign(),
+              builder: (context) => AddCampaign(orgLocalId: widget.orgLocalId,),
             ),
           );
         },

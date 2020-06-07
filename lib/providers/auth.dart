@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:BorhanAdmin/models/AdminInfo.dart';
+import 'package:BorhanAdmin/providers/shard_pref.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import '../models/http_exception.dart';
@@ -10,10 +11,45 @@ class Auth with ChangeNotifier {
 
   String get orgId => _orgId;
 
+  AdminInfo _adminLoaded;
+
+  AdminInfo get userLoad {
+    return _adminLoaded;
+  }
+
   var _adminData = AdminInfo(email: '', id: '');
   AdminInfo get adminData {
     return _adminData;
   }
+
+  Future<AdminInfo> loadSharedPrefs() async {
+    AdminInfo admin;
+    try {
+      SharedPref sharedPref = SharedPref();
+      admin = AdminInfo.fromJson(await sharedPref.read("admin"));
+      _adminLoaded = admin;
+      print('from loading sh pref');
+      print(_adminData.id);
+    } catch (error) {
+      // do something
+      print('error in fetch from sh pref');
+//      print(error);
+    }
+    return admin;
+  }
+
+//  loadSharedPrefs() async {
+//    try {
+//     SharedPref sharedPref = SharedPref();
+//     AdminInfo user = AdminInfo.fromJson(await sharedPref.read("admin"));
+//      _userLoad = user;
+//      print('*********************************************');
+//      print('from loading from sh admin : ');
+//      print(_userLoad);
+//      } catch (Excepetion) {
+//    // do something
+//       }
+//   }
 
   Future<void> _authenticate(String email, String password) async {
     final url =
@@ -36,7 +72,11 @@ class Auth with ChangeNotifier {
         email: responseData['email'],
         id: responseData['localId'],
       );
+      SharedPref sharedPref = SharedPref();
+      sharedPref.save("admin", _adminData);
+      print('after sh pref');
       print("Admin Data is :  $responseData");
+
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }

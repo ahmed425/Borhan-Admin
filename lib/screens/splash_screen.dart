@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/auth_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +12,31 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+//  @override
+//  void initState() {
+//    super.initState();
+//
+//  }
 
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    var shPref;
+    var _isLoading = false;
+    Provider.of<Auth>(context).loadSharedPrefs().then((value) => {
+          print('fromm Splash Screen'),
+          shPref = Provider.of<Auth>(context).userLoad,
+          if (value != null)
+            {
+              _isLoading = true,
+            }
+        });
     Timer(
         Duration(seconds: 4),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => AuthScreen())));
+            builder: (BuildContext context) =>
+                _isLoading ? Home() : AuthScreen())));
+    super.didChangeDependencies();
   }
 
   @override

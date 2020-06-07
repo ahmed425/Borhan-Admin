@@ -30,10 +30,10 @@ class Organizations with ChangeNotifier {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Organization> loadedActivities = [];
       if (extractedData != null) {
-        print('from fetch extracted data' + extractedData.toString());
+//        print('from fetch extracted data' + extractedData.toString());
         extractedData.forEach((autoOrgId, orgData) {
-          print("ID" + autoOrgId);
-          print(orgData);
+//          print("ID" + autoOrgId);
+//          print(orgData);
           loadedActivities.add(Organization(
               id: autoOrgId,
               orgName: orgData['orgName'],
@@ -48,14 +48,14 @@ class Organizations with ChangeNotifier {
               orgLocalId: orgData['orgLocalId']));
         });
         _items = loadedActivities;
-        print("from fetch  " + _items.toString());
-        print("from fetch  " + _items[1].id);
-        print("from fetch  " + _items[1].orgName);
-        print("orgLocalId" + orgLocalId);
+//        print("from fetch  " + _items.toString());
+//        print("from fetch  " + _items[1].id);
+//        print("from fetch  " + _items[1].orgName);
+//        print("orgLocalId" + orgLocalId);
         notifyListeners();
         var organization =
             _items.firstWhere((org) => org.orgLocalId == orgLocalId);
-        print("from fetch Organization  " + organization.id);
+//        print("from fetch Organization  " + organization.id);
         return organization;
       } else {
         print('No Data in this chat');
@@ -94,8 +94,8 @@ class Organizations with ChangeNotifier {
     final url =
         'https://borhanadmin.firebaseio.com/CharitableOrganizations/$orgId.json';
 //    print("  Current Address is   :  $address");
-    print('befor update logo from provider');
-    print(newOrg.logo);
+//    print('befor update logo from provider');
+//    print(newOrg.logo);
     await http.patch(url,
         body: json.encode({
           'orgName': newOrg.orgName,
@@ -144,9 +144,9 @@ class Organizations with ChangeNotifier {
     await uploadTask.onComplete;
     print('File Uploaded');
     String _downloadUrl = await storageReference.getDownloadURL();
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    print("from uploading :  " + _downloadUrl);
+//    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+//        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+//    print("from uploading :  " + _downloadUrl);
     return _downloadUrl;
   }
 
@@ -154,7 +154,7 @@ class Organizations with ChangeNotifier {
     print("From Delete Image");
     StorageReference myStorageReference =
         await FirebaseStorage.instance.getReferenceFromUrl(imgUrl);
-    print(myStorageReference.path);
+//    print(myStorageReference.path);
     await myStorageReference.delete();
     print("image deleted successfully");
   }

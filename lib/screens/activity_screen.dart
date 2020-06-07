@@ -9,6 +9,9 @@ import '../widgets/activity_item.dart';
 class ActivityScreen extends StatefulWidget {
   static const routeName = '/activities';
 
+  final orgLocalId;
+  ActivityScreen({this.orgLocalId});
+
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
 }
@@ -21,9 +24,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print('from activity screen org id = ' + orgId),
@@ -60,9 +63,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 padding: const EdgeInsets.all(10),
                 itemCount: activitiesData.items.length,
                 itemBuilder: (_, i) => ActivityItem(
-                    activitiesData.items[i].activityName,
-                    activitiesData.items[i].id,
-                    activitiesData.items[i].imagesUrl),
+                    name: activitiesData.items[i].activityName,
+                    id: activitiesData.items[i].id,
+                    image: activitiesData.items[i].imagesUrl,
+                    orgLocalId: widget.orgLocalId),
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),
               ),
@@ -70,8 +74,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-            context, MaterialPageRoute(
-              builder: (context) => AddActivity(),
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddActivity(
+                orgLocalId: widget.orgLocalId,
+              ),
             ),
           );
         },

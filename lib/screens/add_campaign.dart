@@ -13,7 +13,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class AddCampaign extends StatefulWidget {
   static const routeName = '/add-Campaign';
-
+  final orgLocalId;
+  final campId;
+  AddCampaign({this.orgLocalId,this.campId});
   @override
   _AddCampaignState createState() => _AddCampaignState();
 }
@@ -146,14 +148,15 @@ class _AddCampaignState extends State<AddCampaign> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
-      final campaignId = ModalRoute.of(context).settings.arguments as String;
+//      final campaignId = ModalRoute.of(context).settings.arguments as String;
+      final campaignId = widget.campId;
       if (campaignId != null) {
         _addCampaign =
             Provider.of<Campaigns>(context, listen: false).findById(campaignId);

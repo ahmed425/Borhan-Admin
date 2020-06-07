@@ -25,11 +25,11 @@ class Activities with ChangeNotifier {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Activity> loadedActivities = [];
 
-      print("Response body"+ response.body);
+//      print("Response body"+ response.body);
 
       if(extractedData!=null) {
         extractedData.forEach((activityId, activityData) {
-          print("Act Id from fetch in looooop  :  "+activityId);
+//          print("Act Id from fetch in looooop  :  "+activityId);
           loadedActivities.add(Activity(
             id: activityId,
             activityName: activityData['name'],
@@ -67,11 +67,11 @@ class Activities with ChangeNotifier {
         activityDescription: activity.activityDescription,
         imagesUrl: activity.imagesUrl,
       );
-      print('from add activity '+newActivity.id);
+//      print('from add activity '+newActivity.id);
       _items.add(newActivity);
       notifyListeners();
     } catch (error) {
-      print(error);
+//      print(error);
       throw error;
     }
   }
@@ -89,7 +89,7 @@ class Activities with ChangeNotifier {
       _items[activityIndex] = newActivity;
       notifyListeners();
     } else {
-      print('...');
+//      print('...');
     }
   }
 
@@ -116,9 +116,9 @@ class Activities with ChangeNotifier {
     await uploadTask.onComplete;
     print('File Uploaded');
     String _downloadUrl = await storageReference.getDownloadURL();
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    print("from uploading :  " + _downloadUrl);
+//    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+//        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+//    print("from uploading :  " + _downloadUrl);
     return _downloadUrl;
   }
 
@@ -126,7 +126,7 @@ class Activities with ChangeNotifier {
     print("From Delete Image");
     StorageReference myStorageReference =
         await FirebaseStorage.instance.getReferenceFromUrl(imgUrl);
-    print(myStorageReference.path);
+//    print(myStorageReference.path);
     await myStorageReference.delete();
     print("image deleted successfully");
   }

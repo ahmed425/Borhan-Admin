@@ -4,6 +4,8 @@ import 'package:BorhanAdmin/screens/email_screen.dart';
 import 'package:flutter/material.dart';
 
 class HelpScreen extends StatelessWidget {
+  final orgLocalId;
+  HelpScreen({this.orgLocalId});
   static const routeName = '/help';
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class HelpScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AllUsersChatScreen()));
+                              builder: (context) => AllUsersChatScreen(orgLocalId: this.orgLocalId,)));
                     },
                     child: Text(
                       'بواسطة محادثة',

@@ -10,7 +10,7 @@ class Campaigns with ChangeNotifier {
   List<Campaign> _campaigns = [];
 
   List<Campaign> get campaigns {
-    print(_campaigns);
+//    print(_campaigns);
     return [..._campaigns];
   }
 
@@ -20,12 +20,12 @@ class Campaigns with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts(String orgId) async {
-    print("from fetch   hhhhhh    hhhhh    org ig  "+orgId);
+//    print("from fetch   hhhhhh    hhhhh    org ig  "+orgId);
     final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId.json';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print("Response body from fetch   hhhhhh    hhhhh "+ response.body);
+//      print("Response body from fetch   hhhhhh    hhhhh "+ response.body);
       final List<Campaign> loadedCampaigns = [];
       if(extractedData!=null) {
         extractedData.forEach((prodId, prodData) {
@@ -38,8 +38,8 @@ class Campaigns with ChangeNotifier {
           ));
         });
         _campaigns = loadedCampaigns;
-        print("from fetch   hhhhhh    hhhhh "+_campaigns[0].id);
-        print(_campaigns[0].campaignDescription);
+//        print("from fetch   hhhhhh    hhhhh "+_campaigns[0].id);
+//        print(_campaigns[0].campaignDescription);
         notifyListeners();
       }else {
         print('No Data in this chat');
@@ -75,7 +75,7 @@ class Campaigns with ChangeNotifier {
       notifyListeners();
       updateCampaign(newCampaign.id, newCampaign, orgId);
     } catch (error) {
-      print(error);
+//      print(error);
       throw error;
     }
   }
@@ -103,7 +103,7 @@ class Campaigns with ChangeNotifier {
       _campaigns[campaignIndex] = newCampaign;
       notifyListeners();
     } else {
-      print('...');
+//      print('...');
     }
   }
 
@@ -132,9 +132,9 @@ class Campaigns with ChangeNotifier {
     await uploadTask.onComplete;
     print('File Uploaded');
     String _downloadUrl = await storageReference.getDownloadURL();
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    print("from uploading :  " + _downloadUrl);
+//    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+//        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+//    print("from uploading :  " + _downloadUrl);
     return _downloadUrl;
   }
 
@@ -142,7 +142,7 @@ class Campaigns with ChangeNotifier {
     print("From Delete Image");
     StorageReference myStorageReference =
         await FirebaseStorage.instance.getReferenceFromUrl(imgUrl);
-    print(myStorageReference.path);
+//    print(myStorageReference.path);
     await myStorageReference.delete();
     print("image deleted successfully");
   }

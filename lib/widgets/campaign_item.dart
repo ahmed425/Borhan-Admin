@@ -10,7 +10,8 @@ class CampaignItem extends StatefulWidget {
   final String name;
   final String id;
   final String image;
-  CampaignItem(this.name, this.id, this.image);
+  final orgLocalId;
+  CampaignItem(this.name, this.id, this.image, this.orgLocalId);
 
   @override
   _CampaignItemState createState() => _CampaignItemState();
@@ -23,8 +24,8 @@ class _CampaignItemState extends State<CampaignItem> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
-      Provider.of<Organizations>(context).fetchAndSetOrg(data.adminData.id).then((value) => {
+//      final data = Provider.of<Auth>(context);
+      Provider.of<Organizations>(context).fetchAndSetOrg(widget.orgLocalId).then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
@@ -48,10 +49,11 @@ class _CampaignItemState extends State<CampaignItem> {
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: () {
-                Navigator.of(context).pushNamed(
-                  AddCampaign.routeName,
-                  arguments: widget.id,
-                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddCampaign(orgLocalId: widget.orgLocalId,campId: widget.id,)));
               },
               color: Theme.of(context).primaryColor,
             ),

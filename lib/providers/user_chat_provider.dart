@@ -1,4 +1,5 @@
 
+import 'package:BorhanAdmin/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,6 +12,10 @@ class UserChatProvider with ChangeNotifier {
   }
 
   List<String> _usersLocalId = [];
+  List<String> get usersLocalId {
+    return [..._usersLocalId];
+  }
+  List<User> _usersName = [];
 
   Future<void> fetchAndSetAllUsers(String orgId) async {
     final url = 'https://borhanadmin.firebaseio.com/chat/$orgId.json';
@@ -59,6 +64,7 @@ class UserChatProvider with ChangeNotifier {
 //  }
 //
 //  Future<void> fetchAndSetAllUsersNames(String orgId) async {
+//    _users = [];
 //    _usersLocalId.forEach((element) async {
 //      print(element);
 //      final url = 'https://borhanadmin.firebaseio.com/chat/$orgId/$element.json';
@@ -67,22 +73,35 @@ class UserChatProvider with ChangeNotifier {
 //        print('All Users from fetch');
 //        final extractedData = json.decode(response.body) as Map<String, dynamic>;
 //        print(response.body);
+////        final List<User> loadedChat = [];
 //        final List<String> loadedChat = [];
 //        if (extractedData != null) {
 //          extractedData.forEach((userId,Data) {
 //            loadedChat.add(Data['name']);
 //            return;
 //          });
-//          _users.add(loadedChat[0]);
+//          _users.insert(0,loadedChat[0]);
 //          notifyListeners();
 //        print(_users);
-//        } else {
+//        }
+////        if(extractedData!=null) {
+////          extractedData.forEach((userId, userData) {
+////            print("Act Id from fetch in looooop  :  "+userId);
+////            loadedChat.add(User(
+////              id: userId,
+////              name: userData['name'],
+////            ));
+////          });
+////          _usersName = loadedChat;
+//////        print('loadedAct Name :  '+ _items[1].id);
+////          notifyListeners();
+////        }
+//        else {
 //          print('No Data in this chat');
 //        }
 //      } catch (error) {
 //        throw (error);
 //      }
 //    });
-//
 //  }
 }

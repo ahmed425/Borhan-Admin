@@ -9,7 +9,8 @@ import '../providers/activities.dart';
 
 class AllUsersChatScreen extends StatefulWidget {
   static const routeName = '/usersChat';
-
+  final orgLocalId;
+  AllUsersChatScreen({this.orgLocalId});
   @override
   _UsersChatScreenState createState() => _UsersChatScreenState();
 }
@@ -24,9 +25,9 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
         orgId = value.id,
         print(orgId),
@@ -39,7 +40,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
           }),
         }),
       });
-//      then((value) => {
+//      .then((value) => {
 //                orgId = value.id,
 //                print(orgId),
 //                Provider.of<UserChatProvider>(context)
@@ -88,6 +89,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
   }
 
   Widget buildItem(BuildContext context, List<String> documents, int i) {
+    final users = Provider.of<UserChatProvider>(context);
     if (documents[i] == null) {
       return Container();
     } else {
@@ -131,7 +133,8 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ChatScreen(id: documents[i])));
+//                        ChatScreen(id: users.usersLocalId[i])));
+                    ChatScreen(id: documents[i],orgLocalId: widget.orgLocalId,)));
           },
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
           shape:

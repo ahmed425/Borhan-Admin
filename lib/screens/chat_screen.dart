@@ -10,9 +10,9 @@ import '../models/chat.dart';
 
 class ChatScreen extends StatefulWidget {
   static const routeName = '/chat';
+  final orgLocalId;
   var id = '';
-
-  ChatScreen({this.id});
+  ChatScreen({this.id,this.orgLocalId});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -36,6 +36,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage() {
     FocusScope.of(context).unfocus();
+    chat = Chat(
+      img: chat.img,
+      text: _enteredMessage,
+      userName: chat.userName,
+      userId: chat.userId,
+      id: chat.id,
+      time: chat.time,
+    );
     Provider.of<ChatProvider>(context, listen: false)
         .addMessage(chat, widget.id, orgId)
         .then((value) => {
@@ -49,9 +57,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
@@ -59,8 +67,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     .fetchAndSetChat(widget.id, orgId),
               });
     }
-    _isInit = true;
-//    _isInit = false;
+//    _isInit = true;
+    _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -84,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
               child: FutureBuilder(
-                future: _getData(),
+                future: chatDocs.fetchAndSetChat(widget.id, orgId),
                 builder: (ctx, futureSnapshot) {
 //                  if (futureSnapshot.connectionState ==
 //                      ConnectionState.waiting) {
@@ -121,25 +129,25 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(labelText: 'كتابة رسالة ...'),
-                      onTap: () {
-//                        _isInit = true;
-                      },
+//                      onTap: () {
+////                        _isInit = true;
+//                      },
                       onChanged: (value) {
                         setState(() {
                           _enteredMessage = value;
                         });
-                        print('from wigdet Message is : ' + value);
+                        print('from wigdet Message is : ' + _enteredMessage);
 //                        _isInit = true;
 //                        Provider.of<ChatProvider>(context)
 //                            .fetchAndSetChat(widget.id, orgId);
-                        chat = Chat(
-                          img: chat.img,
-                          text: value,
-                          userName: chat.userName,
-                          userId: chat.userId,
-                          id: chat.id,
-                          time: chat.time,
-                        );
+//                        chat = Chat(
+//                          img: chat.img,
+//                          text: value,
+//                          userName: chat.userName,
+//                          userId: chat.userId,
+//                          id: chat.id,
+//                          time: chat.time,
+//                        );
                       },
                     ),
                   ),

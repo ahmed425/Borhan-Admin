@@ -10,7 +10,9 @@ import '../models/activity.dart';
 
 class AddActivity extends StatefulWidget {
   static const routeName = '/add-activity';
-
+  final orgLocalId ;
+  final actId;
+  AddActivity({this.orgLocalId,this.actId});
   @override
   _AddActivityState createState() => _AddActivityState();
 }
@@ -141,14 +143,17 @@ class _AddActivityState extends State<AddActivity> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
+    print('from add act screen when edit');
+    print(widget.orgLocalId);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
-      final activityId = ModalRoute.of(context).settings.arguments as String;
+//      final activityId = ModalRoute.of(context).settings.arguments as String;
+      final activityId = widget.actId;
       if (activityId != null) {
         _addActivity = Provider.of<Activities>(context, listen: false)
             .findById(activityId);

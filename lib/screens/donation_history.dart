@@ -7,6 +7,8 @@ import '../models/donation_history.dart';
 import 'package:provider/provider.dart';
 
 class DonationHistory extends StatefulWidget {
+  final orgLocalId ;
+  DonationHistory({this.orgLocalId});
   @override
   _DonationHistoryState createState() => _DonationHistoryState();
 }
@@ -19,9 +21,9 @@ class _DonationHistoryState extends State<DonationHistory> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),

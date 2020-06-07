@@ -22,6 +22,7 @@ class DonationRequestItem extends StatefulWidget {
   final String actName;
   final String userId;
   final String status;
+  final orgLocalId ;
 
   DonationRequestItem({
     this.id,
@@ -38,6 +39,7 @@ class DonationRequestItem extends StatefulWidget {
     this.actName,
     this.userId,
     this.status,
+    this.orgLocalId,
   });
 
   @override
@@ -84,9 +86,9 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
         image: widget.image,
         status: widget.status,
       );
-      final data = Provider.of<Auth>(context);
+//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(data.adminData.id)
+          .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
