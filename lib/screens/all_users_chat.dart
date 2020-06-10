@@ -34,7 +34,8 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                     .then((_) => {
                           print('from provider'),
                           setState(() {
-                            _isLoading = false;
+                            print('from set state');
+                            _isLoading = true;
                           }),
                         }),
               });
@@ -50,18 +51,15 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
       appBar: AppBar(
         title: const Text('المحادثات'),
       ),
-      body: _isLoading
-          ? Container(
+      body: 
+      // _isLoading? 
+      Container(
               color: Colors.teal[100],
               child: WillPopScope(
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      child: _isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ListView.builder(
+                      child: ListView.builder(
                               padding: EdgeInsets.all(10.0),
                               itemBuilder: (context, index) =>
                                   buildItem(context, allUsers.users, index),
@@ -72,12 +70,14 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 ),
               ),
             )
-          : Center(child: CircularProgressIndicator()),
+          // : Center(child: CircularProgressIndicator()),
     );
   }
 
   Widget buildItem(BuildContext context, List<String> documents, int i) {
-    final users = Provider.of<UserChatProvider>(context);
+    // final users = Provider.of<UserChatProvider>(context);
+    print('from build');
+    print(documents);
     if (documents[i] == null) {
       return Container();
     } else {

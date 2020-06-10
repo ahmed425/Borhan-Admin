@@ -22,10 +22,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-    _controller = VideoPlayerController.network(
-      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-//      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    );
+    _controller = VideoPlayerController.asset('assets/demo/borhan.mp4');
+    
+//     network(
+//       'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+// //      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+//     );
 
     // Initialize the controller and store the Future for later use.
     _initializeVideoPlayerFuture = _controller.initialize();

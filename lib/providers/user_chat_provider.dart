@@ -18,12 +18,13 @@ class UserChatProvider with ChangeNotifier {
   List<User> _usersName = [];
 
   Future<void> fetchAndSetAllUsers(String orgId) async {
+    print('from feeeeeetch '+orgId);
     final url = 'https://borhanadmin.firebaseio.com/chat/$orgId.json';
     try {
       final response = await http.get(url);
-      print('All Users from fetch');
+      // print('All Users from fetch');
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(response.body);
+      // print(response.body);
       final List<String> loadedChat = [];
       if (extractedData != null) {
         extractedData.forEach((usersId,Data) {

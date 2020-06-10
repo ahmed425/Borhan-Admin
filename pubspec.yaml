@@ -27,6 +27,7 @@ dependencies:
   image_picker: ^0.6.6+1
   firebase_core: ^0.4.0+9
   firebase_storage: ^3.1.5
+  firebase_database:
   toast: ^0.1.5
   location: ^3.0.0
   video_player:
@@ -70,6 +71,7 @@ flutter:
     - assets/images/borhan.png
     - assets/images/borhan3.png
     - assets/images/borhan4.png
+    - assets/demo/borhan.mp4
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
