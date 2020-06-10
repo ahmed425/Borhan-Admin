@@ -1,7 +1,6 @@
 # BorhanAdmin
 
-A new Flutter project.
-
+Flutter Mobile Application to manage the donation operations of a charity organization.
 ## Getting Started
 
 This project is a starting point for a Flutter application.
