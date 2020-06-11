@@ -1,11 +1,12 @@
 import 'package:BorhanAdmin/models/donation_request.dart';
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/donation_requests.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/screens/donation_request_details.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'dart:io' show Platform;
 
 class DonationRequestItem extends StatefulWidget {
   final String id;
@@ -101,7 +102,8 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
   void _showAlertDialog(String message) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
+      builder: (ctx) => (Platform.isAndroid)?
+      AlertDialog(
         backgroundColor: Colors.teal[100],
         title: Text('هل أنت متأكد ؟ '),
         content: Text(message),
@@ -160,6 +162,66 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
               Navigator.of(ctx).pop();
             },
           )
+        ],
+      ):CupertinoAlertDialog(
+         title: Text('هل أنت متأكد ؟ '),
+        content: Text(message),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: Text('نعم'),
+            onPressed: () {
+              _donationReq = DonationRequest(
+                donatorMobileNo: widget.donatorMobileNo,
+                availableOn: widget.availableOn,
+                donatorAddress: widget.donatorAddress,
+                donatorName: widget.donatorName,
+                userId: widget.userId,
+                id: widget.id,
+                orgName: widget.orgName,
+                actName: widget.actName,
+                donationAmount: widget.donationAmount,
+                donationDate: widget.donationDate,
+                donationItems: widget.donationItems,
+                donationType: widget.donationType,
+                image: widget.image,
+                status: 'cancel',
+              );
+              Provider.of<DonationRequests>(context)
+                  .updateDonationReq(_donationReq, orgId)
+                  .then((value) => {
+                        print(
+                            'from .then ' + orgId + '\n' + _donationReq.userId),
+                        Provider.of<DonationRequests>(context)
+                            .addDonationReqInHistory(
+                                Provider.of<DonationRequests>(context)
+                                    .findById(widget.id),
+                                orgId)
+                            .then((value) => {
+                                  Provider.of<DonationRequests>(context)
+                                      .updateInMyDonation(
+                                          _donationReq.userId, _donationReq)
+                                      .then((value) => {
+                                            Provider.of<DonationRequests>(
+                                                    context)
+                                                .deleteRequest(
+                                                    widget.id, orgId),
+                                            Navigator.pop(context),
+                                            Toast.show("تم إلغاء التبرع بنجاح",
+                                                context,
+                                                duration: Toast.LENGTH_LONG,
+                                                gravity: Toast.BOTTOM),
+                                          }),
+                                }),
+                      });
+            },
+          
+          ),
+          CupertinoDialogAction(
+            child: Text('لا'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
         ],
       ),
     );

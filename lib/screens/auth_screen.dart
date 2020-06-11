@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
-
+import 'dart:io';
+import 'dart:io' show Platform;
 import 'package:app_settings/app_settings.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -37,13 +38,13 @@ class AuthScreen extends StatelessWidget {
                   children: <Widget>[
                     Flexible(
                       child: Container(
-                          margin: EdgeInsets.only(bottom: 20.0),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 94.0),
-                          child: Image.asset(
-                            'assets/images/borhan3.png',
-                            fit: BoxFit.fill,
-                          ),
+                        margin: EdgeInsets.only(bottom: 20.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 94.0),
+                        child: Image.asset(
+                          'assets/images/borhan3.png',
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                     Flexible(
@@ -98,54 +99,75 @@ class _AuthCardState extends State<AuthCard> {
         showDialog(
             context: context,
             barrierDismissible: false,
-            child: AlertDialog(
-                title: const Text('حدث خطأ ما '),
-                content: Text(
-                    'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
-                actions: <Widget>[
-                  FlatButton(
-                      onPressed: () => {
-//                            SystemChannels.platform
-//                                .invokeMethod('SystemNavigator.pop'),
-                            Navigator.pop(context),
-                          },
-                      child: Text(
-                        'خروج ',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
-                      )),
-                  FlatButton(
-                      onPressed: () => {
-                            AppSettings.openWIFISettings(),
-                          },
-                      child: Text(
-                        ' اعدادت Wi-Fi ',
-                        style: TextStyle(color: Colors.blue),
-                      )),
-                  FlatButton(
-                      onPressed: () => {
-                            AppSettings.openDataRoamingSettings(),
-                          },
-                      child: Text(
-                        ' اعدادت الباقه ',
-                        style: TextStyle(
-                          color: Colors.blue,
-                        ),
-                      ))
-                ]
-//              actions: <Widget>[
-//                FlatButton(
-//                    onPressed: () => {
-//                          SystemChannels.platform
-//                              .invokeMethod('SystemNavigator.pop'),
-////                          Navigator.pop(context),
-//                        },
-//                    child: Text(
-//                      'خروج ',
-//                      style: TextStyle(color: Colors.red),
-//                    ))
-//              ],
-                ));
+            child: (Platform.isAndroid)
+                ? AlertDialog(
+                    title: const Text('حدث خطأ ما '),
+                    content: Text(
+                        'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
+                    actions: <Widget>[
+                        FlatButton(
+                            onPressed: () => {
+                                  Navigator.pop(context),
+                                },
+                            child: Text(
+                              'خروج ',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        FlatButton(
+                            onPressed: () => {
+                                  AppSettings.openWIFISettings(),
+                                },
+                            child: Text(
+                              ' اعدادت Wi-Fi ',
+                              style: TextStyle(color: Colors.blue),
+                            )),
+                        FlatButton(
+                            onPressed: () => {
+                                  AppSettings.openDataRoamingSettings(),
+                                },
+                            child: Text(
+                              ' اعدادت الباقه ',
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            ))
+                      ])
+                : CupertinoAlertDialog(
+                    title: const Text('حدث خطأ ما '),
+                    content: Text(
+                        'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                          onPressed: () => {
+                                AppSettings.openWIFISettings(),
+                              },
+                          child: Text(
+                            ' اعدادت Wi-Fi ',
+                            style: TextStyle(color: Colors.blue),
+                          )),
+                      CupertinoDialogAction(
+                          onPressed: () => {
+                                AppSettings.openDataRoamingSettings(),
+                              },
+                          child: Text(
+                            ' اعدادت الباقه ',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          )),
+                      CupertinoDialogAction(
+                          onPressed: () => {
+                                Navigator.pop(context),
+                              },
+                          child: Text(
+                            'خروج ',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
+                          )),
+                    ],
+                  ));
       } else if (_previousResult == ConnectivityResult.none) {
         checkinternet().then((result) {
           if (result == true) {
@@ -190,7 +212,8 @@ class _AuthCardState extends State<AuthCard> {
     print("alert");
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
+      builder: (ctx) => (Platform.isAndroid)?
+      AlertDialog(
         title: Text('حدث خطأ ما'),
         content: Text(message),
         actions: <Widget>[
@@ -201,7 +224,18 @@ class _AuthCardState extends State<AuthCard> {
             },
           )
         ],
-      ),
+      ):CupertinoAlertDialog(
+             title: Text('خطأ'),
+            content: Text('حدث خطأ ما'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text('حسنا'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ),
     );
   }
 

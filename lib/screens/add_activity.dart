@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -118,11 +119,23 @@ class _AddActivityState extends State<AddActivity> {
       } catch (error) {
         await showDialog(
           context: context,
-          builder: (ctx) => AlertDialog(
+          builder: (ctx) => (Platform.isAndroid)?
+          AlertDialog(
             title: Text('خطأ'),
             content: Text('حدث خطأ ما'),
             actions: <Widget>[
               FlatButton(
+                child: Text('حسنا'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ):CupertinoAlertDialog(
+             title: Text('خطأ'),
+            content: Text('حدث خطأ ما'),
+            actions: <Widget>[
+              CupertinoDialogAction(
                 child: Text('حسنا'),
                 onPressed: () {
                   Navigator.of(ctx).pop();

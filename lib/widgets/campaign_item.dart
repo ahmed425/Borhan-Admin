@@ -1,10 +1,12 @@
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/screens/add_campaign.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_activity.dart';
 import 'package:provider/provider.dart';
 import '../providers/campaigns.dart';
+import 'dart:io' show Platform;
 
 class CampaignItem extends StatefulWidget {
   final String name;
@@ -74,4 +76,55 @@ class _CampaignItemState extends State<CampaignItem> {
       ):Container(),
     );
   }
+
+  _showDialog(){
+    showDialog(
+      context: context,
+      builder: (ctx) => (Platform.isAndroid)?
+      AlertDialog(
+        title: Text('حذف نشاط'),
+        content: Text('هل تريد حذف النشاط؟'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('الغاء'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+          FlatButton(
+            child: Text('نعم',
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),),
+            onPressed: () {
+              Provider.of<Campaigns>(context, listen: false).deleteCampaign(widget.id, orgId);
+            Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ):CupertinoAlertDialog(
+                title: Text('حذف نشاط'),
+        content: Text('هل تريد حذف النشاط؟'),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: Text('نعم',
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),),
+            onPressed: () {
+             Provider.of<Campaigns>(context, listen: false).deleteCampaign(widget.id, orgId);
+                    Navigator.of(ctx).pop();
+              },
+          ),
+          CupertinoDialogAction(
+            child: Text('الغاء'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ),
+    );
+      
+  }
+
+
 }

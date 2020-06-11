@@ -1,11 +1,12 @@
 //import 'package:BorhanAdmin/screens/email_screen.dart';
 //import 'package:BorhanAdmin/screens/help_screen.dart';
-
+import 'dart:io' show Platform;
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/providers/shard_pref.dart';
 import 'package:BorhanAdmin/screens/auth_screen.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/video_screen.dart';
@@ -66,7 +67,8 @@ class _HomeState extends State<Home> {
     print("alert");
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
+      builder: (ctx) => (Platform.isAndroid)?
+      AlertDialog(
         title: Text('تسجيل خروج'),
         content: Text(message),
         actions: <Widget>[
@@ -87,9 +89,30 @@ class _HomeState extends State<Home> {
             },
           ),
         ],
+      ):CupertinoAlertDialog(
+                title: Text('تسجيل خروج'),
+        content: Text(message),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: Text('نعم'),
+            onPressed: () {
+              SharedPref sharedPref = SharedPref();
+              sharedPref.remove("admin");
+//              Navigator.of(ctx).pop();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => AuthScreen()));
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text('الغاء'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
       ),
     );
-//        .then((value) => Navigator.of(context).pop());
+      //  .then((value) => Navigator.of(context).pop());
   }
 
 

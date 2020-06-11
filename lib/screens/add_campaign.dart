@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:BorhanAdmin/models/campaign.dart';
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/campaigns.dart';
@@ -125,11 +126,23 @@ class _AddCampaignState extends State<AddCampaign> {
       } catch (error) {
         await showDialog(
           context: context,
-          builder: (ctx) => AlertDialog(
+          builder: (ctx) => (Platform.isAndroid)?
+          AlertDialog(
             title: Text('خطأ'),
             content: Text('حدث خطأ ما'),
             actions: <Widget>[
               FlatButton(
+                child: Text('حسنا'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ):CupertinoAlertDialog(
+             title: Text('خطأ'),
+            content: Text('حدث خطأ ما'),
+            actions: <Widget>[
+              CupertinoDialogAction(
                 child: Text('حسنا'),
                 onPressed: () {
                   Navigator.of(ctx).pop();
@@ -145,31 +158,6 @@ class _AddCampaignState extends State<AddCampaign> {
 //        Navigator.of(context).pop();
       }
     }
-//      try {
-//        Provider.of<Campaigns>(context, listen: false)
-//            .addUsersCampaign(_addCampaign, orgId);
-//      } catch (error) {
-//        await showDialog(
-//          context: context,
-//          builder: (ctx) => AlertDialog(
-//            title: Text('خطأ'),
-//            content: Text('حدث خطأ ما'),
-//            actions: <Widget>[
-//              FlatButton(
-//                child: Text('حسنا'),
-//                onPressed: () {
-//                  Navigator.of(ctx).pop();
-//                },
-//              )
-//            ],
-//          ),
-//        );
-//      } finally {
-//        setState(() {
-//          _isLoading = false;
-//        });
-//      }
-//    }
   }
 
   @override
