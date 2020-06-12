@@ -38,19 +38,6 @@ class Auth with ChangeNotifier {
     return admin;
   }
 
-//  loadSharedPrefs() async {
-//    try {
-//     SharedPref sharedPref = SharedPref();
-//     AdminInfo user = AdminInfo.fromJson(await sharedPref.read("admin"));
-//      _userLoad = user;
-//      print('*********************************************');
-//      print('from loading from sh admin : ');
-//      print(_userLoad);
-//      } catch (Excepetion) {
-//    // do something
-//       }
-//   }
-
   Future<void> _authenticate(String email, String password) async {
     final url =
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBxvZKA_BX1E0Ae_R8BS3L_-hyUSi1vkbo';
@@ -110,6 +97,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
+    print('from login provider');
     return _authenticate(email, password);
   }
 }

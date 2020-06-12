@@ -243,6 +243,7 @@ class _AuthCardState extends State<AuthCard> {
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
+      print('not valid');
       return;
     }
     _formKey.currentState.save();
@@ -252,6 +253,7 @@ class _AuthCardState extends State<AuthCard> {
     if (_authMode == AuthMode.Login) {
       try {
         // Log user in
+        print('log in ');
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email'],
           _authData['password'],
