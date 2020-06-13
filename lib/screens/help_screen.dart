@@ -1,12 +1,14 @@
 import 'package:BorhanAdmin/screens/all_users_chat.dart';
-import 'package:BorhanAdmin/screens/chat_screen.dart';
 import 'package:BorhanAdmin/screens/email_screen.dart';
 import 'package:flutter/material.dart';
 
 class HelpScreen extends StatelessWidget {
   final orgLocalId;
+
   HelpScreen({this.orgLocalId});
+
   static const routeName = '/help';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,14 +55,18 @@ class HelpScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AllUsersChatScreen(orgLocalId: this.orgLocalId,)));
+                            builder: (context) => AllUsersChatScreen(
+                              orgLocalId: this.orgLocalId,
+                            ),
+                          ));
                     },
                     child: Text(
                       'بواسطة محادثة',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),

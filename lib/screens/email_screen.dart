@@ -1,10 +1,7 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:BorhanAdmin/providers/email_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../models/emailm.dart';
@@ -40,100 +37,87 @@ class _EmailScreenState extends State<EmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.teal),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('طلب مساعدة بالبريد الإلكتروني'),
-          actions: <Widget>[
-            IconButton(
-              onPressed: send,
-              icon: Icon(Icons.send),
-            )
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text('مستقبل الرساله'),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _recipientController,
-                    readOnly: true,
-//                    onTap: () {
-//                      emailM = EmailM(
-//                        recipientController: _recipientController.text,
-//                        bodyController: emailM.bodyController,
-//                        subjectController: emailM.subjectController,
-//                      );
-//                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('طلب مساعدة بالبريد الإلكتروني'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: send,
+            icon: Icon(Icons.open_in_new),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text('مستقبل الرساله'),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _recipientController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                Text('الموضوع'),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _subjectController,
-//                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      emailM = EmailM(
-                        recipientController: emailM.recipientController,
-                        bodyController: emailM.bodyController,
-                        subjectController: val,
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+              ),
+              Text('الموضوع'),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _subjectController,
+                  onChanged: (val) {
+                    emailM = EmailM(
+                      recipientController: emailM.recipientController,
+                      bodyController: emailM.bodyController,
+                      subjectController: val,
+                    );
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                Text('المضمون'),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _bodyController,
-//                    textDirection: TextDirection.rtl,
-                    onChanged: (val) {
-                      emailM = EmailM(
-                        recipientController: emailM.recipientController,
-                        bodyController: val,
-                        subjectController: emailM.subjectController,
-                      );
-                    },
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+              ),
+              Text('المضمون'),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _bodyController,
+                  onChanged: (val) {
+                    emailM = EmailM(
+                      recipientController: emailM.recipientController,
+                      bodyController: val,
+                      subjectController: emailM.subjectController,
+                    );
+                  },
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                ...attachments.map(
-                  (item) => Text(
-                    item,
-                    overflow: TextOverflow.fade,
-                  ),
+              ),
+              ...attachments.map(
+                (item) => Text(
+                  item,
+                  overflow: TextOverflow.fade,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.teal,
-          icon: Icon(Icons.camera),
-          label: Text(
-            'إضافة صورة',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-          ),
-          onPressed: _openImagePicker,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.teal,
+        icon: Icon(Icons.camera),
+        label: Text(
+          'إضافة صورة',
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
+        onPressed: _openImagePicker,
       ),
     );
   }

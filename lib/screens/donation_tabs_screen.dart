@@ -4,8 +4,10 @@ import 'donation_requests_screen.dart';
 
 class DonationTabsScreen extends StatefulWidget {
   static const routeName = '/donationTabsScreen';
-  final orgLocalId ;
+  final orgLocalId;
+
   DonationTabsScreen({this.orgLocalId});
+
   @override
   _DonationTabsScreenState createState() => _DonationTabsScreenState();
 }
@@ -40,8 +42,12 @@ class _DonationTabsScreenState extends State<DonationTabsScreen> {
         ),
         body: TabBarView(
           children: <Widget>[
-            DonationRequestsScreen(orgLocalId: widget.orgLocalId,),
-            DonationHistory(orgLocalId: widget.orgLocalId,),
+            DonationRequestsScreen(
+              orgLocalId: widget.orgLocalId,
+            ),
+            DonationHistory(
+              orgLocalId: widget.orgLocalId,
+            ),
           ],
         ),
       ),

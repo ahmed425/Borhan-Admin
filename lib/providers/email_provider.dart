@@ -10,9 +10,7 @@ class EmailProvider with ChangeNotifier {
       recipients: [emailM.recipientController],
       attachmentPaths: attachments,
     );
-
     String platformResponse;
-
     try {
       await FlutterEmailSender.send(email);
       platformResponse = 'success';

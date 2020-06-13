@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 import 'package:BorhanAdmin/models/campaign.dart';
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/campaigns.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,13 +9,14 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import '../providers/campaigns.dart';
 import '../models/campaign.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class AddCampaign extends StatefulWidget {
   static const routeName = '/add-Campaign';
   final orgLocalId;
   final campId;
-  AddCampaign({this.orgLocalId,this.campId});
+
+  AddCampaign({this.orgLocalId, this.campId});
+
   @override
   _AddCampaignState createState() => _AddCampaignState();
 }
@@ -59,7 +59,6 @@ class _AddCampaignState extends State<AddCampaign> {
       setState(() {
         _isLoadImg = false;
       });
-      print("value from upload" + _downloadUrl);
     });
   }
 
@@ -83,20 +82,15 @@ class _AddCampaignState extends State<AddCampaign> {
       return;
     }
     if (_addCampaign.imagesUrl != null && _addCampaign.imagesUrl != '') {
-      print(
-          '---------------------------- from delete image -----------------------------');
-      print('Image Url : ' + _addCampaign.imagesUrl);
       Provider.of<Campaigns>(context, listen: false)
           .deleteImage(_addCampaign.imagesUrl);
     }
-    print("---------------------------------------------");
     _form.currentState.save();
     setState(() {
       _isLoading = true;
     });
 
     if (_addCampaign.id != null) {
-      print("Campaign id :  " + _addCampaign.id);
       _addCampaign = Campaign(
         id: _addCampaign.id,
         imagesUrl: _downloadUrl != null ? _downloadUrl : _addCampaign.imagesUrl,
@@ -104,13 +98,11 @@ class _AddCampaignState extends State<AddCampaign> {
         campaignName: _addCampaign.campaignName,
         time: _addCampaign.time,
       );
-      print(_addCampaign.imagesUrl);
       Provider.of<Campaigns>(context, listen: false)
           .updateCampaign(_addCampaign.id, _addCampaign, orgId);
       setState(() {
         _isLoading = false;
       });
-//      Navigator.of(context).pop();
     } else {
       _addCampaign = Campaign(
         id: _addCampaign.id,
@@ -126,36 +118,36 @@ class _AddCampaignState extends State<AddCampaign> {
       } catch (error) {
         await showDialog(
           context: context,
-          builder: (ctx) => (Platform.isAndroid)?
-          AlertDialog(
-            title: Text('خطأ'),
-            content: Text('حدث خطأ ما'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('حسنا'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ):CupertinoAlertDialog(
-             title: Text('خطأ'),
-            content: Text('حدث خطأ ما'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text('حسنا'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
+          builder: (ctx) => (Platform.isAndroid)
+              ? AlertDialog(
+                  title: Text('خطأ'),
+                  content: Text('حدث خطأ ما'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('حسنا'),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                )
+              : CupertinoAlertDialog(
+                  title: Text('خطأ'),
+                  content: Text('حدث خطأ ما'),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text('حسنا'),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                ),
         );
       } finally {
         setState(() {
           _isLoading = false;
         });
-//        Navigator.of(context).pop();
       }
     }
   }
@@ -163,14 +155,12 @@ class _AddCampaignState extends State<AddCampaign> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
-//      final campaignId = ModalRoute.of(context).settings.arguments as String;
       final campaignId = widget.campId;
       if (campaignId != null) {
         _addCampaign =
@@ -318,9 +308,7 @@ class _AddCampaignState extends State<AddCampaign> {
                             color: Colors.teal,
                             onPressed: () {
                               _saveForm();
-                              Provider.of<Campaigns>(context, listen: false)
-                                  .addUsersCampaign(_addCampaign, orgId)
-                                  .then((value) => Navigator.of(context).pop());
+                              Navigator.of(context).pop();
                             },
                           ),
                         ),

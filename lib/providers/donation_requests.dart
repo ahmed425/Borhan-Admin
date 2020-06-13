@@ -13,12 +13,10 @@ class DonationRequests with ChangeNotifier {
   }
 
   DonationRequest findById(String id) {
-    // ignore: non_constant_identifier_names
     return _donationRequests.firstWhere((request) => request.id == id);
   }
 
   Future<void> fetchAndSetProducts(String orgId) async {
-//    orgId = '-M8R7YEmnXs8Bxkd8a5-';
     final url =
         'https://borhanadmin.firebaseio.com/DonationRequests/$orgId.json';
     try {
@@ -26,7 +24,6 @@ class DonationRequests with ChangeNotifier {
       print(_donationRequests);
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-//      print(extractedData);
       final List<DonationRequest> loadedRequests = [];
       if (extractedData != null) {
         extractedData.forEach((prodId, donationData) {
@@ -56,11 +53,9 @@ class DonationRequests with ChangeNotifier {
       }
     } catch (error) {
       throw (error);
-//      print("error is $error");
     }
   }
 
-  // ignore: non_constant_identifier_names
   Future<void> addDonationReqInHistory(DonationRequest donationReq, String orgId) async {
     final url =
         'https://borhanadmin.firebaseio.com/DonationHistory/$orgId.json';
@@ -96,7 +91,7 @@ class DonationRequests with ChangeNotifier {
     final url =
         'https://borhanadmin.firebaseio.com/DonationRequests/$orgId/$id.json';
     final existingProductIndex =
-        _donationRequests.indexWhere((prod) => prod.id == id);
+    _donationRequests.indexWhere((prod) => prod.id == id);
     var existingProduct = _donationRequests[existingProductIndex];
     _donationRequests.removeWhere((campaign) => campaign.id == id);
     notifyListeners();
@@ -106,18 +101,15 @@ class DonationRequests with ChangeNotifier {
       notifyListeners();
       throw HttpException('Could not delete product.');
     }
-    print("deleted successfully");
     print(response.statusCode);
-//    existingProduct = null;
   }
 
   Future<void> updateInMyDonation(
       String userId, DonationRequest donationReq) async {
     final reqIndex =
-        _donationRequests.indexWhere((request) => request.id == donationReq.id);
+    _donationRequests.indexWhere((request) => request.id == donationReq.id);
     if (reqIndex >= 0) {
       var id = donationReq.id;
-      print('');
       final url =
           'https://borhanadmin.firebaseio.com/MyDonations/$userId/$id.json';
       await http.patch(url,
@@ -137,15 +129,13 @@ class DonationRequests with ChangeNotifier {
           }));
       _donationRequests[reqIndex] = donationReq;
       notifyListeners();
-    } else {
-      print('...');
     }
   }
 
   Future<void> updateDonationReq(
       DonationRequest donationReq, String orgId) async {
     final reqIndex =
-        _donationRequests.indexWhere((request) => request.id == donationReq.id);
+    _donationRequests.indexWhere((request) => request.id == donationReq.id);
     if (reqIndex >= 0) {
       var reqId = donationReq.id;
       final url =
@@ -167,8 +157,6 @@ class DonationRequests with ChangeNotifier {
           }));
       _donationRequests[reqIndex] = donationReq;
       notifyListeners();
-    } else {
-      print('...');
     }
   }
 }

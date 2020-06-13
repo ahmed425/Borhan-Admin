@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-
 import '../models/organization.dart';
 import '../providers/organizations_provider.dart';
 
@@ -17,13 +16,8 @@ class EditOrganizationScreen extends StatefulWidget {
 }
 
 class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
-  // final _myFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
-  final _imageUrlController = TextEditingController();
-  final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
-  PlaceLocation _pickedLocation;
-  PlaceLocation _currentLocation;
   var _editedOrg = Organization(
     id: null,
     orgName: '',
@@ -65,8 +59,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
   final _licenseController = TextEditingController();
   final _mobileController = TextEditingController();
 
-  var currentLocData;
-
   @override
   void setState(fn) {
     if (mounted) {
@@ -76,7 +68,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _descriptionFocusNode.dispose();
     super.dispose();
   }
@@ -104,8 +95,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                       'mobileNo': _editedOrg.mobileNo,
                       'orgName': _editedOrg.orgName,
                     };
-//                    print("After init value" + _editedOrg.orgName);
-//                    print("from edit org details logo = " + _editedOrg.logo);
                     _nameController.text = _initValues['orgName'];
                     _addressController.text = _initValues['address'];
                     _descController.text = _initValues['description'];
@@ -125,12 +114,10 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
   Future getImage() async {
     File img;
     img = await ImagePicker.pickImage(source: ImageSource.gallery);
-
     setState(() {
       _image = img;
       _isLoadImg = true;
     });
-
     Provider.of<Organizations>(context, listen: false)
         .uploadImage(_image)
         .then((val) {
@@ -138,13 +125,10 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       setState(() {
         _isLoadImg = false;
       });
-
-      print("value from upload _download url" + _downloadUrl);
     });
   }
 
   Future<void> _saveForm() async {
-//    PlaceLocation myCurrentLocation;
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -154,12 +138,8 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       _isLoading = true;
     });
 
-    currentLocData = await Provider.of<Organizations>(context, listen: false)
-        .getTheCurrentUserLocation();
     if (_downloadUrl != null) {
-      print("Logo from save before delete url" + _downloadUrl);
       if (_initValues['logo'] != null && _initValues['logo'] != '') {
-        print("Logo from save before delete" + _initValues['logo']);
         Provider.of<Organizations>(context, listen: false)
             .deleteImage(_initValues['logo']);
       }
@@ -179,8 +159,7 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
       orgLocalId: _editedOrg.orgLocalId,
     );
     await Provider.of<Organizations>(context, listen: false)
-        .updateOrgWithCurrentLocation(
-            _editedOrg.id, _editedOrg, currentLocData);
+        .updateOrganization(_editedOrg.id, _editedOrg);
 
     setState(() {
       _isLoading = false;
@@ -190,11 +169,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
 
     Toast.show("تم حفظ البيانات بنجاح", context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-  }
-
-  void _selectPlace(double lat, double lng) {
-    _pickedLocation = PlaceLocation(latitude: lat, longitude: lng);
-//    print(_pickedLocation.longitude);
   }
 
   @override
@@ -269,7 +243,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         Text('نبذة عن الجمعية'),
                         TextField(
                           controller: _descController,
-//                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
@@ -291,7 +264,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         Text('رقم الرخصة'),
                         TextField(
                           controller: _licenseController,
-//                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
@@ -313,7 +285,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         Text('رقم الهاتف الأرضي'),
                         TextField(
                           controller: _landController,
-//                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
@@ -335,7 +306,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         Text('رقم الهاتف المحمول'),
                         TextField(
                           controller: _mobileController,
-//                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
@@ -357,7 +327,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         Text('تفاصيل الحساب المصرفي'),
                         TextField(
                           controller: _bankController,
-//                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
@@ -382,7 +351,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                           style: TextStyle(
                               decoration: TextDecoration.underline,
                               color: Colors.blue),
-//                    textDirection: TextDirection.rtl,
                           onChanged: (val) {
                             _editedOrg = Organization(
                               orgName: _editedOrg.orgName,
@@ -411,7 +379,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                         SizedBox(
                           height: 10,
                         ),
-//                        LocationInput(_selectPlace),
                       ],
                     ),
                   ),
@@ -442,21 +409,6 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                     ? Image.file(_image)
                     : _editedOrg.logo != null //update
                         ? Image.network(_editedOrg.logo)
-//              Row(
-//                          mainAxisAlignment: MainAxisAlignment.center,
-//                          children: <Widget>[
-//                            Expanded(
-//                              child: SizedBox(
-//                                height: MediaQuery.of(context).size.width / 2,
-////                                  height: MediaQuery.of(context).size.width,
-//                                child: CachedNetworkImage(
-//                                  imageUrl: _editedOrg.logo,
-//                                ),
-//                              ),
-////                          fit: BoxFit.cover,
-//                            ),
-//                          ],
-//                        )
                         : _image == null
                             ? Container()
                             : Image.file(

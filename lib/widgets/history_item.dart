@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HistoryItem extends StatelessWidget {
-  String donationAmount;
-  String donationDate;
-  String donationItems;
-  String donatorAddress;
-  String donatorMobile;
-  String donatorName;
-  String actName;
-  String status;
+  final String donationAmount;
+  final String donationDate;
+  final String donationItems;
+  final String donatorAddress;
+  final String donatorMobile;
+  final String donatorName;
+  final String actName;
+  final String status;
 
   HistoryItem({
     this.donationAmount,
@@ -27,14 +26,12 @@ class HistoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-//      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Container(
             child: donatorName != '' && donatorName != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         'اسم المتبرع : ',
@@ -60,7 +57,6 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             child: donatorMobile != '' && donatorMobile != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         'رقم الهاتف المحمول:',
@@ -86,7 +82,6 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             child: donatorAddress != '' && donatorAddress != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         ' العنوان:',
@@ -112,7 +107,6 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             child: donationDate != '' && donationDate != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         'التاريخ :',
@@ -138,7 +132,6 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             child: donationItems != '' && donationItems != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         ' وصف التبرع :',
@@ -164,7 +157,6 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             child: actName != '' && actName != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         'اسم النشاط:',
@@ -190,7 +182,6 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             child: donationAmount != '' && donationAmount != null
                 ? Row(
-//                    textDirection: TextDirection.rtl,
                     children: <Widget>[
                       Text(
                         'المبلغ:',

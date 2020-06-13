@@ -64,7 +64,6 @@ class ChatProvider with ChangeNotifier {
         img: chat.img,
         time: DateTime.now().toString(),
       );
-//      _items.add(newMessage);
       _items.insert(0, newMessage);
       notifyListeners();
     } catch (error) {
@@ -74,16 +73,11 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<String> uploadImage(File image) async {
-    print("in upload");
     StorageReference storageReference =
     FirebaseStorage.instance.ref().child(image.path.split('/').last);
     StorageUploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.onComplete;
-    print('File Uploaded');
     String _downloadUrl = await storageReference.getDownloadURL();
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    print("from uploading :  " + _downloadUrl);
     return _downloadUrl;
   }
 }

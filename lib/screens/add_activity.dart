@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +10,12 @@ import '../models/activity.dart';
 
 class AddActivity extends StatefulWidget {
   static const routeName = '/add-activity';
-  final orgLocalId ;
+  final orgLocalId;
+
   final actId;
-  AddActivity({this.orgLocalId,this.actId});
+
+  AddActivity({this.orgLocalId, this.actId});
+
   @override
   _AddActivityState createState() => _AddActivityState();
 }
@@ -67,7 +69,6 @@ class _AddActivityState extends State<AddActivity> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _descFocusNode.dispose();
     super.dispose();
   }
@@ -78,27 +79,21 @@ class _AddActivityState extends State<AddActivity> {
       return;
     }
     if (_addActivity.imagesUrl != null && _addActivity.imagesUrl != '') {
-      print(
-          '---------------------------- from delete image -----------------------------');
-      print('Image Url : ' + _addActivity.imagesUrl);
       Provider.of<Activities>(context, listen: false)
           .deleteImage(_addActivity.imagesUrl);
     }
-    print("---------------------------------------------");
     _form.currentState.save();
     setState(() {
       _isLoading = true;
     });
 
     if (_addActivity.id != null) {
-      print("activity id :  " + _addActivity.id);
       _addActivity = Activity(
         id: _addActivity.id,
         imagesUrl: _downloadUrl != null ? _downloadUrl : _addActivity.imagesUrl,
         activityDescription: _addActivity.activityDescription,
         activityName: _addActivity.activityName,
       );
-      print(_addActivity.imagesUrl);
       Provider.of<Activities>(context, listen: false)
           .updateActivity(_addActivity.id, _addActivity, orgId);
       setState(() {
@@ -112,37 +107,37 @@ class _AddActivityState extends State<AddActivity> {
         activityDescription: _addActivity.activityDescription,
         activityName: _addActivity.activityName,
       );
-      print(_addActivity.imagesUrl);
       try {
         await Provider.of<Activities>(context, listen: false)
             .addActivity(_addActivity, orgId);
       } catch (error) {
         await showDialog(
           context: context,
-          builder: (ctx) => (Platform.isAndroid)?
-          AlertDialog(
-            title: Text('خطأ'),
-            content: Text('حدث خطأ ما'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('حسنا'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ):CupertinoAlertDialog(
-             title: Text('خطأ'),
-            content: Text('حدث خطأ ما'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text('حسنا'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
+          builder: (ctx) => (Platform.isAndroid)
+              ? AlertDialog(
+                  title: Text('خطأ'),
+                  content: Text('حدث خطأ ما'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('حسنا'),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                )
+              : CupertinoAlertDialog(
+                  title: Text('خطأ'),
+                  content: Text('حدث خطأ ما'),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text('حسنا'),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                ),
         );
       } finally {
         setState(() {
@@ -156,24 +151,15 @@ class _AddActivityState extends State<AddActivity> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
-    print('from add act screen when edit');
-    print(widget.orgLocalId);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
-                print(orgId),
               });
-//      final activityId = ModalRoute.of(context).settings.arguments as String;
       final activityId = widget.actId;
       if (activityId != null) {
         _addActivity = Provider.of<Activities>(context, listen: false)
             .findById(activityId);
-        print(
-            'After Find Activity  _addActivity =  ' + _addActivity.toString());
-        print('After Find Activity  Activity Name =  ' +
-            _addActivity.activityName);
         _initValues = {
           'actName': _addActivity.activityName,
           'actDescription': _addActivity.activityDescription,
@@ -276,7 +262,6 @@ class _AddActivityState extends State<AddActivity> {
                                   child: CircularProgressIndicator(),
                                 )
                               : newImage(),
-//                      child: addImage(),
                         ),
                         Container(
                           color: Colors.teal[100],

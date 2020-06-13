@@ -15,7 +15,6 @@ import './providers/campaigns.dart';
 import './providers/history_provider.dart';
 import './providers/organizations_provider.dart';
 import './providers/email_provider.dart';
-import './providers/video_provider.dart';
 import './providers/donation_requests.dart';
 import './screens/add_campaign.dart';
 import './screens/activity_screen.dart';
@@ -23,7 +22,6 @@ import './screens/add_activity.dart';
 import './screens/donation_tabs_screen.dart';
 import './screens/donation_request_details.dart';
 import './screens/home_screen.dart';
-import './screens/auth_screen.dart';
 import './screens/video_screen.dart';
 import './screens/email_screen.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
@@ -56,9 +54,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: HistoryProvider(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Video(),
         ),
         ChangeNotifierProvider.value(
           value: EmailProvider(),

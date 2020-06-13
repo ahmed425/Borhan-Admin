@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-
 import '../providers/donation_requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +16,7 @@ class _DonationRequestDetailsScreenState
     extends State<DonationRequestDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    var myRequests =
-        Provider.of<DonationRequests>(context, listen: false).donationRequests;
-    var myProvider = Provider.of<DonationRequests>(context, listen: false);
-
+    Provider.of<DonationRequests>(context, listen: false).donationRequests;
     final requestId = ModalRoute.of(context).settings.arguments as String;
     var currentRequest = Provider.of<DonationRequests>(context, listen: false)
         .findById(requestId);
@@ -32,19 +28,19 @@ class _DonationRequestDetailsScreenState
       body: Container(
         color: Colors.teal[100],
         padding: EdgeInsets.all(10),
-        child:
-//          padding: const EdgeInsets.all(16.0),
-            SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
-//            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               currentRequest.actName != null && currentRequest.actName != ''
                   ? Container(
                       padding: EdgeInsets.all(5),
-                      child: Text("اسم النشاط",
-                          style: TextStyle(
-                            fontSize: 20,
-                          )))
+                      child: Text(
+                        "اسم النشاط",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    )
                   : Container(),
               currentRequest.actName != null && currentRequest.actName != ''
                   ? Container(
@@ -101,9 +97,12 @@ class _DonationRequestDetailsScreenState
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      child: Text(currentRequest.donatorAddress,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)))
+                      child: Text(
+                        currentRequest.donatorAddress,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    )
                   : Container(),
               currentRequest.donatorMobileNo != null &&
                       currentRequest.donatorMobileNo != ''
@@ -215,13 +214,11 @@ class _DonationRequestDetailsScreenState
                       children: <Widget>[
                         Expanded(
                           child: SizedBox(
-//                      width: MediaQuery.of(context).size.width / 2,
                             height: MediaQuery.of(context).size.width,
                             child: CachedNetworkImage(
                               imageUrl: currentRequest.image,
                             ),
                           ),
-//                          fit: BoxFit.cover,
                         ),
                       ],
                     )

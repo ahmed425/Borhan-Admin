@@ -21,20 +21,17 @@ class ActivityItem extends StatefulWidget {
 class _ActivityItemState extends State<ActivityItem> {
   String orgId = '';
   var _isInit = true;
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
-//      print('Image is : ${widget.image}');
-      print('id is : ${widget.id}');
-      print('OrgLocal from act item is : ${widget.orgLocalId}');
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -55,12 +52,14 @@ class _ActivityItemState extends State<ActivityItem> {
               icon: Icon(Icons.edit),
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddActivity(
-                              orgLocalId: widget.orgLocalId,
-                              actId: widget.id,
-                            )));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddActivity(
+                      orgLocalId: widget.orgLocalId,
+                      actId: widget.id,
+                    ),
+                  ),
+                );
               },
               color: Theme.of(context).primaryColor,
             ),
@@ -96,9 +95,13 @@ class _ActivityItemState extends State<ActivityItem> {
                   },
                 ),
                 FlatButton(
-                  child: Text('نعم',
+                  child: Text(
+                    'نعم',
                     style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),),
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   onPressed: () {
                     Provider.of<Activities>(context, listen: false)
                         .deleteActivity(widget.id, orgId);
@@ -115,7 +118,9 @@ class _ActivityItemState extends State<ActivityItem> {
                   child: Text(
                     'نعم',
                     style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   onPressed: () {
                     Provider.of<Activities>(context, listen: false)

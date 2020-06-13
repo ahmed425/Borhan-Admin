@@ -1,7 +1,4 @@
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
-import 'package:intl/intl.dart';
-
 import '../providers/donation_requests.dart';
 import '../widgets/donation_request_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,13 +24,10 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
                 orgId = value.id,
-                print('from donation req screen id   '),
-                print(orgId),
                 Provider.of<DonationRequests>(context)
                     .fetchAndSetProducts(orgId)
                     .then((_) {
@@ -57,7 +51,6 @@ class _DonationRequestsScreenState extends State<DonationRequestsScreen> {
     });
 
     final donationsData = Provider.of<DonationRequests>(context);
-    print('from build in req donation' + donationsData.toString());
     return Container(
       color: Colors.teal[100],
       child: _isLoading

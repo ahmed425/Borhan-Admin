@@ -1,9 +1,7 @@
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/screens/add_campaign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../screens/add_activity.dart';
 import 'package:provider/provider.dart';
 import '../providers/campaigns.dart';
 import 'dart:io' show Platform;
@@ -13,6 +11,7 @@ class CampaignItem extends StatefulWidget {
   final String id;
   final String image;
   final orgLocalId;
+
   CampaignItem(this.name, this.id, this.image, this.orgLocalId);
 
   @override
@@ -22,12 +21,14 @@ class CampaignItem extends StatefulWidget {
 class _CampaignItemState extends State<CampaignItem> {
   String orgId = '';
   var _isInit = true;
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
-      Provider.of<Organizations>(context).fetchAndSetOrg(widget.orgLocalId).then((value) => {
+      Provider.of<Organizations>(context)
+          .fetchAndSetOrg(widget.orgLocalId)
+          .then((value) => {
                 orgId = value.id,
                 print(orgId),
               });
@@ -38,7 +39,6 @@ class _CampaignItemState extends State<CampaignItem> {
 
   @override
   Widget build(BuildContext context) {
-//    final scaffold = Scaffold.of(context);
     return ListTile(
       title: Text(
         widget.name,
@@ -54,77 +54,89 @@ class _CampaignItemState extends State<CampaignItem> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            AddCampaign(orgLocalId: widget.orgLocalId,campId: widget.id,)));
+                      builder: (context) => AddCampaign(
+                        orgLocalId: widget.orgLocalId,
+                        campId: widget.id,
+                      ),
+                    ));
               },
               color: Theme.of(context).primaryColor,
             ),
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                Provider.of<Campaigns>(context, listen: false).deleteCampaign(widget.id, orgId);
+                _showDialog();
               },
               color: Theme.of(context).errorColor,
             ),
           ],
         ),
       ),
-      leading: widget.image!=null?
-      CircleAvatar(
-        radius: 25,
-        backgroundImage: NetworkImage(widget.image),
-      ):Container(),
+      leading: widget.image != null
+          ? CircleAvatar(
+              radius: 25,
+              backgroundImage: NetworkImage(widget.image),
+            )
+          : Container(),
     );
   }
 
-  _showDialog(){
+  _showDialog() {
     showDialog(
       context: context,
-      builder: (ctx) => (Platform.isAndroid)?
-      AlertDialog(
-        title: Text('حذف نشاط'),
-        content: Text('هل تريد حذف النشاط؟'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('الغاء'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          ),
-          FlatButton(
-            child: Text('نعم',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),),
-            onPressed: () {
-              Provider.of<Campaigns>(context, listen: false).deleteCampaign(widget.id, orgId);
-            Navigator.of(ctx).pop();
-            },
-          ),
-        ],
-      ):CupertinoAlertDialog(
-                title: Text('حذف نشاط'),
-        content: Text('هل تريد حذف النشاط؟'),
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: Text('نعم',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),),
-            onPressed: () {
-             Provider.of<Campaigns>(context, listen: false).deleteCampaign(widget.id, orgId);
+      builder: (ctx) => (Platform.isAndroid)
+          ? AlertDialog(
+              title: Text('حذف نشاط'),
+              content: Text('هل تريد حذف النشاط؟'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('الغاء'),
+                  onPressed: () {
                     Navigator.of(ctx).pop();
-              },
-          ),
-          CupertinoDialogAction(
-            child: Text('الغاء'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          ),
-        ],
-      ),
+                  },
+                ),
+                FlatButton(
+                  child: Text(
+                    'نعم',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    Provider.of<Campaigns>(context, listen: false)
+                        .deleteAdminCampaign(widget.id, orgId);
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+              ],
+            )
+          : CupertinoAlertDialog(
+              title: Text('حذف نشاط'),
+              content: Text('هل تريد حذف النشاط؟'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text(
+                    'نعم',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    Provider.of<Campaigns>(context, listen: false)
+                        .deleteAdminCampaign(widget.id, orgId);
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text('الغاء'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+              ],
+            ),
     );
-      
   }
-
-
 }

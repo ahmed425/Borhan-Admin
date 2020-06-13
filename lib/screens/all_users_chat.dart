@@ -1,5 +1,3 @@
-import 'package:BorhanAdmin/providers/auth.dart';
-import 'package:BorhanAdmin/providers/chat_provider.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/providers/user_chat_provider.dart';
 import 'package:BorhanAdmin/screens/chat_screen.dart';
@@ -19,7 +17,6 @@ class AllUsersChatScreen extends StatefulWidget {
 class _UsersChatScreenState extends State<AllUsersChatScreen> {
   String orgId = '';
   var _isInit = true;
-  var _isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -30,14 +27,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
                 orgId = value.id,
                 print(orgId),
                 Provider.of<UserChatProvider>(context)
-                    .fetchAndSetAllUsers(orgId)
-                    .then((_) => {
-                          print('from provider'),
-                          setState(() {
-                            print('from set state');
-                            _isLoading = true;
-                          }),
-                        }),
+                    .fetchAndSetAllUsers(orgId),
               });
     }
     _isInit = false;
@@ -48,36 +38,31 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
   Widget build(BuildContext context) {
     final allUsers = Provider.of<UserChatProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('المحادثات'),
-      ),
-      body: 
-      // _isLoading? 
-      Container(
-              color: Colors.teal[100],
-              child: WillPopScope(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      child: ListView.builder(
-                              padding: EdgeInsets.all(10.0),
-                              itemBuilder: (context, index) =>
-                                  buildItem(context, allUsers.users, index),
-                              itemCount: allUsers.users.length,
-                            ),
-                    ),
-                  ],
+        appBar: AppBar(
+          title: const Text('المحادثات'),
+        ),
+        body: Container(
+          color: Colors.teal[100],
+          child: WillPopScope(
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    itemBuilder: (context, index) =>
+                        buildItem(context, allUsers.users, index),
+                    itemCount: allUsers.users.length,
+                  ),
                 ),
-              ),
-            )
-          // : Center(child: CircularProgressIndicator()),
-    );
+              ],
+            ),
+          ),
+        )
+        // : Center(child: CircularProgressIndicator()),
+        );
   }
 
   Widget buildItem(BuildContext context, List<String> documents, int i) {
-    // final users = Provider.of<UserChatProvider>(context);
-    print('from build');
-    print(documents);
     if (documents[i] == null) {
       return Container();
     } else {
@@ -119,9 +104,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-//                        ChatScreen(id: users.usersLocalId[i])));
-                        ChatScreen(
+                    builder: (context) => ChatScreen(
                           id: documents[i],
                           orgLocalId: widget.orgLocalId,
                         )));

@@ -1,14 +1,13 @@
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/history_provider.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/material.dart';
 import '../widgets/history_item.dart';
-import '../models/donation_history.dart';
 import 'package:provider/provider.dart';
 
 class DonationHistory extends StatefulWidget {
-  final orgLocalId ;
+  final orgLocalId;
   DonationHistory({this.orgLocalId});
+
   @override
   _DonationHistoryState createState() => _DonationHistoryState();
 }
@@ -21,7 +20,6 @@ class _DonationHistoryState extends State<DonationHistory> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-//      final data = Provider.of<Auth>(context);
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)
           .then((value) => {
@@ -128,8 +126,6 @@ class _DonationHistoryState extends State<DonationHistory> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-//                                                        textDirection:
-//                                                            TextDirection.rtl,
                                                         children: <Widget>[
                                                           Text(
                                                             'نوع التبرع : ',

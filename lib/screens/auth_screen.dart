@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'package:app_settings/app_settings.dart';
@@ -26,7 +25,6 @@ class AuthScreen extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Container(
-              // color: Color.fromRGBO(57, 162, 139, 1),
               color: Colors.teal[50],
             ),
             SingleChildScrollView(
@@ -43,7 +41,7 @@ class AuthScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 94.0),
                         child: Image.asset(
-                          'assets/images/borhan3.png',
+                          'assets/images/logo.png',
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -159,14 +157,15 @@ class _AuthCardState extends State<AuthCard> {
                             ),
                           )),
                       CupertinoDialogAction(
-                          onPressed: () => {
-                                Navigator.pop(context),
-                              },
-                          child: Text(
-                            'خروج ',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
-                          )),
+                        onPressed: () => {
+                          Navigator.pop(context),
+                        },
+                        child: Text(
+                          'خروج ',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ],
                   ));
       } else if (_previousResult == ConnectivityResult.none) {
@@ -174,10 +173,6 @@ class _AuthCardState extends State<AuthCard> {
           if (result == true) {
             if (dialogShown == true) {
               dialogShown = false;
-              print(
-                  '-------------------------put your fix here ----------------------');
-//              getOrganizationsAndCampaign();
-
               Navigator.pop(context);
             }
           }
@@ -186,13 +181,6 @@ class _AuthCardState extends State<AuthCard> {
       _previousResult = connresult;
     });
   }
-//
-//  @override
-//  void initState(){
-//
-//
-//  }
-//
 
   @override
   void dispose() {
@@ -210,33 +198,33 @@ class _AuthCardState extends State<AuthCard> {
   final _passwordController = TextEditingController();
 
   void _showErrorDialog(String message) {
-    print("alert");
     showDialog(
       context: context,
-      builder: (ctx) => (Platform.isAndroid)?
-      AlertDialog(
-        title: Text('حدث خطأ ما'),
-        content: Text(message),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('حسنا'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      ):CupertinoAlertDialog(
-             title: Text('خطأ'),
-            content: Text('حدث خطأ ما'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text('حسنا'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
+      builder: (ctx) => (Platform.isAndroid)
+          ? AlertDialog(
+              title: Text('حدث خطأ ما'),
+              content: Text(message),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('حسنا'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            )
+          : CupertinoAlertDialog(
+              title: Text('خطأ'),
+              content: Text('حدث خطأ ما'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text('حسنا'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ),
     );
   }
 
@@ -252,15 +240,12 @@ class _AuthCardState extends State<AuthCard> {
     });
     if (_authMode == AuthMode.Login) {
       try {
-        // Log user in
-        print('log in ');
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email'],
           _authData['password'],
         );
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home()));
-        // Navigator.of(context).pushReplacementNamed('/home');
       } catch (error) {
         const errorMessage =
             'البريد الإلكتروني أو كلمة المرور غير صحيحة,رجاء المحاولة مرة أخري';

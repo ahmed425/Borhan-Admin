@@ -1,7 +1,4 @@
-import 'package:BorhanAdmin/models/organization.dart';
-import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
-import 'package:BorhanAdmin/providers/user_chat_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/campaigns.dart';
@@ -11,7 +8,9 @@ import '../widgets/campaign_item.dart';
 class CampaignScreen extends StatefulWidget {
   static const routeName = '/Campaigns';
   final orgLocalId;
+
   CampaignScreen({this.orgLocalId});
+
   @override
   _CampaignScreenState createState() => _CampaignScreenState();
 }
@@ -23,12 +22,15 @@ class _CampaignScreenState extends State<CampaignScreen> {
 
   @override
   void didChangeDependencies() {
-//    final data = Provider.of<Auth>(context);
     if (_isInit) {
       Provider.of<Organizations>(context)
-          .fetchAndSetOrg(widget.orgLocalId).then((value) => {orgId = value.id,
+          .fetchAndSetOrg(widget.orgLocalId)
+          .then((value) => {
+                orgId = value.id,
                 print(orgId),
-                Provider.of<Campaigns>(context).fetchAndSetProducts(orgId).then((_) {
+                Provider.of<Campaigns>(context)
+                    .fetchAndSetProducts(orgId)
+                    .then((_) {
                   setState(() {
                     _isLoading = false;
                   });
@@ -42,7 +44,6 @@ class _CampaignScreenState extends State<CampaignScreen> {
     super.didChangeDependencies();
   }
 
-//  in body : _isLoading? Center(child:CircularProgressIndicator(),) :
   @override
   Widget build(BuildContext context) {
     final campaignsData = Provider.of<Campaigns>(context);
@@ -75,7 +76,9 @@ class _CampaignScreenState extends State<CampaignScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddCampaign(orgLocalId: widget.orgLocalId,),
+              builder: (context) => AddCampaign(
+                orgLocalId: widget.orgLocalId,
+              ),
             ),
           );
         },

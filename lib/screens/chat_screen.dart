@@ -10,8 +10,9 @@ class ChatScreen extends StatefulWidget {
   static const routeName = '/chat';
   final orgLocalId;
 
-  var id = '';
-  ChatScreen({this.id,this.orgLocalId});
+  final id;
+
+  ChatScreen({this.id, this.orgLocalId});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -61,21 +62,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 orgId = value.id,
                 print(orgId),
                 Provider.of<ChatProvider>(context)
-                    .fetchAndSetChat(widget.id, orgId).then((value) => {
-                  _loading =true,
-                }),
+                    .fetchAndSetChat(widget.id, orgId)
+                    .then((value) => {
+                          _loading = true,
+                        }),
               });
     }
-//    _isInit = true;
     _isInit = false;
     super.didChangeDependencies();
-  }
-
-  Future _getData() async {
-    final url =
-        'https://borhanadmin.firebaseio.com/chat/$orgId/${widget.id}.json';
-    var response = await http.get(url);
-    return response;
   }
 
   @override
@@ -85,59 +79,64 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: Text('المحادثة'),
       ),
-      body: _loading ?Container(
-        color: Colors.teal[100],
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: FutureBuilder(
-                future: chatDocs.fetchAndSetChat(widget.id, orgId),
-                builder: (ctx, futureSnapshot) {
-                  return StreamBuilder(builder: (ctx, chatSnapshot) {
-                    return ListView.builder(
-                      reverse: true,
-                      itemCount: chatDocs.items.length,
-                      itemBuilder: (_, index) => MessageBubble(
-                        chatDocs.items[index].text,
-                        chatDocs.items[index].userName,
-                        chatDocs.items[index].userName != "Admin",
-                      ),
-                    );
-                  });
-                },
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 8),
-              padding: EdgeInsets.all(8),
-              child: Row(
+      body: _loading
+          ? Container(
+              color: Colors.teal[100],
+              child: Column(
                 children: <Widget>[
                   Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(labelText: 'كتابة رسالة ...'),
-                      onChanged: (value) {
-                        setState(() {
-                          _enteredMessage = value;
+                    child: FutureBuilder(
+                      future: chatDocs.fetchAndSetChat(widget.id, orgId),
+                      builder: (ctx, futureSnapshot) {
+                        return StreamBuilder(builder: (ctx, chatSnapshot) {
+                          return ListView.builder(
+                            reverse: true,
+                            itemCount: chatDocs.items.length,
+                            itemBuilder: (_, index) => MessageBubble(
+                              chatDocs.items[index].text,
+                              chatDocs.items[index].userName,
+                              chatDocs.items[index].userName != "Admin",
+                            ),
+                          );
                         });
-                        print('from wigdet Message is : ' + _enteredMessage);
                       },
                     ),
                   ),
-                  IconButton(
-                    color: Theme.of(context).primaryColor,
-                    icon: Icon(
-                      Icons.send,
+                  Container(
+                    margin: EdgeInsets.only(top: 8),
+                    padding: EdgeInsets.all(8),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            controller: _controller,
+                            decoration:
+                                InputDecoration(labelText: 'كتابة رسالة ...'),
+                            onChanged: (value) {
+                              setState(() {
+                                _enteredMessage = value;
+                              });
+                              print('from wigdet Message is : ' +
+                                  _enteredMessage);
+                            },
+                          ),
+                        ),
+                        IconButton(
+                          color: Theme.of(context).primaryColor,
+                          icon: Icon(
+                            Icons.send,
+                          ),
+                          onPressed: _enteredMessage.trim().isEmpty
+                              ? null
+                              : _sendMessage,
+                        )
+                      ],
                     ),
-                    onPressed:
-                        _enteredMessage.trim().isEmpty ? null : _sendMessage,
-                  )
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ):Center(child: CircularProgressIndicator()),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
