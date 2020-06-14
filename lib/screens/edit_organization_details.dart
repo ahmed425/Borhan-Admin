@@ -236,6 +236,9 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                               webPage: _editedOrg.webPage,
                             );
                           },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          minLines: 1,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                           ),
@@ -257,6 +260,9 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                               webPage: _editedOrg.webPage,
                             );
                           },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          minLines: 3,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                           ),
@@ -341,6 +347,9 @@ class _EditOrganizationScreenState extends State<EditOrganizationScreen> {
                               webPage: _editedOrg.webPage,
                             );
                           },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+//                          minLines: 2,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                           ),

@@ -48,8 +48,7 @@ class HelpScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 35),
                 ),
-                SizedBox(
-                  width: 250,
+                FittedBox(
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.push(
@@ -61,7 +60,7 @@ class HelpScreen extends StatelessWidget {
                           ));
                     },
                     child: Text(
-                      'بواسطة محادثة',
+                      'محادثة مع مستخدمي التطبيق',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.0,

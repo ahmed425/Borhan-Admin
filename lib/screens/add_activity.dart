@@ -230,7 +230,8 @@ class _AddActivityState extends State<AddActivity> {
                         TextFormField(
                           initialValue: _initValues['actDescription'],
                           textAlign: TextAlign.right,
-                          maxLines: 3,
+                          maxLines: null,
+                          minLines: 2,
                           keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                             hintText: 'نشاط يساعد في اطعام المحتاجين',
@@ -254,8 +255,26 @@ class _AddActivityState extends State<AddActivity> {
                             );
                           },
                         ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         Container(
-                          padding: const EdgeInsets.all(10.0),
+                          child: RaisedButton(
+                            child: Text(
+                              'اختيار صورة',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            color: Colors.teal,
+                            onPressed: () {
+                              getImage();
+                            },
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(5.0),
                           color: Colors.teal[100],
                           child: _isLoadImg
                               ? Center(
@@ -265,7 +284,7 @@ class _AddActivityState extends State<AddActivity> {
                         ),
                         Container(
                           color: Colors.teal[100],
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: new RaisedButton(
                             textColor: Colors.white,
                             child: _addActivity.id != null
@@ -287,48 +306,30 @@ class _AddActivityState extends State<AddActivity> {
   Widget newImage() {
     return Center(
       child: Container(
-        height: 300,
+//        height: 300,
         color: Colors.teal[100],
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10.0,
-              ),
-              RaisedButton(
-                child: Text(
-                  'اختيار صورة',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                color: Colors.teal,
-                onPressed: () {
-                  getImage();
-                },
-              ),
-              _addActivity.id != null && _image != null
-                  ? Image.file(
-                      _image,
-                      height: MediaQuery.of(context).size.width,
-                    )
-                  : _addActivity.id != null &&
-                          _addActivity.imagesUrl != null //update
-                      ? Container(
-                          color: Colors.teal[100],
-                          height: MediaQuery.of(context).size.width,
-                          child: Image.network(_addActivity.imagesUrl))
-                      : _image == null
-                          ? Container(
-                              color: Colors.teal[100],
-                            )
-                          : Image.file(
-                              _image,
-                              height: MediaQuery.of(context).size.width,
-                            ),
-            ],
-          ),
+        child: Column(
+          children: <Widget>[
+            _addActivity.id != null && _image != null
+                ? Image.file(
+                    _image,
+                    height: MediaQuery.of(context).size.width,
+                  )
+                : _addActivity.id != null &&
+                        _addActivity.imagesUrl != null //update
+                    ? Container(
+                        color: Colors.teal[100],
+                        height: MediaQuery.of(context).size.width,
+                        child: Image.network(_addActivity.imagesUrl))
+                    : _image == null
+                        ? Container(
+                            color: Colors.teal[100],
+                          )
+                        : Image.file(
+                            _image,
+                            height: MediaQuery.of(context).size.width,
+                          ),
+          ],
         ),
       ),
     );

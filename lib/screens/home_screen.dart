@@ -65,7 +65,11 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 FlatButton(
-                  child: Text('نعم'),
+                  child: Text('نعم',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),),
                   onPressed: () {
                     SharedPref sharedPref = SharedPref();
                     sharedPref.remove("admin");
@@ -81,7 +85,11 @@ class _HomeState extends State<Home> {
               content: Text(message),
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: Text('نعم'),
+                  child: Text('نعم',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),),
                   onPressed: () {
                     SharedPref sharedPref = SharedPref();
                     sharedPref.remove("admin");

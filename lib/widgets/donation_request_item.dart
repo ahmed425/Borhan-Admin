@@ -261,7 +261,6 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
               ),
               Expanded(
                 child: Column(
-//                            crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(

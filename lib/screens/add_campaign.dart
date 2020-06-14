@@ -237,7 +237,7 @@ class _AddCampaignState extends State<AddCampaign> {
                         TextFormField(
                           initialValue: _initValues['campDescription'],
                           textAlign: TextAlign.right,
-                          maxLines: 3,
+                          maxLines: null,
                           keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                             hintText: 'حملة تساعد في اطعام المحتاجين',
@@ -270,6 +270,8 @@ class _AddCampaignState extends State<AddCampaign> {
                           textAlign: TextAlign.right,
                           initialValue: _initValues['time'],
                           textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context).requestFocus(_descFocusNode);
                           },
@@ -290,8 +292,26 @@ class _AddCampaignState extends State<AddCampaign> {
                             );
                           },
                         ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         Container(
-                          padding: const EdgeInsets.all(10.0),
+                          child: RaisedButton(
+                            child: Text(
+                              'اختيار صورة',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            color: Colors.teal,
+                            onPressed: () {
+                              getImage();
+                            },
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(5.0),
                           child: _isLoadImg
                               ? Center(
                                   child: CircularProgressIndicator(),
@@ -299,7 +319,7 @@ class _AddCampaignState extends State<AddCampaign> {
                               : newImage(),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: new RaisedButton(
                             textColor: Colors.white,
                             child: _addCampaign.id != null
@@ -324,39 +344,21 @@ class _AddCampaignState extends State<AddCampaign> {
   Widget newImage() {
     return Center(
       child: Container(
-        height: 300,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10.0,
-              ),
-              RaisedButton(
-                child: Text(
-                  'اختيار صورة',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                color: Colors.teal,
-                onPressed: () {
-                  getImage();
-                },
-              ),
-              _addCampaign.id != null && _image != null
-                  ? Image.file(_image)
-                  : _addCampaign.id != null &&
-                          _addCampaign.imagesUrl != null //update
-                      ? Image.network(_addCampaign.imagesUrl)
-                      : _image == null
-                          ? Container()
-                          : Image.file(
-                              _image,
-                              height: 250,
-                            ),
-            ],
-          ),
+//        height: 300,
+        child: Column(
+          children: <Widget>[
+            _addCampaign.id != null && _image != null
+                ? Image.file(_image)
+                : _addCampaign.id != null &&
+                        _addCampaign.imagesUrl != null //update
+                    ? Image.network(_addCampaign.imagesUrl)
+                    : _image == null
+                        ? Container()
+                        : Image.file(
+                            _image,
+                            height: 250,
+                          ),
+          ],
         ),
       ),
     );
