@@ -22,7 +22,7 @@ class Organizations with ChangeNotifier {
     return organization;
   }
 
-  Future<String> fetchAndSetOrgName(String orgId) async {
+  Future<String> fetchAndSetOrgName (String orgId) async {
     final url =
         'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
     try {
@@ -56,7 +56,7 @@ class Organizations with ChangeNotifier {
     }
   }
 
-  Future<Organization> fetchAndSetOrg(String orgLocalId) async {
+  Future<Organization> fetchAndSetOrg (String orgLocalId) async {
     final url =
         'https://borhanadmin.firebaseio.com/CharitableOrganizations.json';
     try {

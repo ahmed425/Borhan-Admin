@@ -71,7 +71,6 @@ class _AddCampaignState extends State<AddCampaign> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _descFocusNode.dispose();
     super.dispose();
   }

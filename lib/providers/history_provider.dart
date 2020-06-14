@@ -19,7 +19,9 @@ class HistoryProvider with ChangeNotifier {
             final List<History> loadedHistory = [];
             if(extractedData!=null){
                 extractedData.forEach((historyId, historyData) {
-                    loadedHistory.add(History(
+                    loadedHistory.add(
+                      History(
+                        orgId: orgId,
                         id: historyId,
                         donatorName: historyData['donatorName'],
                         donatorMobile: historyData['donatorMobile'],

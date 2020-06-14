@@ -4,7 +4,6 @@ import '../widgets/donation_request_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:io' show Platform;
 
 class DonationRequestsScreen extends StatefulWidget {
   final orgLocalId;

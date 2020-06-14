@@ -1,7 +1,6 @@
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 import '../providers/chat_provider.dart';
 import '../widgets/message_bubble.dart';
 import '../models/chat.dart';
@@ -54,7 +53,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     if (_isInit) {
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)

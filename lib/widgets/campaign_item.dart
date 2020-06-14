@@ -24,7 +24,6 @@ class _CampaignItemState extends State<CampaignItem> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     if (_isInit) {
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)

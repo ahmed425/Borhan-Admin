@@ -24,7 +24,6 @@ class _ActivityItemState extends State<ActivityItem> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     if (_isInit) {
       Provider.of<Organizations>(context)
           .fetchAndSetOrg(widget.orgLocalId)

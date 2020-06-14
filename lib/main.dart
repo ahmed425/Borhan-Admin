@@ -24,9 +24,6 @@ import './screens/donation_request_details.dart';
 import './screens/home_screen.dart';
 import './screens/video_screen.dart';
 import './screens/email_screen.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
-
-//var timeDilation = 2.0; // Will slow down animations by a factor of two
 
 void main() {
   runApp(new MyApp());

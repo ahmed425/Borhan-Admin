@@ -44,6 +44,7 @@ class _UsersChatScreenState extends State<AllUsersChatScreen> {
         body: Container(
           color: Colors.teal[100],
           child: WillPopScope(
+            onWillPop: () async => true,
             child: Stack(
               children: <Widget>[
                 Container(

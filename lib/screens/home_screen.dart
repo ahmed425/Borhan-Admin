@@ -45,8 +45,6 @@ class _HomeState extends State<Home> {
           });
     }
     _isInit = false;
-
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 

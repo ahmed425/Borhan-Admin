@@ -88,7 +88,6 @@ class _AuthCardState extends State<AuthCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     connectivitySubscription = Connectivity()
         .onConnectivityChanged

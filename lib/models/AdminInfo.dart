@@ -20,7 +20,6 @@ class AdminInfo with ChangeNotifier {
 
   @override
   String toString() {
-    // TODO: implement toString
     return "UserNav object data is id = $id email = $email";
   }
 }
