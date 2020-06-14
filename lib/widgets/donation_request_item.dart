@@ -413,6 +413,7 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
                 child: Column(
                   children: <Widget>[
                     Container(
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Theme.of(context).primaryColor,
@@ -445,46 +446,52 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        RaisedButton(
-                          onPressed: () {
-                            _showAlertDialogDone(
-                                'هل أنت متأكد من اتمام هذا التبرع ؟');
-                          },
-                          child: Text(
-                            '  تم التبرع ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold),
+                        SizedBox(
+                          width: 200,
+                          child: RaisedButton(
+                            onPressed: () {
+                              _showAlertDialogDone(
+                                  'هل أنت متأكد من اتمام هذا التبرع ؟');
+                            },
+                            child: Text(
+                              '  تم التبرع ',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            textColor:
+                                Theme.of(context).primaryTextTheme.button.color,
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: Theme.of(context).primaryColor,
-                          textColor:
-                              Theme.of(context).primaryTextTheme.button.color,
                         ),
-                        RaisedButton(
-                          onPressed: () {
-                            _showAlertDialogDeleted(
-                                'هل أنت متأكد من إلغاء هذا التبرع ؟');
+                        SizedBox(
+                          width: 200,
+                          child: RaisedButton(
+                            onPressed: () {
+                              _showAlertDialogDeleted(
+                                  'هل أنت متأكد من إلغاء هذا التبرع ؟');
 //                            Toast.show("تم إلغاء التبرع بنجاح", context,
 //                                duration: Toast.LENGTH_LONG,
 //                                gravity: Toast.BOTTOM);
-                          },
-                          child: Text(
-                            '  إلغاء التبرع ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold),
+                            },
+                            child: Text(
+                              '  إلغاء التبرع ',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            textColor:
+                                Theme.of(context).primaryTextTheme.button.color,
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: Theme.of(context).primaryColor,
-                          textColor:
-                              Theme.of(context).primaryTextTheme.button.color,
                         ),
                       ],
                     ),
