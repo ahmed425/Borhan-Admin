@@ -1,9 +1,11 @@
-import 'dart:io' show Platform;
+import 'dart:async';
+import 'dart:io' show InternetAddress, Platform, SocketException;
 import 'package:BorhanAdmin/providers/auth.dart';
 import 'package:BorhanAdmin/providers/organizations_provider.dart';
 import 'package:BorhanAdmin/providers/shard_pref.dart';
 import 'package:BorhanAdmin/screens/auth_screen.dart';
 import 'package:BorhanAdmin/screens/help_screen.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../screens/video_screen.dart';
@@ -14,6 +16,7 @@ import '../screens/activity_screen.dart';
 import '../screens/edit_organization_details.dart';
 import 'activity_screen.dart';
 import 'edit_organization_details.dart';
+import 'package:app_settings/app_settings.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/home';
@@ -28,6 +31,122 @@ class _HomeState extends State<Home> {
   var _isInit = true;
   var orgLogo = '';
   var _isLoading = false;
+  StreamSubscription connectivitySubscription;
+  ConnectivityResult _previousResult;
+  bool dialogShown = false;
+
+  Future<bool> checkInternet() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return Future.value(true);
+      }
+    } on SocketException catch (_) {
+      return Future.value(false);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    connectivitySubscription.cancel();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connresult) {
+      if (connresult == ConnectivityResult.none) {
+        dialogShown = true;
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            child: (Platform.isAndroid)
+                ? AlertDialog(
+                    title: const Text('حدث خطأ ما '),
+                    content: Text(
+                        'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالك وحاول مرة أخرى'),
+                    actions: <Widget>[
+                        FlatButton(
+                            onPressed: () => {
+                                  Navigator.pop(context),
+                                },
+                            child: Text(
+                              'خروج ',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        FlatButton(
+                            onPressed: () => {
+                                  AppSettings.openWIFISettings(),
+                                },
+                            child: Text(
+                              ' اعدادت Wi-Fi ',
+                              style: TextStyle(color: Colors.blue),
+                            )),
+                        FlatButton(
+                            onPressed: () => {
+                                  AppSettings.openDataRoamingSettings(),
+                                },
+                            child: Text(
+                              ' اعدادت الباقه ',
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            ))
+                      ])
+                : CupertinoAlertDialog(
+                    title: const Text('حدث خطأ ما '),
+                    content: Text(
+                        'فقدنا الاتصال بالانترنت  ،\n تأكد من اتصالالك وحاول مرة أخرى'),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                          onPressed: () => {
+                                AppSettings.openWIFISettings(),
+                              },
+                          child: Text(
+                            ' اعدادت Wi-Fi ',
+                            style: TextStyle(color: Colors.blue),
+                          )),
+                      CupertinoDialogAction(
+                          onPressed: () => {
+                                AppSettings.openDataRoamingSettings(),
+                              },
+                          child: Text(
+                            ' اعدادت الباقه ',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          )),
+                      CupertinoDialogAction(
+                        onPressed: () => {
+                          Navigator.pop(context),
+                        },
+                        child: Text(
+                          'خروج ',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ));
+      } else if (_previousResult == ConnectivityResult.none) {
+        checkInternet().then((result) {
+          if (result == true) {
+            if (dialogShown == true) {
+              dialogShown = false;
+              Navigator.pop(context);
+            }
+          }
+        });
+      }
+      _previousResult = connresult;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -63,11 +182,13 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 FlatButton(
-                  child: Text('نعم',
+                  child: Text(
+                    'نعم',
                     style: TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
-                    ),),
+                    ),
+                  ),
                   onPressed: () {
                     SharedPref sharedPref = SharedPref();
                     sharedPref.remove("admin");
@@ -83,11 +204,13 @@ class _HomeState extends State<Home> {
               content: Text(message),
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: Text('نعم',
+                  child: Text(
+                    'نعم',
                     style: TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
-                    ),),
+                    ),
+                  ),
                   onPressed: () {
                     SharedPref sharedPref = SharedPref();
                     sharedPref.remove("admin");
