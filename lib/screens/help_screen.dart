@@ -21,7 +21,8 @@ class HelpScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                FittedBox(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*8/9,
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.push(
@@ -48,7 +49,8 @@ class HelpScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 35),
                 ),
-                FittedBox(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*8/9,
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.push(

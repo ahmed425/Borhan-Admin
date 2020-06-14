@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 class DonationHistory extends StatefulWidget {
   final orgLocalId;
+
   DonationHistory({this.orgLocalId});
 
   @override
