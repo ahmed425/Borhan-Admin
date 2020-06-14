@@ -97,7 +97,7 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
     super.didChangeDependencies();
   }
 
-  void _showAlertDialog(String message) {
+  void _showAlertDialogDone(String message) {
     showDialog(
       context: context,
       builder: (ctx) => (Platform.isAndroid)
@@ -108,6 +108,150 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
               actions: <Widget>[
                 FlatButton(
                   child: Text('نعم'),
+                  onPressed: () {
+                    _donationReq = DonationRequest(
+                      donatorMobileNo: widget.donatorMobileNo,
+                      availableOn: widget.availableOn,
+                      donatorAddress: widget.donatorAddress,
+                      donatorName: widget.donatorName,
+                      userId: widget.userId,
+                      id: widget.id,
+                      orgName: widget.orgName,
+                      actName: widget.actName,
+                      donationAmount: widget.donationAmount,
+                      donationDate: widget.donationDate,
+                      donationItems: widget.donationItems,
+                      donationType: widget.donationType,
+                      image: widget.image,
+                      status: 'done',
+                    );
+                    Provider.of<DonationRequests>(context)
+                        .updateDonationReq(_donationReq, orgId)
+                        .then((value) => {
+                              print('from .then ' +
+                                  orgId +
+                                  '\n' +
+                                  _donationReq.userId),
+                              Provider.of<DonationRequests>(context)
+                                  .addDonationReqInHistory(
+                                      Provider.of<DonationRequests>(context)
+                                          .findById(widget.id),
+                                      orgId)
+                                  .then((value) => {
+                                        Provider.of<DonationRequests>(context)
+                                            .updateInMyDonation(
+                                                _donationReq.userId,
+                                                _donationReq)
+                                            .then((value) => {
+                                                  Provider.of<DonationRequests>(
+                                                          context)
+                                                      .deleteRequest(
+                                                          widget.id, orgId),
+                                                  Navigator.pop(context),
+                                                  Toast.show(
+                                                      "تم اتمام التبرع و نقله للتبرعات السابقة بنجاح",
+                                                      context,
+                                                      duration:
+                                                          Toast.LENGTH_LONG,
+                                                      gravity: Toast.BOTTOM),
+                                                }),
+                                      }),
+                            });
+                  },
+                ),
+                FlatButton(
+                  child: Text('لا'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            )
+          : CupertinoAlertDialog(
+              title: Text('هل أنت متأكد ؟ '),
+              content: Text(message),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text('نعم'),
+                  onPressed: () {
+                    _donationReq = DonationRequest(
+                      donatorMobileNo: widget.donatorMobileNo,
+                      availableOn: widget.availableOn,
+                      donatorAddress: widget.donatorAddress,
+                      donatorName: widget.donatorName,
+                      userId: widget.userId,
+                      id: widget.id,
+                      orgName: widget.orgName,
+                      actName: widget.actName,
+                      donationAmount: widget.donationAmount,
+                      donationDate: widget.donationDate,
+                      donationItems: widget.donationItems,
+                      donationType: widget.donationType,
+                      image: widget.image,
+                      status: 'cancel',
+                    );
+                    Provider.of<DonationRequests>(context)
+                        .updateDonationReq(_donationReq, orgId)
+                        .then((value) => {
+                              print('from .then ' +
+                                  orgId +
+                                  '\n' +
+                                  _donationReq.userId),
+                              Provider.of<DonationRequests>(context)
+                                  .addDonationReqInHistory(
+                                      Provider.of<DonationRequests>(context)
+                                          .findById(widget.id),
+                                      orgId)
+                                  .then((value) => {
+                                        Provider.of<DonationRequests>(context)
+                                            .updateInMyDonation(
+                                                _donationReq.userId,
+                                                _donationReq)
+                                            .then((value) => {
+                                                  Provider.of<DonationRequests>(
+                                                          context)
+                                                      .deleteRequest(
+                                                          widget.id, orgId),
+                                                  Navigator.pop(context),
+                                                  Toast.show(
+                                                      "تم اتمام التبرع بنجاح",
+                                                      context,
+                                                      duration:
+                                                          Toast.LENGTH_LONG,
+                                                      gravity: Toast.BOTTOM),
+                                                }),
+                                      }),
+                            });
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text('لا'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+              ],
+            ),
+    );
+  }
+
+  void _showAlertDialogDeleted(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => (Platform.isAndroid)
+          ? AlertDialog(
+              backgroundColor: Colors.teal[100],
+              title: Text('هل أنت متأكد ؟ '),
+              content: Text(message),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'نعم',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   onPressed: () {
                     _donationReq = DonationRequest(
                       donatorMobileNo: widget.donatorMobileNo,
@@ -172,7 +316,13 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
               content: Text(message),
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: Text('نعم'),
+                  child: Text(
+                    'نعم',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   onPressed: () {
                     _donationReq = DonationRequest(
                       donatorMobileNo: widget.donatorMobileNo,
@@ -297,57 +447,8 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
                       children: <Widget>[
                         RaisedButton(
                           onPressed: () {
-                            _donationReq = DonationRequest(
-                              donatorMobileNo: widget.donatorMobileNo,
-                              availableOn: widget.availableOn,
-                              donatorAddress: widget.donatorAddress,
-                              donatorName: widget.donatorName,
-                              userId: widget.userId,
-                              id: widget.id,
-                              orgName: widget.orgName,
-                              actName: widget.actName,
-                              donationAmount: widget.donationAmount,
-                              donationDate: widget.donationDate,
-                              donationItems: widget.donationItems,
-                              donationType: widget.donationType,
-                              image: widget.image,
-                              status: 'done',
-                            );
-                            Provider.of<DonationRequests>(context)
-                                .updateDonationReq(_donationReq, orgId)
-                                .then((value) => {
-                                      print('from .then ' +
-                                          orgId +
-                                          '\n' +
-                                          _donationReq.userId),
-                                      Provider.of<DonationRequests>(context)
-                                          .addDonationReqInHistory(
-                                              Provider.of<DonationRequests>(
-                                                      context)
-                                                  .findById(widget.id),
-                                              orgId)
-                                          .then((value) => {
-                                                Provider.of<DonationRequests>(
-                                                        context)
-                                                    .updateInMyDonation(
-                                                        _donationReq.userId,
-                                                        _donationReq)
-                                                    .then((value) => {
-                                                          Provider.of<DonationRequests>(
-                                                                  context)
-                                                              .deleteRequest(
-                                                                  widget.id,
-                                                                  orgId),
-                                                          Toast.show(
-                                                              "تم إتمام التبرع و نقله للتبرعات السابقة بنجاح",
-                                                              context,
-                                                              duration: Toast
-                                                                  .LENGTH_LONG,
-                                                              gravity:
-                                                                  Toast.BOTTOM),
-                                                        }),
-                                              }),
-                                    });
+                            _showAlertDialogDone(
+                                'هل أنت متأكد من اتمام هذا التبرع ؟');
                           },
                           child: Text(
                             '  تم التبرع ',
@@ -365,8 +466,11 @@ class _DonationRequestItemState extends State<DonationRequestItem> {
                         ),
                         RaisedButton(
                           onPressed: () {
-                            _showAlertDialog(
+                            _showAlertDialogDeleted(
                                 'هل أنت متأكد من إلغاء هذا التبرع ؟');
+//                            Toast.show("تم إلغاء التبرع بنجاح", context,
+//                                duration: Toast.LENGTH_LONG,
+//                                gravity: Toast.BOTTOM);
                           },
                           child: Text(
                             '  إلغاء التبرع ',

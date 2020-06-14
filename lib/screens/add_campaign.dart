@@ -148,6 +148,7 @@ class _AddCampaignState extends State<AddCampaign> {
         setState(() {
           _isLoading = false;
         });
+        Navigator.of(context).pop();
       }
     }
   }
@@ -200,7 +201,7 @@ class _AddCampaignState extends State<AddCampaign> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          'اسم الحمة',
+                          'اسم الحملة',
                           textAlign: TextAlign.center,
                         ),
                         TextFormField(
@@ -215,7 +216,7 @@ class _AddCampaignState extends State<AddCampaign> {
                           },
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'من فضلك أدخل أسم للحملة';
+                              return 'من فضلك أدخل أسم الحملة';
                             }
                             return null;
                           },
@@ -328,7 +329,6 @@ class _AddCampaignState extends State<AddCampaign> {
                             color: Colors.teal,
                             onPressed: () {
                               _saveForm();
-                              Navigator.of(context).pop();
                             },
                           ),
                         ),

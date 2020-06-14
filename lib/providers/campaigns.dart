@@ -46,7 +46,7 @@ class Campaigns with ChangeNotifier {
   }
 
   Future<void> addAdminCampaign(Campaign campaign, String orgId) async {
-    if(campaign.imagesUrl ==null){
+    if (campaign.imagesUrl == null) {
       campaign = Campaign(
         campaignName: campaign.campaignName,
         campaignDescription: campaign.campaignDescription,
@@ -76,15 +76,18 @@ class Campaigns with ChangeNotifier {
         time: campaign.time,
       );
       _campaigns.add(newCampaign);
-      updateUserCampaign(newCampaign.id, newCampaign);
+      updateUserCampaign(newCampaign.id, newCampaign, orgId);
       notifyListeners();
     } catch (error) {
       throw error;
     }
   }
 
-  Future<void> updateUserCampaign(String id, Campaign newCampaign) async {
-    if(newCampaign.imagesUrl == null){
+  Future<void> updateUserCampaign(
+      String id, Campaign newCampaign, String orgId) async {
+    final orgName = await orgData.fetchAndSetOrgName(orgId);
+
+    if (newCampaign.imagesUrl == null) {
       newCampaign = Campaign(
         campaignName: newCampaign.campaignName,
         campaignDescription: newCampaign.campaignDescription,
@@ -92,21 +95,28 @@ class Campaigns with ChangeNotifier {
         time: newCampaign.time,
       );
     }
-      final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
-      await http.patch(userUrl,
-          body: json.encode({
-            'name': newCampaign.campaignName,
-            'description': newCampaign.campaignDescription,
-            'image': newCampaign.imagesUrl,
-            'time': newCampaign.time,
-          }));
-      notifyListeners();
+    final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
+    await http.patch(userUrl,
+        body: json.encode({
+          'name': newCampaign.campaignName,
+          'description': newCampaign.campaignDescription,
+          'image': newCampaign.imagesUrl,
+          'time': newCampaign.time,
+          'orgId': orgId,
+          'orgName': orgName,
+        }));
+    notifyListeners();
   }
 
-  Future<void> updateCampaign(String id, Campaign newCampaign, String orgId) async {
-    final campaignIndex = _campaigns.indexWhere((campaign) => campaign.id == id);
+  Future<void> updateCampaign(
+      String id, Campaign newCampaign, String orgId) async {
+    final orgName = await orgData.fetchAndSetOrgName(orgId);
+
+    final campaignIndex =
+        _campaigns.indexWhere((campaign) => campaign.id == id);
     if (campaignIndex >= 0) {
-      final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
+      final url =
+          'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
       final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
       await http.patch(userUrl,
           body: json.encode({
@@ -114,6 +124,8 @@ class Campaigns with ChangeNotifier {
             'description': newCampaign.campaignDescription,
             'image': newCampaign.imagesUrl,
             'time': newCampaign.time,
+            'orgId': orgId,
+            'orgName': orgName,
           }));
       await http.patch(url,
           body: json.encode({
@@ -128,7 +140,8 @@ class Campaigns with ChangeNotifier {
   }
 
   Future<void> deleteAdminCampaign(String id, String orgId) async {
-    final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
+    final url =
+        'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
     final existingProductIndex = _campaigns.indexWhere((prod) => prod.id == id);
     var existingProduct = _campaigns[existingProductIndex];
     _campaigns.removeWhere((campaign) => campaign.id == id);
@@ -168,4 +181,3 @@ class Campaigns with ChangeNotifier {
     await myStorageReference.delete();
   }
 }
-
