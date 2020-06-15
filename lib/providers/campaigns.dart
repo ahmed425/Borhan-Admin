@@ -108,15 +108,13 @@ class Campaigns with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateCampaign(
-      String id, Campaign newCampaign, String orgId) async {
+  Future<void> updateCampaign(String id, Campaign newCampaign, String orgId) async {
     final orgName = await orgData.fetchAndSetOrgName(orgId);
 
     final campaignIndex =
         _campaigns.indexWhere((campaign) => campaign.id == id);
     if (campaignIndex >= 0) {
-      final url =
-          'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
+      final url = 'https://borhanadmin.firebaseio.com/AdminCampaigns/$orgId/$id.json';
       final userUrl = 'https://borhanadmin.firebaseio.com/Campaigns/$id.json';
       await http.patch(userUrl,
           body: json.encode({

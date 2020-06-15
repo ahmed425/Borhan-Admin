@@ -101,6 +101,7 @@ class _AddCampaignState extends State<AddCampaign> {
           .updateCampaign(_addCampaign.id, _addCampaign, orgId);
       setState(() {
         _isLoading = false;
+        Navigator.of(context).pop();
       });
     } else {
       _addCampaign = Campaign(
