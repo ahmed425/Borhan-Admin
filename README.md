@@ -25,7 +25,7 @@ Flutter Mobile Application to manage the donation operations of a charity organi
 ![image](https://i.imgur.com/4e3mioU.png) 
 ![image](https://i.imgur.com/OPN4mR5.png) 
 ![image](https://i.imgur.com/JlIPv5r.png) 
-![image](https://i.imgur.com/iIlrgiF.png) 
+![image](https://i.imgur.com/94eKgoJ.png) 
 
 
 
