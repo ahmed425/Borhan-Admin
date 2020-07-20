@@ -1,6 +1,6 @@
 # BorhanAdmin
 
-Flutter Mobile Application to manage the donation operations of a charity organization .
+Flutter Mobile Application to manage the donation operations of a charity organization.
 
 # Application Features
 
